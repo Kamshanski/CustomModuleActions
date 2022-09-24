@@ -1,0 +1,32 @@
+<idea-plugin>
+    <id>dev.itssho.module</id>
+    <name>Itssho Module Creator</name>
+    <version>1.0</version>
+    <incompatible-with />
+    <vendor email="kamshanski@gmail.com">Evgenii Ruban</vendor>
+
+    <description><![CDATA[
+    Plugin helps create module for multimodule project.
+    For now the plugin is created completely for personal use of plugin's author.
+    Makes no use for third-party use.]]></description>
+
+    <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.gradle</depends>
+    <depends>org.jetbrains.kotlin</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+<!--        <action id="dev.itssho.module.ModuleCreatorAction" class="dev.itssho.module.ModuleCreatorAction" text="Create Module">-->
+<!--            <add-to-group group-id="NewGroup" anchor="first"/>-->
+<!--        </action>-->
+        <action id="dev.itssho.module.feature.qpay.module.QpayModuleAction" class="dev.itssho.module.feature.qpay.module.QpayModuleAction" text="Qpay Module">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+    </actions>
+</idea-plugin>

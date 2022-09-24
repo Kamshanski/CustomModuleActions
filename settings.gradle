@@ -1,0 +1,28 @@
+pluginManagement {
+	repositories {
+		google()
+		gradlePluginPortal()
+		maven { url "https://jitpack.io" }
+	}
+}
+rootProject.name = "ModuleCreator"
+
+include("core")
+include("uikit")
+include("uikit2")
+include("qpay-module")
+include("ui-hierarchy")
+include("ui-component")
+include("util-common")
+include("component-table")
+include(":lib:table")
+include(":lib:table-swing")
+include("component-res")
+include("component-chain")
+include("ui-util")
+include("shared-dialog")
+include("component-idea")
+include 'util-koin'
+include 'component-log'
+include 'shared-file'
+

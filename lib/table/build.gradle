@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+//tasks.withType(JavaCompile) {
+//    options.release = 11
+//}
+//tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+//    kotlinOptions {
+//        jvmTarget = "11"
+//        freeCompilerArgs += "-opt-in=kotlin.ExperimentalStdlibApi"
+//    }
+//}

@@ -1,0 +1,23 @@
+plugins {
+    id 'org.jetbrains.intellij'
+    id 'org.jetbrains.kotlin.jvm'
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
+}
+intellij {
+    version = '2020.2.4'
+    type = "IC"
+
+    // Require the Android plugin (Gradle will choose the correct version):
+    plugins.set(["android"])
+}

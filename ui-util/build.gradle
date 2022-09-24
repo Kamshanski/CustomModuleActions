@@ -1,0 +1,24 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.intellij'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+
+    implementation(project(":ui-component"))
+    implementation(project(":lib:table"))
+    implementation(project(":lib:table-swing"))
+}
+
+intellij {
+    version = '2020.2.4'
+    type = "IC"
+
+    // Require the Android plugin (Gradle will choose the correct version):
+    plugins.set(["android"])
+}

@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '1.9.0' // При обновлении версии обновить сущности в модуле component-idea
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+}
+
+group 'dev.itssho.module'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+    google()
+    maven { url "https://maven.pkg.jetbrains.space/public/p/compose/dev" }
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
+    testImplementation 'org.mockito:mockito-core:4.6.1'
+
+// Koin Core features
+    implementation "io.insert-koin:koin-core:3.2.0"
+// Koin Test features
+    testImplementation "io.insert-koin:koin-test:3.2.0"
+
+    implementation(project(":ui-hierarchy"))
+    implementation(project(":ui-component"))
+    implementation(project(":ui-util"))
+    implementation(project(":lib:table"))
+    implementation(project(":lib:table-swing"))
+    implementation(project(":component-table"))
+    implementation(project(":core"))
+    implementation(project(":util-common"))
+    implementation(project(":component-chain"))
+    implementation(project(":component-res"))
+    implementation(project(":component-idea"))
+    implementation(project(":shared-dialog"))
+    implementation project(":uikit")
+    implementation project(":uikit2")
+    implementation project(":qpay-module")
+    implementation project(":core")
+    implementation project(":component-res")
+    implementation project(":component-idea")
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2020.2.4'
+    type = "IC"
+
+    plugins.set(["android"])
+}
+patchPluginXml {
+    changeNotes = "Some changes"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "11"
+        freeCompilerArgs += "-opt-in=kotlin.ExperimentalStdlibApi"
+    }
+}
+configurations {
+    compileClasspath.resolutionStrategy.sortArtifacts(ResolutionStrategy.SortOrder.DEPENDENCY_FIRST)
+    testCompileClasspath.resolutionStrategy.sortArtifacts(ResolutionStrategy.SortOrder.DEPENDENCY_FIRST)
+}

@@ -1,0 +1,1 @@
+fun <T> mutableEmptyList(): MutableList<T> = ArrayList(0)
