@@ -7,13 +7,14 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven {
-        setUrl("https://dl.bintray.com/s1m0nw1/KtsRunner")
-    }
 }
 
-static String kotlin(String s) {
-    return "org.jetbrains.kotlin:kotlin-$s"
+static String kotlin(String s, String version = null) {
+    if (version == null) {
+        return "org.jetbrains.kotlin:kotlin-$s"
+    } else {
+        return "org.jetbrains.kotlin:kotlin-$s:$version"
+    }
 }
 
 dependencies {
@@ -24,14 +25,21 @@ dependencies {
 
     implementation(kotlin("script-runtime"))
     implementation(kotlin("script-util"))
+    implementation(kotlin("scripting-jsr223"))
     implementation(kotlin("scripting-dependencies"))
     implementation(kotlin("scripting-common"))
+    implementation(kotlin("scripting-jvm"))
+    implementation(kotlin("scripting-jvm-host"))
+    implementation(kotlin("scripting-ide-services"))
     implementation(kotlin("compiler-embeddable"))
+    implementation(kotlin("scripting-compiler"))
     implementation(kotlin("scripting-compiler-embeddable"))
+    implementation(kotlin("scripting-compiler-impl"))
+    implementation(kotlin("scripting-compiler-impl-embeddable"))
     implementation(kotlin("script-util"))
+    implementation(kotlin("scripting-intellij"))
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
-    implementation("net.java.dev.jna:jna:5.12.1")
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
