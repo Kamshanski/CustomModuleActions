@@ -8,6 +8,10 @@ import dev.itssho.module.qpay.module.actor.di.module.makeCreateDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCreateModule
 import dev.itssho.module.qpay.module.actor.di.module.makeNameDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeNameModule
+import dev.itssho.module.qpay.module.actor.di.module.makePreparationDataModule
+import dev.itssho.module.qpay.module.actor.di.module.makePreparationModule
+import dev.itssho.module.qpay.module.actor.di.module.makeStructureDataModule
+import dev.itssho.module.qpay.module.actor.di.module.makeStructureModule
 import dev.itssho.module.qpay.module.actor.di.module.other.makeSharedFileModule
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
@@ -30,6 +34,14 @@ fun makeDi(jbContext: JBContext? = null, swingContext: SwingContext? = null): Ko
 		)
 	}
 	val commonModule = makeCommonModule().apply { includes(commonDataModule) }
+
+
+	val preparationDataModule = makePreparationDataModule().apply { includes(commonDataModule) }
+	val preparationModule = makePreparationModule().apply {
+		includes(preparationDataModule)
+		includes(commonModule)
+	}
+
 
 
 	val nameDataModule = makeNameDataModule().apply { includes(commonDataModule) }
@@ -55,10 +67,11 @@ fun makeDi(jbContext: JBContext? = null, swingContext: SwingContext? = null): Ko
 
 
 	koinApp.modules(
-		commonDataModule, commonModule,
-		nameDataModule, nameModule,
-		structureDataModule, structureModule,
-		createDataModule, createModule,
+		commonDataModule, 		commonModule,
+		preparationDataModule, 	preparationModule,
+		nameDataModule, 		nameModule,
+		structureDataModule, 	structureModule,
+		createDataModule, 		createModule,
 	)
 
 	return koinApp

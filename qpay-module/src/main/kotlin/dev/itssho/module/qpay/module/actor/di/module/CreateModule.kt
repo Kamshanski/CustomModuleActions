@@ -12,8 +12,6 @@ import dev.itssho.module.qpay.module.create.data.datasource.directory.DirectoryD
 import dev.itssho.module.qpay.module.create.data.datasource.file.FileDataSource
 import dev.itssho.module.qpay.module.create.data.repository.DirectoryRepositoryImpl
 import dev.itssho.module.qpay.module.create.data.repository.FileRepositoryImpl
-import dev.itssho.module.qpay.module.create.domain.hierarchy.ControllerImpl
-import dev.itssho.module.qpay.module.create.domain.hierarchy.HierarchyProcessorProvider
 import dev.itssho.module.qpay.module.create.domain.repository.DirectoryRepository
 import dev.itssho.module.qpay.module.create.domain.repository.FileRepository
 import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUseCase
@@ -40,7 +38,6 @@ fun makeCreateDataModule() = module {
 
 	singleOf(::DirectoryRepositoryImpl) bind DirectoryRepository::class
 	singleOf(::FileRepositoryImpl) bind FileRepository::class
-	factoryOf(::HierarchyProcessorProvider)
 
 	factoryOf(::ImplementHierarchyUseCase)
 	factoryOf(::ControllerImpl) bind Controller::class

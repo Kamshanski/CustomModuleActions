@@ -1,4 +1,4 @@
-package ui
+package di
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -34,7 +34,7 @@ class DiTest : KoinTest {
 
 		whenever(context.ideProject).thenReturn(project)
 
-		whenever(context.rootDirectory).thenReturn(rootDirectory)
+		whenever(context.mainFolderPsiDirectory).thenReturn(rootDirectory)
 		whenever(rootDirectory.virtualFile).thenReturn(rootDirectoryVirtualFile)
 		whenever(rootDirectoryVirtualFile.path).thenReturn("abvgd")
 

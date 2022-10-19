@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.create.domain.hierarchy
+package dev.itssho.module.qpay.module.common.domain.hierarchy
 
 import dev.itssho.module.hierarchy.controller.Controller
 import dev.itssho.module.qpay.module.create.domain.repository.DirectoryRepository

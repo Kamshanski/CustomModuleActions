@@ -14,6 +14,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
 // Koin Core features
     implementation "io.insert-koin:koin-core:3.2.0"
 // Koin Test features
@@ -24,6 +25,7 @@ dependencies {
     implementation(project(":ui-hierarchy"))
     implementation(project(":ui-component"))
     implementation(project(":ui-util"))
+    implementation(project(":lib:script"))
     implementation(project(":lib:table"))
     implementation(project(":lib:table-swing"))
     implementation(project(":component-table"))

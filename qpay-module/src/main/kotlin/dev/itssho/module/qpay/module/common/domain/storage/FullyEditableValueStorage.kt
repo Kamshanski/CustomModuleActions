@@ -5,6 +5,7 @@ import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage.Str
 import dev.itssho.module.hierarchy.storage.ValueStorage.StrList
 
+// TODO Утащить получение в UseCase, Repo, DataSource
 class FullyEditableValueStorage : MutableValueStorage {
 
 	val stringConstantsKeys = Str.values()
