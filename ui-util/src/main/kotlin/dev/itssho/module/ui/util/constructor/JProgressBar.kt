@@ -4,7 +4,7 @@ import dev.itssho.module.component.value.Orientation
 import javax.swing.JProgressBar
 import javax.swing.SwingConstants
 
-inline fun jProgressBar(orientation: Orientation = Orientation.HORIZONTAL, min: Int = 0, max: Int = 100) = JProgressBar(
+inline fun jProgressBar(orientation: Orientation = Orientation.HORIZONTAL, min: Int = Int.MIN_VALUE, max: Int = Int.MAX_VALUE) = JProgressBar(
 	when (orientation) {
 		Orientation.HORIZONTAL -> SwingConstants.HORIZONTAL
 		Orientation.VERTICAL   -> SwingConstants.VERTICAL
