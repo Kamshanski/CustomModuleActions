@@ -7,11 +7,12 @@ import dev.itssho.module.hierarchy.Delete
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.attr.Attr
 import dev.itssho.module.hierarchy.attr.BackText
-import dev.itssho.module.hierarchy.attr.DirChain
+import dev.itssho.module.hierarchy.attr.Directory
 import dev.itssho.module.hierarchy.attr.FileExtension
 import dev.itssho.module.hierarchy.attr.FileTemplate
 import dev.itssho.module.hierarchy.attr.FrontText
 import dev.itssho.module.hierarchy.controller.Controller
+import dev.itssho.module.hierarchy.extension.reportError
 import dev.itssho.module.hierarchy.extension.selectedItem
 import dev.itssho.module.hierarchy.handler.HierarchyProcessor
 import dev.itssho.module.hierarchy.handler.util.DirUtil
@@ -19,6 +20,8 @@ import dev.itssho.module.hierarchy.handler.util.FileUtil
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.initializer.HierarchyInitializer
 import dev.itssho.module.hierarchy.initializer.ValuesInitializer
+import dev.itssho.module.hierarchy.name.IssueReporter
+import dev.itssho.module.hierarchy.name.NameHandler
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.hierarchy.storage.moduleName
@@ -34,21 +37,33 @@ fun Char.lowercase(): Char = this.toString().lowercase().first()
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")	// Независимость от версии Kotlin`а
 fun String.lowercase(): String = (this as java.lang.String).toLowerCase(Locale.US)
 
+/* Constants and utils */
+
+object C {
+
+	const val DELIMITER = "-"
+
+	const val COMPANY_NAME_KEY = "COMPANY_NAME"
+	const val TEAM_KEY = "TEAM"
+}
+
+interface VSUtil {
+
+	val ValueStorage.companyName: List<String> get() = this.getList(C.COMPANY_NAME_KEY)
+	val ValueStorage.companyNameOrNull: List<String>? get() = this.getListOrNull(C.COMPANY_NAME_KEY)
+
+	val ValueStorage.team: String get() = this.get(C.TEAM_KEY)
+	val ValueStorage.teamOrNull: String? get() = this.getOrNull(C.TEAM_KEY)
+}
+
 
 
 /* Value Initializer. Keys and values initialization here  */
 
-object Keys {
-
-	const val COMPANY_NAME = "COMPANY_NAME"
-
-	const val TEAM = "TEAM"
-}
-
 class ValuesInitializerImpl : ValuesInitializer {
 
 	override fun initialize(valueStorage: MutableValueStorage) {
-		valueStorage.put(Keys.COMPANY_NAME, listOf("ru", "ftc", "qpay"))
+		valueStorage.put(C.COMPANY_NAME_KEY, listOf("ru", "ftc", "qpay"))
 	}
 }
 
@@ -102,9 +117,9 @@ class QpayHierarchyProcessor : HierarchyProcessor() {
 	}
 
 	private fun handleTeam(ho: HierarchyObject.HOSelector, valueStorage: MutableValueStorage, controller: Controller) {
-		valueStorage.putOrReplace(Keys.TEAM, ho.selectedItem)
+		valueStorage.putOrReplace(C.TEAM_KEY, ho.selectedItem)
 		val parent = ho.parent
-		val directory = DirUtil.extractDirRecursively(parent!!, valueStorage)
+		val directory = DirUtil.extractDirRecursively(parent!!, valueStorage, ::interpretDirDefault)
 
 		val extension = FileUtil.getFileExtensionPart(ho)
 		val fileName = FileUtil.getFileName(ho)
@@ -119,8 +134,8 @@ class QpayHierarchyProcessor : HierarchyProcessor() {
 class FragmentTemplate : FileTemplate.Template("FRAGMENT_TEMPLATE_NAME") {
 
 	override fun compile(folder: List<String>, fileName: String, fileExtension: String, valueStorage: ValueStorage): String {
-		val companyName = valueStorage.getList(Keys.COMPANY_NAME)
-		val moduleName = valueStorage.moduleName
+		val companyName = valueStorage.getList(C.COMPANY_NAME_KEY)
+		val moduleName = valueStorage.moduleName.split(C.DELIMITER)
 		val fqPackage = companyName + moduleName
 
 		return """
@@ -155,7 +170,7 @@ class ReadmeTemplate : FileTemplate.Template("README_TEMPLATE_NAME") {
 
 	override fun compile(folder: List<String>, fileName: String, fileExtension: String, valueStorage: ValueStorage): String =
 		"""
-			#Team: ${valueStorage.getOrNull(Keys.TEAM)}
+			#Team: ${valueStorage.getOrNull(C.TEAM_KEY)}
 
 			- ✨Magic ✨
 		""".trimIndent()
@@ -211,9 +226,13 @@ class ViewModelTemplate : FileTemplate.Template("VIEW_MODEL_TEMPLATE_NAME") {
 /* Hierarchy Initializer. Define initial hierarchy. Use attrs to add features to each element: design, file name/ext/templates and more */
 
 @Suppress("MemberVisibilityCanBePrivate", "PropertyName", "TestFunctionName")
-class HierarchyInitializerImpl : HierarchyInitializer {
+class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 
-	val DELIMITER = "."
+	val DOT_DELIMITER = "."
+	val MINUS_DELIMITER = "-"
+
+	val String.byDot: List<String> get() = this.split(DOT_DELIMITER)
+	val String.byMinus: List<String> get() = this.split(MINUS_DELIMITER)
 
 	val TEAMS_LIST = listOf(
 		"kukusiki",
@@ -223,6 +242,7 @@ class HierarchyInitializerImpl : HierarchyInitializer {
 
 	fun moduleNamePascalCasePrefix(vs: ValueStorage): String {
 		return vs.moduleName
+			.split(C.DELIMITER)
 			.let { it.subList(1, it.size) }
 			.map { it.lowercase() }
 			.joinToString(separator = "") { it[0].uppercase() + it.substring(startIndex = 1) }
@@ -230,6 +250,7 @@ class HierarchyInitializerImpl : HierarchyInitializer {
 
 	fun moduleNameSnakeCasePrefix(vs: ValueStorage): String {
 		return vs.moduleName
+			.split(C.DELIMITER)
 			.let { it.subList(1, it.size) }
 			.joinToString(separator = "_") { it.lowercase() }
 	}
@@ -242,7 +263,7 @@ class HierarchyInitializerImpl : HierarchyInitializer {
 	// Temp File
 	fun FolderItemActs(): List<Act> = AddFile() + AddFolder() + Delete()
 
-	fun DirOfItemId(delimiter: String = DELIMITER): List<Attr> = Dir(DirChain.Dir.PERSONAL_ITEM_ID(delimiter))
+	fun DirOfItemId(delimiter: String = DOT_DELIMITER): List<Attr> = Dir(Directory.Chain.CALCULATED { ho -> ho.personalId.split(delimiter)})
 	fun FileExt(type: String): List<Attr> = listOf(FileExtension(type))
 	fun Kt(): List<Attr> = FileExt("kt")
 	fun Md(): List<Attr> = FileExt("md")
@@ -258,33 +279,20 @@ class HierarchyInitializerImpl : HierarchyInitializer {
 		}
 	}.toTypedArray().let { listOf(FrontText(Text.Complex(*it))) }
 
-	fun Dir(string: String, delimiter: String = DELIMITER): List<Attr> = listOf(DirChain(DirChain.Dir.CUSTOM(string, delimiter)))
-	fun Dir(chain: DirChain.Dir): List<Attr> = listOf(DirChain(chain))
-	fun Dir(vararg any: Any, delimiter: String = DELIMITER): List<Attr> = any.map {
-		when (it) {
-			is String       -> DirChain.Dir.CUSTOM(it, delimiter)
-			is DirChain.Dir -> it
-			else            -> throw IllegalArgumentException("Only String or DirChain.Dir allowed in Dir()")
-		}
-	}.toTypedArray().let { listOf(DirChain(*it)) }
+	fun Dir(list: List<String>): List<Attr> = listOf(Directory(Directory.Chain.CONST(list)))
+	fun Dir(string: String, delimiter: String = DOT_DELIMITER): List<Attr> = Dir(string.split(delimiter))
+	fun Dir(chain: Directory.Chain): List<Attr> = listOf(Directory(chain))
 
-	fun Back(fileExt: String): List<Attr> = listOf(BackText(Text.Const(fileExt)))
+	fun Back(string: String): List<Attr> = listOf(BackText(Text.Const(string)))
 	fun Back(text: Text): List<Attr> = listOf(BackText(text))
-	fun Back(vararg any: Any): List<Attr> = any.map {
-		when (it) {
-			is String -> Text.Const(it)
-			is Text   -> it
-			else      -> throw IllegalArgumentException("Only String or Text allowed in Name()")
-		}
-	}.toTypedArray().let { listOf(BackText(Text.Complex(*it))) }
 
 	override fun initialize(valueStorage: ValueStorage): HierarchyObject = valueStorage.let { vs ->
 		HierarchyObject.HOLabel(
 			"qpay", attributes = Front("qpay-rarog"), children = listOf(
 				HierarchyObject.HOLabel(
-					"moduleName", attributes = Back(Text.Var.MODULE_NAME) + Dir(DirChain.Dir.MODULE_NAME), children = listOf(
+					"moduleName", attributes = Back(vs.moduleName) + Dir(valueStorage.moduleName.split(C.DELIMITER)), children = listOf(
 						HierarchyObject.HOTreeCheck(
-							"mainKotlin", selected = true, actions = FolderItemActs(), attrs = Back("main.kotlin") + Dir("src.main.kotlin", "ru.ftc.qpay", DirChain.Dir.MODULE_NAME), children = listOf(
+							"mainKotlin", selected = true, actions = FolderItemActs(), attrs = Back("main.kotlin") + Dir("src.main.kotlin".byDot + vs.companyName + vs.moduleName.byMinus), children = listOf(
 								HierarchyObject.HOTreeCheck(
 									"data", selected = true, actions = FolderItemActs(), attrs = Back("data") + DirOfItemId(), children = listOf(
 										HierarchyObject.HOTreeCheck("datasource", selected = true, actions = FolderItemActs(), attrs = Back("datasource") + DirOfItemId()),
@@ -351,11 +359,42 @@ class HierarchyInitializerImpl : HierarchyInitializer {
 }
 
 
+class MyNameHandler : NameHandler {
+
+	companion object {
+
+		val FIRST_PARTS = listOf(
+			"feature",
+			"shared",
+			"design",
+			"util",
+			"tool",
+			"component",
+			"zabivaka"
+		)
+	}
+
+	override fun validate(fullName: String, reporter: IssueReporter) {
+		for (ch in fullName) {
+			if (ch !in 'a'..'z' && ch != '-') {
+				reporter.reportError("Qpay module name can have only a-z and -. This one is illegal char: $ch")
+			}
+		}
+
+		val firstPart = fullName.split("-").first()
+		if (firstPart !in FIRST_PARTS) {
+			reporter.reportError("Module must be one of these: ${FIRST_PARTS.joinToString()}")
+		}
+	}
+}
+
+
 
 /* Combine all classes in one script return */
 
 ModuleAction(
 	name = "MyGreatName",
+	nameHandler = MyNameHandler(),
 	hierarchyInitializer = HierarchyInitializerImpl(),
 	valuesInitializer = ValuesInitializerImpl(),
 	hierarchyProcessor = QpayHierarchyProcessor()
