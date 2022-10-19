@@ -29,7 +29,7 @@ class QpayNameViewModel(
 		val DOMAINS = ModuleDomain.values
 	}
 
-	// Решить как-то по-человечески
+	// TODO Решить как-то по-человечески
 	private val updateLocked = AtomicBoolean(false)
 
 	private val _moduleNameState = MutableStateFlow(makeInitialViewState())
