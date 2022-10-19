@@ -1,6 +1,5 @@
 package dev.itssho.module.component.idea.action.idea
 
-import com.intellij.ide.IdeBundle
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
 import com.intellij.openapi.application.ModalityState.NON_MODAL
@@ -31,7 +30,7 @@ internal inline fun invokeAndWaitForWriteCommand(project: Project, commandKey: S
 			commandKey,
 			groupId, // TODO Потестить отмену создани модуля. Возможно (UPD. точно нужен) для этой операции нужен groupId.
 			// UPD2 Опытным путём это не помогло. Нужно обратить внимание на LocalHistory.
-			// Если не поможет, то собирать на уровне domain все таски для Idea и отдельно запускать их всех скопом в invokeAndWaitIfNeeded
+			// Если не поможет, то собирать на уровне domain все таски для Idea и отдельно запускать их всем скопом в invokeAndWaitIfNeeded
 		)
 	}
 }

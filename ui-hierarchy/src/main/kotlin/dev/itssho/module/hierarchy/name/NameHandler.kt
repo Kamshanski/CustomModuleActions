@@ -1,5 +1,6 @@
 package dev.itssho.module.hierarchy.name
 
+// TODO Прокинуть ValueStorage в NameHandler
 interface NameHandler {
 
 	/** Initial module name value */

@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
 
+// TODO Сделать норм логирование
 class MakeIdeaFileUseCase {
 
 	suspend operator fun invoke(fileName: String, content: String) {
