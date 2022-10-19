@@ -6,13 +6,12 @@ import dev.itssho.module.hierarchy.extension.filterSelected
 import dev.itssho.module.hierarchy.extension.flatten
 import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUseCase
 import dev.itssho.module.shared.file.domain.usecase.MakeIdeaFileUseCase
+import fullStackTraceString
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import string.fit
-import java.io.PrintWriter
-import java.io.StringWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -70,9 +69,7 @@ class QpayCreateViewModel(
 						if (_fullLog.value.isNotEmpty()) {
 							append("\n")
 						}
-						val writer = StringWriter()
-						exception.printStackTrace(PrintWriter(writer))
-						logBuilder.append(writer.toString())
+						logBuilder.append(exception.fullStackTraceString())
 					}
 
 					publishLog(logBuilder)

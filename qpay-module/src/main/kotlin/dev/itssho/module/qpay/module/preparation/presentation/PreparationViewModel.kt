@@ -4,6 +4,7 @@ import dev.itssho.module.core.presentation.ViewModel
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
+import fullStackTraceString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -47,7 +48,7 @@ class PreparationViewModel(
 
 				_finalResult.value = PreparationStepResult.Success
 			} catch (ex: Exception) {
-				_error.value = ex.toString()
+				_error.value = ex.fullStackTraceString()
 				_description.value = "На этом шаге произошла ошибка"
 				_progress.value = null
 			}
