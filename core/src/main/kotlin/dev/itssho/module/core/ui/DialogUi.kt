@@ -24,7 +24,7 @@ abstract class DialogUI<T>(
 
 		onShow()
 
-		val presentResult = result as? StepResult.Present ?: throw ClassCastException("result in DialogUI is NONE on Resume")
+		val presentResult = result as? StepResult.Present ?: throw ClassCastException("StepResult is not Present ${this::class.simpleName} on Dialog Resume")
 		val result = presentResult.value as T
 
 		onDispose()

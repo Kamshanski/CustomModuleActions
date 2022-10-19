@@ -31,8 +31,8 @@ class PreparationViewModel(
 	private val _error: MutableStateFlow<String> = MutableStateFlow("")
 	val error: StateFlow<String> = _error
 
-	private val _finalResult = MutableStateFlow<PreparationStepResult?>(null)
-	val finalResult = _finalResult as StateFlow<PreparationStepResult?>
+	private val _finalResult = MutableStateFlow<PreparationFinalResult?>(null)
+	val finalResult = _finalResult as StateFlow<PreparationFinalResult?>
 
 	// TODO унести в ресурсы
 	fun startPreparation() {
@@ -46,11 +46,12 @@ class PreparationViewModel(
 					_progress.value = progress.value!!.copy(completed = i + 1)
 				}
 
-				_finalResult.value = PreparationStepResult.Success
+				_finalResult.value = PreparationFinalResult(PreparationStepResult.Success, exitStepNow = true)
 			} catch (ex: Exception) {
 				_error.value = ex.fullStackTraceString()
 				_description.value = "На этом шаге произошла ошибка"
 				_progress.value = null
+				_finalResult.value = PreparationFinalResult(PreparationStepResult.Failure, exitStepNow = false)
 			}
 		}
 	}
@@ -77,6 +78,6 @@ class PreparationViewModel(
 	}
 
 	fun close() {
-		_finalResult.value = PreparationStepResult.Failure
+		_finalResult.value = PreparationFinalResult(PreparationStepResult.Failure, exitStepNow = true)
 	}
 }

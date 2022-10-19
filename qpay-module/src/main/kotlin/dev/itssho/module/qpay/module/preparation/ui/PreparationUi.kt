@@ -1,6 +1,7 @@
 package dev.itssho.module.qpay.module.preparation.ui
 
 import coroutine.observe
+import coroutine.observeNotNull
 import dev.itssho.module.component.Scroll
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.qpay.module.preparation.presentation.PreparationStepResult
@@ -65,9 +66,12 @@ class PreparationUi(
 		viewModel.description.observeText(scope, descriptionLabel)
 		viewModel.error.observe(scope) { error -> setError(error) }
 
-		viewModel.finalResult.observe(scope) { result ->
-			result ?: return@observe
-			resumeDialogWithOkAction(result)
+		viewModel.finalResult.observeNotNull(scope) { (result, exitNow) ->
+			if (exitNow) {
+				resumeDialogWithOkAction(result)
+			} else {
+				setDialogResult(result)
+			}
 		}
 	}
 
