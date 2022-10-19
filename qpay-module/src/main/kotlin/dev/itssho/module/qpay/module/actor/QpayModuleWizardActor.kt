@@ -2,7 +2,6 @@ package dev.itssho.module.qpay.module.actor
 
 import dev.itssho.module.core.actor.BaseActor
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.core.actor.SwingContext
 import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayNameKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayPreparationKoinDi
@@ -17,9 +16,9 @@ import dev.itssho.module.qpay.module.structure.actor.QpayStructureStep
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureStepResult
 import dev.itssho.module.util.koin.use
 
-class QpayModuleWizardActor(jbContext: JBContext? = null, swingContext: SwingContext? = null) : BaseActor(jbContext ?: swingContext ?: error("No Context specified")) {
+class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 
-	val di = makeDi(jbContext, swingContext).koin
+	val di = makeDi(jbContext).koin
 
 	override suspend fun runAction() {
 

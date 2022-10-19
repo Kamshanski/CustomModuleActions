@@ -1,7 +1,6 @@
 package dev.itssho.module.qpay.module.actor.di
 
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.core.actor.SwingContext
 import dev.itssho.module.qpay.module.actor.di.module.makeCommonDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCommonModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCreateDataModule
@@ -19,7 +18,7 @@ import org.koin.dsl.module
 
 
 /** Вкладывать common в другие модули не надо. Внутри makeDi это уже делается */
-fun makeDi(jbContext: JBContext? = null, swingContext: SwingContext? = null): KoinApplication {
+fun makeDi(jbContext: JBContext): KoinApplication {
 
 	val koinApp = koinApplication()
 
@@ -27,7 +26,7 @@ fun makeDi(jbContext: JBContext? = null, swingContext: SwingContext? = null): Ko
 	val koinModule = module { single { koinApp.koin } }
 
 
-	val commonDataModule = makeCommonDataModule(jbContext, swingContext).apply {
+	val commonDataModule = makeCommonDataModule(jbContext).apply {
 		includes(
 			koinModule,
 			makeSharedFileModule()

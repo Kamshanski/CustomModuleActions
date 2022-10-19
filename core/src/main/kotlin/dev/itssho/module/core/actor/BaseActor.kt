@@ -1,5 +1,6 @@
 package dev.itssho.module.core.actor
 
+// TODO Почистить
 @Suppress("ComponentNotRegistered")
 abstract class BaseActor(val context: Context) {
 

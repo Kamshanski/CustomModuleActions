@@ -4,7 +4,6 @@ import com.intellij.ide.script.IdeScriptEngineManager
 import dev.itssho.module.component.scripting.idea.IdeaKtsScriptRunnerFactory
 import dev.itssho.module.core.actor.Context
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.core.actor.SwingContext
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
@@ -26,13 +25,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.binds
 import org.koin.dsl.module
 
-fun makeCommonDataModule(jbContext: JBContext?, swingContext: SwingContext?): Module =
+fun makeCommonDataModule(jbContext: JBContext): Module =
 	module {
-		when {
-			jbContext != null    -> single { jbContext } bind Context::class
-			swingContext != null -> single { swingContext } bind Context::class
-			else                 -> throw IllegalArgumentException("Specify Context in di")
-		}
+		single { jbContext } bind Context::class
 
 		single(DataScopeQ) { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
 		factory { IdeScriptEngineManager.getInstance() }
