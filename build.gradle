@@ -71,6 +71,7 @@ dependencies {
     implementation project(":uikit")
     implementation project(":uikit2")
     implementation project(":qpay-module")
+    implementation project(":feature-preferences")
     implementation project(":core")
     implementation project(":component-res")
     implementation project(":component-idea")

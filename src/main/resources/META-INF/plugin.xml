@@ -19,6 +19,11 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService
             serviceImplementation="dev.itssho.module.shared.preferences.ModuleCreatorSettingsState"/>
+        <applicationConfigurable
+            parentId="tools"
+            instance="dev.itssho.module.feature.preferences.ModuleCreatorSettingConfigurable"
+            id="dev.itssho.module.feature.preferences.ModuleCreatorSettingConfigurable"
+            displayName="Module Creator Plugin Setting Example"/>
     </extensions>
 
     <actions>
