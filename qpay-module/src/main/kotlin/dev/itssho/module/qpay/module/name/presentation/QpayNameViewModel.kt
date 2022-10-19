@@ -15,9 +15,6 @@ import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidatio
 import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidationResult.Valid
 import dev.itssho.module.qpay.module.name.presentation.state.ModuleNameState
 import dev.itssho.module.qpay.module.name.presentation.validator.validateModuleName
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.atomic.AtomicBoolean
@@ -41,8 +38,8 @@ class QpayNameViewModel(
 	private val _moduleNameValidationValidationResult: MutableStateFlow<ModuleNameValidationResult> = MutableStateFlow(Valid())
 	val moduleNameValidationError = _moduleNameValidationValidationResult as StateFlow<ModuleNameValidationResult>
 
-	private val _navAction = MutableSharedFlow<QpayNameNavAction>(0)
-	val navAction: Flow<QpayNameNavAction> = _navAction
+	private val _finalResult = MutableStateFlow<QpayNameStepResult?>(null)
+	val finalResult = _finalResult as StateFlow<QpayNameStepResult?>
 
 	private fun makeInitialViewState(): ModuleNameState {
 		val levelIndex = 0
@@ -157,20 +154,16 @@ class QpayNameViewModel(
 
 	fun proceed() {
 		// TODO сделать проверки. При ошибках не закрывать экран
-		dispatchedLaunch(Dispatchers.Default) {
-			val fullModuleName = _moduleNameState.value.fullModuleName
-			if (validateModuleName(fullModuleName) is Valid) {
-				val splitName = fullModuleName.split(Separator.Minus.value)
-				setModuleNameUseCase(splitName)
-				_navAction.emit(QpayNameNavAction.Continue(splitName))
-			}
+		val fullModuleName = _moduleNameState.value.fullModuleName
+		if (validateModuleName(fullModuleName) is Valid) {
+			val splitName = fullModuleName.split(Separator.Minus.value)
+			setModuleNameUseCase(splitName)
+			_finalResult.value = QpayNameStepResult.Name(splitName)
 		}
 	}
 
 	fun close() {
-        dispatchedLaunch(Dispatchers.Default) {
-			_navAction.emit(QpayNameNavAction.Close)
-		}
+		_finalResult.value = QpayNameStepResult.Nothing
 	}
 
 	val levels = LEVELS.map { level -> convertLevelName(level) }
