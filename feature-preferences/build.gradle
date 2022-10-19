@@ -1,0 +1,22 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.intellij'
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation project(":shared-preferences")
+}
+
+intellij {
+    version = '2020.2.4'
+    type = "IC"
+
+    // Require the Android plugin (Gradle will choose the correct version):
+    plugins.set(["android"])
+}

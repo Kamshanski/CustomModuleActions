@@ -7,5 +7,5 @@ interface ModuleActionRepository {
 	@Throws(IllegalStateException::class)
 	fun getCached(): ModuleAction
 
-	suspend fun get(): ModuleAction
+	suspend fun get(path: String): ModuleAction
 }

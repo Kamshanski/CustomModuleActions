@@ -1,9 +1,9 @@
 pluginManagement {
-	repositories {
-		google()
-		gradlePluginPortal()
-		maven { url "https://jitpack.io" }
-	}
+    repositories {
+        google()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+    }
 }
 rootProject.name = "ModuleCreator"
 
@@ -27,4 +27,6 @@ include("component-log")
 include("shared-file")
 include("component-scripting")
 include("component-scripting-idea")
+include("feature-preferences")
+include("shared-preferences")
 

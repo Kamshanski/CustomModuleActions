@@ -3,15 +3,19 @@ package dev.itssho.module.qpay.module.preparation.presentation
 import dev.itssho.module.core.presentation.ViewModel
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
+import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
 import fullStackTraceString
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.nio.file.AccessDeniedException
+import java.nio.file.InvalidPathException
 
 class PreparationViewModel(
 	private val valueStorage: MutableValueStorage,
 	private val loadModuleActionUseCase: LoadModuleActionUseCase,
 	private val getModuleActionUseCase: GetModuleActionUseCase,
+	private val getSettingsUseCase: GetSettingsUseCase,
 ) : ViewModel() {
 
 	private val phases = listOf(
@@ -48,7 +52,12 @@ class PreparationViewModel(
 
 				_finalResult.value = PreparationFinalResult(PreparationStepResult.Success, exitStepNow = true)
 			} catch (ex: Exception) {
-				_error.value = ex.fullStackTraceString()
+				val errorText = when (ex) {
+					is AccessDeniedException,
+					is InvalidPathException -> "Ошибка чтения скрипта. Проверь путь до скрипта в настройках. \nТекущий путь до скрипта: '${getSettingsUseCase().scriptPath}'\n"
+					else                    -> ""
+				}
+				_error.value = errorText + ex.fullStackTraceString()
 				_description.value = "На этом шаге произошла ошибка"
 				_progress.value = null
 				_finalResult.value = PreparationFinalResult(PreparationStepResult.Failure, exitStepNow = false)
@@ -59,7 +68,6 @@ class PreparationViewModel(
 	private suspend fun loadScript() {
 		// TODO унести в ресурсы
 		showPhaseDescription(title = "Загрузка скрипта", description = "Пододи")
-
 		loadModuleActionUseCase()
 	}
 
