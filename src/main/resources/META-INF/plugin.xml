@@ -17,14 +17,11 @@
     <depends>org.jetbrains.kotlin</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <applicationService
+            serviceImplementation="dev.itssho.module.shared.preferences.ModuleCreatorSettingsState"/>
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
-<!--        <action id="dev.itssho.module.ModuleCreatorAction" class="dev.itssho.module.ModuleCreatorAction" text="Create Module">-->
-<!--            <add-to-group group-id="NewGroup" anchor="first"/>-->
-<!--        </action>-->
         <action id="dev.itssho.module.feature.qpay.module.QpayModuleAction" class="dev.itssho.module.feature.qpay.module.QpayModuleAction" text="Qpay Module">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>

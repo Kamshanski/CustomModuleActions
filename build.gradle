@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":component-res"))
     implementation(project(":component-idea"))
     implementation(project(":shared-dialog"))
+    implementation project(":shared-preferences")
     implementation project(":uikit")
     implementation project(":uikit2")
     implementation project(":qpay-module")
