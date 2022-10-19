@@ -4,5 +4,5 @@ sealed interface QpayNameStepResult {
 
 	object Nothing : QpayNameStepResult
 
-	data class Name(val name: List<String>) : QpayNameStepResult
+	data class Name(val name: String) : QpayNameStepResult
 }

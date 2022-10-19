@@ -1,4 +1,4 @@
 package dev.itssho.module.hierarchy.storage
 
-val ValueStorage.moduleName: List<String> get() = getList(ValueStorage.StrList.MODULE_NAME)
-val ValueStorage.moduleNameOrNull: List<String>? get() = getListOrNull(ValueStorage.StrList.MODULE_NAME)
+val ValueStorage.moduleName: String get() = get(ValueStorage.Str.MODULE_NAME)
+val ValueStorage.moduleNameOrNull: String? get() = getOrNull(ValueStorage.Str.MODULE_NAME)

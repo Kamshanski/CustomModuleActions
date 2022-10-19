@@ -14,23 +14,22 @@ interface ValueStorage {
 	fun getListOrNull(key: String): List<String>?
 
 	object StrList {
-
-		val MODULE_NAME = "MODULE_NAME"
-
 		@Deprecated("Хз зачем это может быть нужно")
 		val PROJECT_PATH = "PROJECT_PATH"
 
 		// TODO заменить рефлексией или enum
 		fun values(): List<String> = listOf(
-			MODULE_NAME,
 			PROJECT_PATH,
 		)
 	}
 
 	object Str {
 
+		val MODULE_NAME = "MODULE_NAME"
+
 		// TODO заменить рефлексией
 		fun values(): List<String> = listOf(
+			MODULE_NAME,
 		)
 	}
 }

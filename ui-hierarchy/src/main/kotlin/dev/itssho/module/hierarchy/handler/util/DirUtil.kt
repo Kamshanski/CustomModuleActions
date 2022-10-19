@@ -11,18 +11,11 @@ import dev.itssho.module.hierarchy.storage.moduleName
 @Suppress("MemberVisibilityCanBePrivate")
 object DirUtil {
 
-	fun interpretDir(directory: DirChain.Dir, ho: HierarchyObject, moduleName: List<String>): List<String> =
-		when (directory) {
-			is DirChain.Dir.CUSTOM           -> directory.path.split(directory.delimiter)
-			is DirChain.Dir.PERSONAL_ITEM_ID -> ho.personalId.split(directory.delimiter)
-			is DirChain.Dir.MODULE_NAME      -> moduleName
-		}
-
-	/** Вытаскивает ве атрибуты DirChain от ho до последненго родителя, который */
+	/** Вытаскивает все атрибуты DirChain от ho до последненго родителя */
 	fun extractDirRecursively(
 		ho: HierarchyObject,
 		valueStorage: ValueStorage,
-		interpretDir: DirInterpreter = DirUtil::interpretDir,
+		interpretDir: DirInterpreter,
 	): List<String> {
 		val moduleName = valueStorage.moduleName
 

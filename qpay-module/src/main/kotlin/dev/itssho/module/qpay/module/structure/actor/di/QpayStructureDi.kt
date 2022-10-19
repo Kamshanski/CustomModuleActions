@@ -8,4 +8,6 @@ interface QpayStructureDi {
 	fun getUi(): StructureUi
 
 	fun getViewModel(): QpayStructureViewModel
+
+	fun insertModuleName(moduleName: String)
 }

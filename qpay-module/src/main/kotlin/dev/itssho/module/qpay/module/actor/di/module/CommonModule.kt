@@ -11,7 +11,6 @@ import dev.itssho.module.qpay.module.common.data.repository.ModuleActionReposito
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
-import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleNameUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.SetModuleNameUseCase
 import dev.itssho.module.qpay.module.structure.actor.di.DataScopeQ
@@ -40,7 +39,6 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class
 
 		factoryOf(::SetModuleNameUseCase)
-		factoryOf(::GetModuleNameUseCase)
 		factoryOf(::GetModuleActionUseCase)
 		factoryOf(::LoadModuleActionUseCase)
 	}

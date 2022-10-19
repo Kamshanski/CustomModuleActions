@@ -40,7 +40,7 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 		}
 
 		val structureResult = di.get<QpayStructureKoinDi>().use { structureDi ->
-			QpayStructureStep(structureDi)
+			QpayStructureStep(moduleName, structureDi)
 		}
 		val structure = when (structureResult) {
 			is QpayStructureStepResult.Structure -> structureResult.filesFoldersHierarchy
@@ -48,7 +48,7 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 		}
 
 		di.get<QpayCreateKoinDi>().use { createDi ->
-			QpayCreateStep(structure, createDi)
+			QpayCreateStep(moduleName, structure, createDi)
 		}
 	}
 }

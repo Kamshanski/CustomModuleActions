@@ -156,9 +156,8 @@ class QpayNameViewModel(
 		// TODO сделать проверки. При ошибках не закрывать экран
 		val fullModuleName = _moduleNameState.value.fullModuleName
 		if (validateModuleName(fullModuleName) is Valid) {
-			val splitName = fullModuleName.split(Separator.Minus.value)
-			setModuleNameUseCase(splitName)
-			_finalResult.value = QpayNameStepResult.Name(splitName)
+			setModuleNameUseCase(fullModuleName)
+			_finalResult.value = QpayNameStepResult.Name(fullModuleName)
 		}
 	}
 
