@@ -22,7 +22,9 @@ include("component-chain")
 include("ui-util")
 include("shared-dialog")
 include("component-idea")
-include 'util-koin'
-include 'component-log'
-include 'shared-file'
+include("util-koin")
+include("component-log")
+include("shared-file")
+include("component-scripting")
+include("component-scripting-idea")
 

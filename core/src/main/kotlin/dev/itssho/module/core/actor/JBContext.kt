@@ -30,18 +30,14 @@ class JBContext(
 	/** Имя проекта */
 	val projectName: String = ideProject.name
 
-	/** Путь от корня файловой системы ('C:' or '~') до папки Проекта (ИСКЛЮЧИТЕЛЬНО).
-	 * @sample 'C:\aa\bbb\ccc' */
-	val projectDirChain: AnyChain = makeProjectRootPath(selectedDirectory, projectName)
-
 	/** Путь от корня файловой системы ('C:' or '~') до папки Проекта (ВКЛЮЧИТЕЛЬНО).
 	 * @sample 'C:\aa\bbb\ccc\ProjectName' */
-	val rootDirChain: AnyChain = projectDirChain + projectName
+	val mainFolderChain: AnyChain = makeMainFolderChain(ideProject.getBasePath())
 
 	/** PsiDirectory пути от корня файловой системы ('C:' or '~') до папки Проекта (ВКЛЮЧИТЕЛЬНО).
 	 * TODO проверить, от C: он идёт или от начала проекта. Актуализировать описание
 	 * @sample 'C:\aa\bbb\ccc\ProjectName' */
-	val rootDirectory: PsiDirectory = findPsiDirectorySubDirectory(selectedDirectory, rootDirChain)
+	val mainFolderPsiDirectory: PsiDirectory = findPsiDirectorySubDirectory(selectedDirectory, mainFolderChain)
 
 	companion object {
 
@@ -60,26 +56,33 @@ class JBContext(
 			return this
 		}
 
+		private fun makeMainFolderChain(basePath: String?): AnyChain {
+			val mainFolderPath = basePath ?: throw IllegalStateException("Project base path is null")
+			val mainFolderChain = mainFolderPath.splitToChain(Separator.Url)
+			return mainFolderChain
+		}
+
+		@Deprecated("Т.к. имя проекта не всегда равно корневой папке проекта, весь этот алгоритм не дееспособен")
 		private fun makeProjectRootPath(selectedDirectory: PsiDirectory, projectName: String): AnyChain = selectedDirectory
-			.virtualFile.path        									// 'C:\aa\bbb\ccc\ProjectName\module\src\java\...'
+			.virtualFile.path                                            // 'C:\aa\bbb\ccc\ProjectName\module\src\java\...'
 			.split(projectName)                                         // ['C:\aa\bbb\ccc\', '\module\src\java\...']
 			.firstOrNull()                                              // 'C:\aa\bbb\ccc\'
 			?.replace(Separator.Windows.value, Separator.Url.value)     // 'C:/aa/bbb/ccc/'
 			?.splitToChain(Separator.Url)                               // ["C:", "aa", "bbb", "ccc"]
 			.takeNotNullOrExit()
 
-		private fun findPsiDirectorySubDirectory(selectedDirectory: PsiDirectory, rootDirChain: AnyChain): PsiDirectory {
+		private fun findPsiDirectorySubDirectory(selectedDirectory: PsiDirectory, mainFolderDirChain: AnyChain): PsiDirectory {
 			var dir: PsiDirectory? = selectedDirectory
-			val rootDirPath = Path.of(rootDirChain.castTo(Separator.Url).assemble())
+			val mainFolderPath = mainFolderDirChain.castTo(Separator.Url).assemble().let { Path.of(it) }
 			while (true) {
-				val currentDir = dir ?: throw IllegalStateException("PsiDirectory was no found for 'rootDirChain'")
+				val curDir = dir ?: throw IllegalStateException("Main folder psi directory '$mainFolderDirChain' was not found in selected psi directory '$selectedDirectory'")
 
-				val dirPath = currentDir.virtualFile.toNioPath()
-				if (dirPath == rootDirPath || rootDirPath.contains(dirPath)) { // TODO хз как проверять. надо подебажить. Мб contains не нужен. + чекнуть Separator.Windows
-					return currentDir
+				val curDirPath = curDir.virtualFile.toNioPath()
+				if (curDirPath == mainFolderPath || mainFolderPath.contains(curDirPath)) { // TODO хз как проверять. надо подебажить. Мб contains не нужен. + чекнуть Separator.Windows
+					return curDir
 				}
 
-				dir = currentDir.parentDirectory
+				dir = curDir.parentDirectory
 			}
 		}
 	}

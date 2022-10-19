@@ -1,7 +1,6 @@
 package dev.itssho.module.ui.util.constructor
 
 import com.esotericsoftware.tablelayout.swing.Table
-import dev.itssho.module.component.value.Gravity
 import dev.itssho.module.ui.util.container.addAllToCells
 import javax.swing.JComponent
 

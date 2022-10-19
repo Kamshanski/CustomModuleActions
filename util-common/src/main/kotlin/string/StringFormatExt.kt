@@ -1,5 +1,7 @@
 package string
 
+import java.util.Locale
+
 public fun String.truncate(maxLen: Int, truncation: String = "..."): String {
 	if (this.length <= maxLen - truncation.length) {
 		return this
@@ -13,3 +15,6 @@ public fun String.truncate(maxLen: Int, truncation: String = "..."): String {
 		append(truncation)
 	}.toString()
 }
+
+public fun String.lowercase(): String =
+	this.lowercase(Locale.US)

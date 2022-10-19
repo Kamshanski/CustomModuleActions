@@ -13,5 +13,7 @@ interface QpayCreateDi {
 
 	fun getUiScope(): CoroutineScope
 
+	fun insertModuleName(moduleName: String)
+
 	fun insertStructure(structure: HierarchyObject)
 }

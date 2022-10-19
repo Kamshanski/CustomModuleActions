@@ -15,6 +15,7 @@ inline fun <S : Separator> Chain<S>.map(transform: (node: String) -> String): Ch
     return newNodes.splitToChain(separator)
 }
 
+// TODO Переименовать в dropLast
 fun <S : Separator> Chain<S>.removeLast(count: Int): Chain<S> =
     Chain(nodes.subList(0, nodes.size - count), separator)
 

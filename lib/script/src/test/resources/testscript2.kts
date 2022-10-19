@@ -1,0 +1,1 @@
+de.swirtz.ktsrunner.objectloader.ClassFromScript("2) I was created in kts; äö")

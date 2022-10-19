@@ -1,32 +1,35 @@
 package dev.itssho.module.hierarchy.storage
 
-import kotlin.jvm.Throws
-
 // TODO сделать ключи объектами, чтобы не просить список по ключу строки
 interface ValueStorage {
 
-	fun get(key: String): String?
+	@Throws(NoSuchElementException::class)
+	fun get(key: String): String
 
-	fun getList(key: String): List<String>?
+	@Throws(NoSuchElementException::class)
+	fun getList(key: String): List<String>
+
+	fun getOrNull(key: String): String?
+
+	fun getListOrNull(key: String): List<String>?
 
 	object StrList {
-
-		val MODULE_NAME = "MODULE_NAME"
-
 		@Deprecated("Хз зачем это может быть нужно")
 		val PROJECT_PATH = "PROJECT_PATH"
 
 		// TODO заменить рефлексией или enum
 		fun values(): List<String> = listOf(
-			MODULE_NAME,
 			PROJECT_PATH,
 		)
 	}
 
 	object Str {
 
+		val MODULE_NAME = "MODULE_NAME"
+
 		// TODO заменить рефлексией
 		fun values(): List<String> = listOf(
+			MODULE_NAME,
 		)
 	}
 }

@@ -11,10 +11,10 @@ import dev.itssho.module.ui.util.constructor.jProgressBar
 import dev.itssho.module.ui.util.constructor.jbTextArea
 import dev.itssho.module.ui.util.constructor.jiLabel
 import dev.itssho.module.ui.util.constructor.table
+import dev.itssho.module.ui.util.container.*
 import kotlinx.coroutines.CoroutineScope
 import java.awt.event.ActionListener
 import javax.swing.JComponent
-import javax.swing.SwingUtilities
 
 class CreateUi(
 	context: JBContext,
@@ -38,21 +38,19 @@ class CreateUi(
 	}
 
 	override fun configureDialog(dialogWrapper: DummyDialogWrapper) {
-		ActionListener { viewModel.close() }.let {
-			dialogWrapper.okButton.addActionListener(it)
-			dialogWrapper.cancelButton.addActionListener(it)
+		asyncOnUIThread {
+			title = Strings.Create.title
+			width = 500
+			height = 500
 		}
+
+		val dialogBtnListener = ActionListener { viewModel.close() }
+		dialogWrapper.okButton.addActionListener(dialogBtnListener)
+		dialogWrapper.cancelButton.addActionListener(dialogBtnListener)
 
 		initViewModelObservers()
 
-		// TODO Эта штука внутри вызывает launch, хотя не должна. Отсюда сообщения идеи, что операции проходят в не том потоке.
-		SwingUtilities.invokeLater {
-			viewModel.startModuleCreation()
-		}
-
-		title = Strings.Create.title
-		width = 500
-		height = 500
+		viewModel.startModuleCreation()
 	}
 
 	private fun initViewModelObservers() {

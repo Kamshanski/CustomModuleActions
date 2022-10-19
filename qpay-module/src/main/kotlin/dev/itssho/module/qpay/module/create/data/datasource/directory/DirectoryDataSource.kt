@@ -18,7 +18,7 @@ class DirectoryDataSource(
 	private val cache = HashMap<String, PsiDirectory>()
 
 	init {
-		save(context.rootDirectory)
+		save(context.mainFolderPsiDirectory)
 	}
 
 	fun get(directory: List<String>, rootDir: PsiDirectory): PsiDirectory? {
@@ -29,7 +29,7 @@ class DirectoryDataSource(
 		val fromCache = getFromCache(directory, rootDir)
 		fromCache?.let { return it }
 
-		val fromProjectRoot = findSubdirectory(directory, context.rootDirectory)
+		val fromProjectRoot = findSubdirectory(directory, context.mainFolderPsiDirectory)
 		fromProjectRoot?.let { return it }
 
 		return null
@@ -60,10 +60,10 @@ class DirectoryDataSource(
 	}
 
 	fun getOrCreate(directory: List<String>): PsiDirectory =
-		get(directory, context.rootDirectory) ?: createRecursively(directory)
+		get(directory, context.mainFolderPsiDirectory) ?: createRecursively(directory)
 
 	private fun createRecursively(fullDirectory: List<String>): PsiDirectory {
-		var parent = context.rootDirectory
+		var parent = context.mainFolderPsiDirectory
 		var directory = emptyList<String>()
 
 		for (node in fullDirectory) {

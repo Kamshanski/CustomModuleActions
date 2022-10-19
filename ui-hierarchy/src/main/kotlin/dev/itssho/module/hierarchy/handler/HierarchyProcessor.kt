@@ -5,6 +5,7 @@ import dev.itssho.module.hierarchy.HierarchyObject.HOFile
 import dev.itssho.module.hierarchy.HierarchyObject.HOLabel
 import dev.itssho.module.hierarchy.HierarchyObject.HOSelector
 import dev.itssho.module.hierarchy.HierarchyObject.HOTreeCheck
+import dev.itssho.module.hierarchy.attr.Directory
 import dev.itssho.module.hierarchy.controller.Controller
 import dev.itssho.module.hierarchy.handler.util.DirUtil.extractDirRecursively
 import dev.itssho.module.hierarchy.handler.util.FileUtil.getContent
@@ -29,7 +30,7 @@ open class HierarchyProcessor {
 	}
 
 	fun handleFileDefault(ho: HOFile, valueStorage: MutableValueStorage, controller: Controller) {
-		val directory = extractDirRecursively(ho, valueStorage)
+		val directory = extractDirRecursively(ho, valueStorage, ::interpretDirDefault)
 
 		val extension = getFileExtensionPart(ho)
 		val fileName = getFileName(ho)
@@ -41,7 +42,7 @@ open class HierarchyProcessor {
 	}
 
 	fun handleSelectorDefault(ho: HOSelector, valueStorage: MutableValueStorage, controller: Controller) {
-		val directory = extractDirRecursively(ho, valueStorage)
+		val directory = extractDirRecursively(ho, valueStorage, ::interpretDirDefault)
 
 		val extension = getFileExtensionPart(ho)
 		val fileName = getFileName(ho)
@@ -53,8 +54,14 @@ open class HierarchyProcessor {
 	}
 
 	fun handleDirectoryDefault(ho: HOTreeCheck, valueStorage: MutableValueStorage, controller: Controller) {
-		val directory = extractDirRecursively(ho, valueStorage)
+		val directory = extractDirRecursively(ho, valueStorage, ::interpretDirDefault)
 
 		controller.createDirectory(directory)
 	}
+
+	open fun interpretDirDefault(directory: Directory.Chain, ho: HierarchyObject, moduleName: String): List<String> =
+		when (directory) {
+			is Directory.Chain.CONST      -> directory.chain
+			is Directory.Chain.CALCULATED -> directory.calculate(ho)
+		}
 }

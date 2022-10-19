@@ -1,6 +1,6 @@
 @file:Suppress("RemoveExplicitTypeArguments")
 
-package dev.itssho.module.qpay.module.actor.di
+package dev.itssho.module.qpay.module.actor.di.module
 
 import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
@@ -20,14 +20,8 @@ import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 
 fun makeStructureDataModule() = module {
-	factoryOf(::ValuesInitializerImpl) bind ValuesInitializer::class
-	factoryOf(::HierarchyInitializerImpl) bind HierarchyInitializer::class
-
-	factoryOf(::CreateProjectHierarchyUseCase)
 	factoryOf(::GenerateUniqueIdUseCase)
-	factoryOf(::GetModuleNameUseCase)
 	factoryOf(::GetTextUseCase)
-	factoryOf(::InitializeHierarchyUseCase)
 }
 
 fun makeStructureModule() = module {

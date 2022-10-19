@@ -5,6 +5,7 @@ import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage.Str
 import dev.itssho.module.hierarchy.storage.ValueStorage.StrList
 
+// TODO Утащить получение в UseCase, Repo, DataSource
 class FullyEditableValueStorage : MutableValueStorage {
 
 	val stringConstantsKeys = Str.values()
@@ -49,9 +50,15 @@ class FullyEditableValueStorage : MutableValueStorage {
 		lists[key] = list
 	}
 
-	override fun get(key: String): String? = strings[key]
+	@Throws(NoSuchElementException::class)
+	override fun get(key: String): String = getOrNull(key) ?: throw NoSuchElementException("No String with key '$key' in ValueStorage")
 
-	override fun getList(key: String): List<String>? = lists[key]
+	@Throws(NoSuchElementException::class)
+	override fun getList(key: String): List<String> = getListOrNull(key) ?: throw NoSuchElementException("No List<String> with key '$key' in ValueStorage")
+
+	override fun getOrNull(key: String): String? = strings[key]
+
+	override fun getListOrNull(key: String): List<String>? = lists[key]
 
 	fun forcePut(key: String, string: String) {
 		strings[key] = string
