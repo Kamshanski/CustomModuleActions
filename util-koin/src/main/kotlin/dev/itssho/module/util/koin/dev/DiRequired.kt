@@ -1,3 +1,3 @@
 package dev.itssho.module.util.koin.dev
 
-annotation class ToBeInKoin
+annotation class DiRequired
