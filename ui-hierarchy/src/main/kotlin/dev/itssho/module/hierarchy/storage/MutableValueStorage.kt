@@ -1,13 +1,17 @@
 package dev.itssho.module.hierarchy.storage
 
-import kotlin.jvm.Throws
-
 // TODO сделать ключи объектами, чтобы не просить список по ключу строки
 interface ValueStorage {
 
-	fun get(key: String): String?
+	@Throws(NoSuchElementException::class)
+	fun get(key: String): String
 
-	fun getList(key: String): List<String>?
+	@Throws(NoSuchElementException::class)
+	fun getList(key: String): List<String>
+
+	fun getOrNull(key: String): String?
+
+	fun getListOrNull(key: String): List<String>?
 
 	object StrList {
 

@@ -25,7 +25,6 @@ object DirUtil {
 		interpretDir: DirInterpreter = DirUtil::interpretDir,
 	): List<String> {
 		val moduleName = valueStorage.moduleName
-		requireNotNull(moduleName)
 
 		val dirChainCapableObjects = ho.takeUtillParent(orderFromChildToParent = false) { parent -> !parent.hasAttribute<DirChain>() }
 
