@@ -16,6 +16,15 @@ inline fun <T> StateFlow<T>.observe(scope: CoroutineScope, crossinline block: (T
 	}
 }
 
+inline fun <T> StateFlow<T?>.observeNotNull(scope: CoroutineScope, crossinline block: (T) -> Unit) {
+	scope.launch {
+		this@observeNotNull.collect {
+			it ?: return@collect
+			block(it)
+		}
+	}
+}
+
 inline fun <T> Flow<T>.collectOn(scope: CoroutineScope, crossinline collector: (T) -> Unit) {
 	scope.launch {
 		this@collectOn.collect { collector(it) }
