@@ -1,0 +1,1 @@
+Копитыринг из https://github.com/s1monw1/KtsRunner.
