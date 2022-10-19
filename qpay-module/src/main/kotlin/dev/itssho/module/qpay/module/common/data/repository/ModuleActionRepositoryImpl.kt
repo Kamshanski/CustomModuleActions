@@ -3,7 +3,6 @@ package dev.itssho.module.qpay.module.common.data.repository
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
-import kotlinx.coroutines.runBlocking
 
 class ModuleActionRepositoryImpl(
 	private val dataSource: ModuleActionDataSource
@@ -11,14 +10,11 @@ class ModuleActionRepositoryImpl(
 
 	@Throws(IllegalStateException::class)
 	override fun getCached(): ModuleAction {
-		if (!dataSource.isInitialized()) {
-			throw IllegalStateException("Module Action is not initialize yet")
-		}
-
-		return runBlocking { dataSource.getModuleAction() }
+		return dataSource.getModuleAction()
 	}
 
-	override suspend fun get(): ModuleAction {
+	override suspend fun get(path: String): ModuleAction {
+		dataSource.loadModuleAction(path)
 		return dataSource.getModuleAction()
 	}
 }

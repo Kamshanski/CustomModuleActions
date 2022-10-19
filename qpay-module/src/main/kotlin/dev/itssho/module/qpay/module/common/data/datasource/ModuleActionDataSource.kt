@@ -10,23 +10,25 @@ import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
 
-// TODO доставать путь до скрипта из настроек
 class ModuleActionDataSource(private val scriptRunnerFactory: IdeaKtsScriptRunnerFactory) {
+
+	private val mutex = Mutex()
 
 	@Volatile
 	private var cachedModuleAction: ModuleAction? = null
 
-	val mutex = Mutex()
+	fun getModuleAction(): ModuleAction {
+		val action = cachedModuleAction ?: throw IllegalStateException("Module Action is not initialize yet")
+		return action
+	}
 
-	fun isInitialized(): Boolean = cachedModuleAction != null
-
-	suspend fun getModuleAction(): ModuleAction {
+	suspend fun loadModuleAction(path: String): ModuleAction {
 		var localInstance = cachedModuleAction
 		if (localInstance == null) {
 			mutex.withLock {
 				localInstance = cachedModuleAction
 				if (localInstance == null) {
-					localInstance = compileScriptForModuleAction()
+					localInstance = compileScriptForModuleAction(path)
 					cachedModuleAction = localInstance
 				}
 			}
@@ -34,8 +36,8 @@ class ModuleActionDataSource(private val scriptRunnerFactory: IdeaKtsScriptRunne
 		return localInstance!!
 	}
 
-	private suspend fun compileScriptForModuleAction(): ModuleAction = withContext(Dispatchers.IO) {
-		val filePath = "C:\\_Coding\\InteliJ Idea\\ModuleCreator\\qpay-module\\src\\test\\kotlin\\script\\QpayModule.kts".let { Path.of(it) }
+	private suspend fun compileScriptForModuleAction(path: String): ModuleAction = withContext(Dispatchers.IO) {
+		val filePath = path.let { Path.of(it) }
 		val script = Files.readString(filePath)
 
 		val moduleAction = try {
