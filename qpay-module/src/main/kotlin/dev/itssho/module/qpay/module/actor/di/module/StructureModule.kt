@@ -1,14 +1,13 @@
+@file:Suppress("RemoveExplicitTypeArguments")
+
 package dev.itssho.module.qpay.module.actor.di
 
 import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
-import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleNameUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
-import dev.itssho.module.qpay.module.structure.actor.di.NavScopeQ
 import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
-import dev.itssho.module.qpay.module.structure.domain.GenerateUniqueIdUseCase
-import dev.itssho.module.qpay.module.structure.domain.GetProjectHierarchyUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
-import dev.itssho.module.qpay.module.structure.ui.QpayStructureUi
+import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelViewModel
 import dev.itssho.module.util.koin.factoryScopeOf
@@ -21,20 +20,23 @@ import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 
 fun makeStructureDataModule() = module {
-	factoryOf(::GetProjectHierarchyUseCase)
+	factoryOf(::ValuesInitializerImpl) bind ValuesInitializer::class
+	factoryOf(::HierarchyInitializerImpl) bind HierarchyInitializer::class
+
+	factoryOf(::CreateProjectHierarchyUseCase)
 	factoryOf(::GenerateUniqueIdUseCase)
 	factoryOf(::GetModuleNameUseCase)
 	factoryOf(::GetTextUseCase)
+	factoryOf(::InitializeHierarchyUseCase)
 }
 
 fun makeStructureModule() = module {
 	factoryScopeOf(::QpayStructureKoinDi) {
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
-		scoped(NavScopeQ) { CoroutineScope(Job() + Dispatchers.Default) }
 
 		scopedOf(::TreePanelViewModel)
-		scoped { TreePanelUi(get(), get(UiScopeQ)) }
+		scoped { TreePanelUi(get(), get<CoroutineScope>(UiScopeQ)) }
 		scopedOf(::QpayStructureViewModel)
-		scoped { QpayStructureUi(get(), get(), get(), get(UiScopeQ)) }
+		scoped { StructureUi(get(), get(), get(), get(), get<CoroutineScope>(UiScopeQ)) }
 	}
 }

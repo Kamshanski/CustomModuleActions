@@ -15,19 +15,21 @@ import dev.itssho.module.hierarchy.extension.setSelectedItem
 import dev.itssho.module.hierarchy.extension.setText
 import dev.itssho.module.hierarchy.text.Text
 import dev.itssho.module.hierarchy.text.Textual
-import dev.itssho.module.qpay.module.structure.domain.GenerateUniqueIdUseCase
-import dev.itssho.module.qpay.module.structure.domain.GetProjectHierarchyUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.CreateProjectHierarchyUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.InitializeHierarchyUseCase
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelState.Content
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelState.Loading
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class TreePanelViewModel(
-	private val getProjectHierarchyUseCase: GetProjectHierarchyUseCase,
+	private val initializeHierarchyUseCase: InitializeHierarchyUseCase,
+	private val createProjectHierarchyUseCase: CreateProjectHierarchyUseCase,
 	private val generateUniqueIdUseCase: GenerateUniqueIdUseCase,
-
 	private val getTextUseCase: GetTextUseCase,
-): ViewModel() {
+) : ViewModel() {
 
 	private val _texts: HashMap<Text, String> = hashMapOf()
 	val texts: Map<Text, String> = _texts
@@ -36,7 +38,9 @@ class TreePanelViewModel(
 	val state: StateFlow<TreePanelState> = _state
 
 	fun loadStructure() {
-		val ho = getProjectHierarchyUseCase()
+		initializeHierarchyUseCase()
+
+		val ho = createProjectHierarchyUseCase()
 
 		checkHierarchyIdsUniqueness(ho)
 		checkPersonalIdsChars(ho)

@@ -1,6 +1,6 @@
 package dev.itssho.module.qpay.module.common.domain.usecase
 
-import dev.itssho.module.hierarchy.storage.StringListKey
+import dev.itssho.module.hierarchy.storage.ValueStorage.StrList
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 
 class SetModuleNameUseCase(
@@ -8,6 +8,6 @@ class SetModuleNameUseCase(
 ) {
 
 	operator fun invoke(name: List<String>) {
-		fullyEditableValueStorage.forcePut(StringListKey.MODULE_NAME, name)
+		fullyEditableValueStorage.forcePut(StrList.MODULE_NAME, name)
 	}
 }

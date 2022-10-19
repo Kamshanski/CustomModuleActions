@@ -72,7 +72,6 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 		}
 	}
 
-	// TODO разделить создание по каждому HO, ибо для каждого элемента набор элементов влияет на паддинги
 	private fun updateTreePanel(structure: List<HierarchyObject>) {
 		val newComponentCatalogue = LinkedHashMap<String, TreeItem>(componentRegistry.size)
 		structure.forEach { ho ->

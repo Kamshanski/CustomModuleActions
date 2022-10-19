@@ -5,13 +5,14 @@ import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.core.actor.SwingContext
 import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayNameKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.QpayPreparationKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.create.actor.QpayCreateStep
 import dev.itssho.module.qpay.module.name.actor.QpayNameStep
-import dev.itssho.module.qpay.module.name.actor.QpayNameStepResult
+import dev.itssho.module.qpay.module.name.presentation.QpayNameStepResult
 import dev.itssho.module.qpay.module.structure.actor.QpayStructureStep
-import dev.itssho.module.qpay.module.structure.actor.QpayStructureStepResult
+import dev.itssho.module.qpay.module.structure.presentation.QpayStructureStepResult
 import dev.itssho.module.util.koin.use
 
 class QpayModuleWizardActor(jbContext: JBContext? = null, swingContext: SwingContext? = null) : BaseActor(jbContext ?: swingContext ?: error("No Context specified")) {
@@ -21,7 +22,7 @@ class QpayModuleWizardActor(jbContext: JBContext? = null, swingContext: SwingCon
 	override suspend fun runAction() {
 
 		val creationResult = di.get<QpayNameKoinDi>().use { nameDi ->
-			QpayNameStep(context, nameDi)
+			QpayNameStep(nameDi)
 		}
 		val moduleName = when (creationResult) {
 			is QpayNameStepResult.Name    -> creationResult.name
@@ -29,7 +30,7 @@ class QpayModuleWizardActor(jbContext: JBContext? = null, swingContext: SwingCon
 		}
 
 		val structureResult = di.get<QpayStructureKoinDi>().use { structureDi ->
-			QpayStructureStep(context, structureDi)
+			QpayStructureStep(structureDi)
 		}
 		val structure = when (structureResult) {
 			is QpayStructureStepResult.Structure -> structureResult.filesFoldersHierarchy
@@ -37,7 +38,7 @@ class QpayModuleWizardActor(jbContext: JBContext? = null, swingContext: SwingCon
 		}
 
 		di.get<QpayCreateKoinDi>().use { createDi ->
-			QpayCreateStep(context, structure, createDi)
+			QpayCreateStep(structure, createDi)
 		}
 	}
 }

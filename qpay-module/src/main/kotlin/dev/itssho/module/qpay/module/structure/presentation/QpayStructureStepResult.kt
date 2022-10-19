@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.structure.actor
+package dev.itssho.module.qpay.module.structure.presentation
 
 import dev.itssho.module.hierarchy.HierarchyObject
 

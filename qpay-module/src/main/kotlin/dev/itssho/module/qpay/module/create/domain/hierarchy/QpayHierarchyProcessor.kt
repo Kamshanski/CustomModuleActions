@@ -58,7 +58,7 @@ class QpayHierarchyProcessor : HierarchyProcessor() {
 	}
 
 	private fun handleTeam(ho: HOSelector, valueStorage: MutableValueStorage, controller: Controller) {
-		valueStorage.put("team", ho.selectedItem)
+		valueStorage.putOrReplace("team", ho.selectedItem)
 		val parent = ho.parent
 		val directory = DirUtil.extractDirRecursively(parent!!, valueStorage)
 

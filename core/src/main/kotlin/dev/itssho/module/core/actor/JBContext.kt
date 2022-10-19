@@ -11,16 +11,11 @@ import dev.itssho.module.component.chain.any.AnyChain
 import dev.itssho.module.component.chain.castTo
 import dev.itssho.module.component.chain.splitToChain
 import dev.itssho.module.core.ui.UiPlatform
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.swing.Swing
 import java.nio.file.Path
 
 @Suppress("CanBeParameter", "MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
 class JBContext(
 	val ideDataContext: DataContext,
-//	override val scope: CoroutineScope,
 	val ideView: IdeView,
 	val ideProject: Project,
 ) : Context {
@@ -50,9 +45,8 @@ class JBContext(
 
 	companion object {
 
-		fun make(ideContext: DataContext, scope: CoroutineScope = CoroutineScope(Job() + Dispatchers.Swing)): JBContext = JBContext(
+		fun make(ideContext: DataContext): JBContext = JBContext(
 			ideDataContext = ideContext,
-//			scope = scope,
 			ideView = LangDataKeys.IDE_VIEW.getData(ideContext).takeNotNullOrExit(),
 			ideProject = CommonDataKeys.PROJECT.getData(ideContext).takeNotNullOrExit(),
 		)

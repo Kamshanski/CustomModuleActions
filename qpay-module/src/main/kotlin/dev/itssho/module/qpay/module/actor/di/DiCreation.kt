@@ -6,6 +6,8 @@ import dev.itssho.module.qpay.module.actor.di.module.makeCommonDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCommonModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCreateDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCreateModule
+import dev.itssho.module.qpay.module.actor.di.module.makeNameDataModule
+import dev.itssho.module.qpay.module.actor.di.module.makeNameModule
 import dev.itssho.module.qpay.module.actor.di.module.other.makeSharedFileModule
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication

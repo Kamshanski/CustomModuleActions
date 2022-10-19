@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.structure.domain
+package dev.itssho.module.qpay.module.structure.domain.usecase
 
 class GenerateUniqueIdUseCase {
 

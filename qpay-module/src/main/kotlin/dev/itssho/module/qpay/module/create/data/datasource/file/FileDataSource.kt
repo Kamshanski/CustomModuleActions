@@ -7,12 +7,10 @@ import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiDirectory
 import dev.itssho.module.component.idea.action.FileCreator
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.util.koin.dev.ToBeInKoin
 import org.jetbrains.kotlin.idea.KotlinLanguage
 import org.jetbrains.plugins.groovy.GroovyLanguage
 import java.util.Locale
 
-@ToBeInKoin
 class FileDataSource(
 	private val fileCreator: FileCreator,
 	private val context: JBContext,

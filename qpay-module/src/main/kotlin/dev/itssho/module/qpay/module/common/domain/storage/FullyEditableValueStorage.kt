@@ -2,13 +2,13 @@ package dev.itssho.module.qpay.module.common.domain.storage
 
 import dev.itssho.module.hierarchy.storage.ConstValueReplacementException
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
-import dev.itssho.module.hierarchy.storage.StringKey
-import dev.itssho.module.hierarchy.storage.StringListKey
+import dev.itssho.module.hierarchy.storage.ValueStorage.Str
+import dev.itssho.module.hierarchy.storage.ValueStorage.StrList
 
 class FullyEditableValueStorage : MutableValueStorage {
 
-	val stringConstantsKeys = StringKey.values()
-	val listConstantsKeys = StringListKey.values()
+	val stringConstantsKeys = Str.values()
+	val listConstantsKeys = StrList.values()
 
 	private val strings: MutableMap<String, String> = HashMap()
 	private val lists: MutableMap<String, List<String>> = HashMap()

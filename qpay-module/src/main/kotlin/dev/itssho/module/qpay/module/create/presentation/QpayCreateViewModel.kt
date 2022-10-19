@@ -11,8 +11,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import string.fit
-import java.io.OutputStream
-import java.io.PrintStream
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.time.LocalDateTime
@@ -33,6 +31,9 @@ class QpayCreateViewModel(
 
 	private val _lastLog: MutableSharedFlow<String> = MutableSharedFlow(0)
 	val lastLog: Flow<String> = _lastLog
+
+	private val _finalResult = MutableStateFlow<Unit?>(null)
+	val finalResult = _finalResult as StateFlow<Unit?>
 
 	fun startModuleCreation() {
 		launch({ handleError(it) }) {
@@ -81,6 +82,8 @@ class QpayCreateViewModel(
 
 			if (errorsOccured) {
 				makeIdeaFileUseCase("Log_${LocalDateTime.now().run { "$hour.$minute.$second" }}.txt", _fullLog.value.toString())
+			} else {
+				_finalResult.value = Unit
 			}
 		}
 	}
@@ -97,5 +100,9 @@ class QpayCreateViewModel(
 	private suspend fun publishLog(source: CharSequence) {
 		_fullLog.value.append(source)
 		_lastLog.emit(source.toString())
+	}
+
+	fun close() {
+		_finalResult.value = Unit
 	}
 }
