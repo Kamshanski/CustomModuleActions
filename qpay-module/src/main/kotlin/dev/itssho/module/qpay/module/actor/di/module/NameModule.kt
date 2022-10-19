@@ -1,4 +1,6 @@
-package dev.itssho.module.qpay.module.actor.di
+@file:Suppress("RemoveExplicitTypeArguments")
+
+package dev.itssho.module.qpay.module.actor.di.module
 
 import dev.itssho.module.qpay.module.actor.di.component.QpayNameKoinDi
 import dev.itssho.module.qpay.module.name.presentation.QpayNameViewModel
@@ -20,6 +22,6 @@ fun makeNameModule() = module {
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
 		scoped(NavScopeQ) { CoroutineScope(Job() + Dispatchers.Default) }
 		scopedOf(::QpayNameViewModel)
-		scoped { QpayNameUi(get(), get(UiScopeQ)) }
+		scoped { QpayNameUi(get(), get<CoroutineScope>(UiScopeQ)) }
 	}
 }

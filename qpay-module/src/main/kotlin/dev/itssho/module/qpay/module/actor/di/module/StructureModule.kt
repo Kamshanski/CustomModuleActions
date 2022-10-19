@@ -1,12 +1,19 @@
+@file:Suppress("RemoveExplicitTypeArguments")
+
 package dev.itssho.module.qpay.module.actor.di
 
+import dev.itssho.module.hierarchy.initializer.HierarchyInitializer
+import dev.itssho.module.hierarchy.initializer.ValuesInitializer
 import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleNameUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
 import dev.itssho.module.qpay.module.structure.actor.di.NavScopeQ
 import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
-import dev.itssho.module.qpay.module.structure.domain.GenerateUniqueIdUseCase
-import dev.itssho.module.qpay.module.structure.domain.GetProjectHierarchyUseCase
+import dev.itssho.module.qpay.module.structure.domain.hierarchy.HierarchyInitializerImpl
+import dev.itssho.module.qpay.module.structure.domain.hierarchy.ValuesInitializerImpl
+import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.CreateProjectHierarchyUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.InitializeHierarchyUseCase
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
 import dev.itssho.module.qpay.module.structure.ui.QpayStructureUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
@@ -18,13 +25,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.swing.Swing
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.scopedOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 fun makeStructureDataModule() = module {
-	factoryOf(::GetProjectHierarchyUseCase)
+	factoryOf(::ValuesInitializerImpl) bind ValuesInitializer::class
+	factoryOf(::HierarchyInitializerImpl) bind HierarchyInitializer::class
+
+	factoryOf(::CreateProjectHierarchyUseCase)
 	factoryOf(::GenerateUniqueIdUseCase)
 	factoryOf(::GetModuleNameUseCase)
 	factoryOf(::GetTextUseCase)
+	factoryOf(::InitializeHierarchyUseCase)
 }
 
 fun makeStructureModule() = module {
@@ -33,8 +45,9 @@ fun makeStructureModule() = module {
 		scoped(NavScopeQ) { CoroutineScope(Job() + Dispatchers.Default) }
 
 		scopedOf(::TreePanelViewModel)
-		scoped { TreePanelUi(get(), get(UiScopeQ)) }
+		scoped { TreePanelUi(get(), get<CoroutineScope>(UiScopeQ)) }
 		scopedOf(::QpayStructureViewModel)
-		scoped { QpayStructureUi(get(), get(), get(), get(UiScopeQ)) }
+		scoped { QpayStructureUi(get(), get(), get(), get<CoroutineScope>(UiScopeQ)) }
+
 	}
 }

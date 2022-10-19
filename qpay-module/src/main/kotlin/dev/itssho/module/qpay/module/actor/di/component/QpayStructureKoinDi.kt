@@ -14,5 +14,5 @@ class QpayStructureKoinDi(koin: Koin) : LocalKoinScope(koin), QpayStructureDi {
 
 	override fun getViewModel(): QpayStructureViewModel = scope.get()
 
-	override fun getNavigationScope(): CoroutineScope = scope.get(NavScopeQ)
+	override fun getNavigationScope() = scope.get<CoroutineScope>(NavScopeQ)
 }

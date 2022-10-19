@@ -15,7 +15,7 @@ class QpayNameKoinDi(koin: Koin) : LocalKoinScope(koin), QpayNameDi {
 
 	override fun getViewModel(): QpayNameViewModel = scope.get()
 
-	override fun getNavigationScope(): CoroutineScope = scope.get(NavScopeQ)
+	override fun getNavigationScope() = scope.get<CoroutineScope>(NavScopeQ)
 
-	override fun getUiScope(): CoroutineScope = scope.get(UiScopeQ)
+	override fun getUiScope() = scope.get<CoroutineScope>(UiScopeQ)
 }

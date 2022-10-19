@@ -2,13 +2,9 @@ package dev.itssho.module.qpay.module.create.domain.usecase
 
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.controller.Controller
-import dev.itssho.module.hierarchy.initializer.Initializer
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
-import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.create.domain.hierarchy.HierarchyProcessorProvider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 
 /**
  * Полезные исходнички
@@ -23,7 +19,6 @@ import kotlinx.coroutines.withContext
 class ImplementHierarchyUseCase(
     private val hierarchyProcessorProvider: HierarchyProcessorProvider,
     private val controller: Controller,
-    private val initializer: Initializer,
     private val valueStorage: MutableValueStorage,
 ) {
 
@@ -33,7 +28,6 @@ class ImplementHierarchyUseCase(
     @Throws(RuntimeException::class)
     suspend operator fun invoke(ho: HierarchyObject) {
         val hierarchyProcessor = hierarchyProcessorProvider.get()
-        initializer.initialize(valueStorage)
 
         hierarchyProcessor.handle(ho, valueStorage, controller)
 
