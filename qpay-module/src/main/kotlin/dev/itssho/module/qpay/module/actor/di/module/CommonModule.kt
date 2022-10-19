@@ -7,10 +7,14 @@ import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
+import dev.itssho.module.qpay.module.common.data.datasource.SettingsDataSource
 import dev.itssho.module.qpay.module.common.data.repository.ModuleActionRepositoryImpl
+import dev.itssho.module.qpay.module.common.data.repository.SettingsRepositoryImpl
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
+import dev.itssho.module.qpay.module.common.domain.repository.SettingsRepository
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
+import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.SetModuleNameUseCase
 import dev.itssho.module.qpay.module.structure.actor.di.DataScopeQ
@@ -35,12 +39,15 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		singleOf(::IdeaKtsScriptRunnerFactory)
 
 		singleOf(::ModuleActionDataSource)
+		singleOf(::SettingsDataSource)
 
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class
+		singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
 
 		factoryOf(::SetModuleNameUseCase)
 		factoryOf(::GetModuleActionUseCase)
 		factoryOf(::LoadModuleActionUseCase)
+		factoryOf(::GetSettingsUseCase)
 	}
 
 fun makeCommonModule() = module {}
