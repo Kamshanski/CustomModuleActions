@@ -3,13 +3,13 @@ package dev.itssho.module.qpay.module.actor
 import dev.itssho.module.core.actor.BaseActor
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi
-import dev.itssho.module.qpay.module.actor.di.component.QpayNameKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.QpayDeprecatedNameKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayPreparationKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.create.actor.QpayCreateStep
-import dev.itssho.module.qpay.module.name.actor.QpayNameStep
-import dev.itssho.module.qpay.module.name.presentation.QpayNameStepResult
+import dev.itssho.module.qpay.module.name.deprecated.actor.QpayDeprecatedNameStep
+import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameStepResult
 import dev.itssho.module.qpay.module.preparation.actor.QpayPreparationStep
 import dev.itssho.module.qpay.module.preparation.presentation.PreparationStepResult
 import dev.itssho.module.qpay.module.structure.actor.QpayStructureStep
@@ -31,8 +31,8 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 			is PreparationStepResult.Failure -> return
 		}
 
-		val creationResult = di.get<QpayNameKoinDi>().use { nameDi ->
-			QpayNameStep(nameDi)
+		val creationResult = di.get<QpayDeprecatedNameKoinDi>().use { nameDi ->
+			QpayDeprecatedNameStep(nameDi)
 		}
 		val moduleName = when (creationResult) {
 			is QpayNameStepResult.Name    -> creationResult.name

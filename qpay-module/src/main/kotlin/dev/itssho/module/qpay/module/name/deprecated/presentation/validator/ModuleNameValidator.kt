@@ -1,10 +1,16 @@
-package dev.itssho.module.qpay.module.name.presentation.validator
+package dev.itssho.module.qpay.module.name.deprecated.presentation.validator
 
-import dev.itssho.module.component.chain.*
-import dev.itssho.module.qpay.module.name.presentation.converter.parseModuleName
-import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameModel
-import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidationResult
-import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidationResult.*
+import dev.itssho.module.component.chain.Chain
+import dev.itssho.module.component.chain.Separator
+import dev.itssho.module.component.chain.any
+import dev.itssho.module.component.chain.size
+import dev.itssho.module.component.chain.splitToChain
+import dev.itssho.module.qpay.module.name.deprecated.presentation.converter.parseModuleName
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameModel
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult.Failure
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult.Valid
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult.Warning
 
 private val NAME_PART_PATTERN = Regex("[a-z][a-z\\d]*")
 

@@ -1,13 +1,13 @@
-package dev.itssho.module.qpay.module.name.ui
+package dev.itssho.module.qpay.module.name.deprecated.ui
 
 import coroutine.observe
 import dev.itssho.module.component.components.select.ButtonCollection
 import dev.itssho.module.component.resources.Strings
 import dev.itssho.module.component.value.Gravity
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.qpay.module.name.presentation.QpayNameStepResult
-import dev.itssho.module.qpay.module.name.presentation.QpayNameViewModel
-import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidationResult
+import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameStepResult
+import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameViewModel
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult
 import dev.itssho.module.shared.dialog.ui.idea.YesNoIdeaDialog
 import dev.itssho.module.ui.util.constructor.*
 import dev.itssho.module.ui.util.container.*

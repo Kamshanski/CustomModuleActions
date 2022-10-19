@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.name.domain.entity
+package dev.itssho.module.qpay.module.name.deprecated.domain.entity
 
 enum class ModuleLevel {
     FEATURE,

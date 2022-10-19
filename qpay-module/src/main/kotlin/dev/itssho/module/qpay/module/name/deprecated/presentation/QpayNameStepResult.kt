@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.name.presentation
+package dev.itssho.module.qpay.module.name.deprecated.presentation
 
 sealed interface QpayNameStepResult {
 

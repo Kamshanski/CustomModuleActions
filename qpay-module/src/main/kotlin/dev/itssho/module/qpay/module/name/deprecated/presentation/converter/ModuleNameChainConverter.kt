@@ -1,9 +1,15 @@
-package dev.itssho.module.qpay.module.name.presentation.converter
+package dev.itssho.module.qpay.module.name.deprecated.presentation.converter
 
-import dev.itssho.module.component.chain.*
+import dev.itssho.module.component.chain.Chain
+import dev.itssho.module.component.chain.Separator
 import dev.itssho.module.component.chain.any.AnyChain
 import dev.itssho.module.component.chain.any.EMPTY
-import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameModel
+import dev.itssho.module.component.chain.castTo
+import dev.itssho.module.component.chain.getOrNull
+import dev.itssho.module.component.chain.size
+import dev.itssho.module.component.chain.splitToChain
+import dev.itssho.module.component.chain.subchain
+import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameModel
 
 fun convertModuleName(model: ModuleNameModel): Chain<Separator.Minus> {
     val level = model.level

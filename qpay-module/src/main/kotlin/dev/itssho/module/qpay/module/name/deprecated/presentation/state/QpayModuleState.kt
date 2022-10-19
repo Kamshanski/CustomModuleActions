@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.name.presentation.state
+package dev.itssho.module.qpay.module.name.deprecated.presentation.state
 
 data class ModuleNameState(
     val fullModuleName: String,
