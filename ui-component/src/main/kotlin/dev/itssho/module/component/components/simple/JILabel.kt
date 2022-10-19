@@ -7,6 +7,7 @@ import java.awt.Dimension
 import java.awt.Font
 import javax.swing.Icon
 import javax.swing.JLabel
+import javax.swing.SwingConstants
 
 // TODO сделать обчыный label
 /** Скопитырино из com.intellij.ui.ErrorLabel
@@ -21,6 +22,7 @@ class JILabel(
 ) : JLabel(text, icon, LEFT) {
 
 	companion object {
+
 		private const val MIN_TEXT = " "
 	}
 
@@ -28,14 +30,22 @@ class JILabel(
 		font?.also { this.font = it }
 		isOpaque = false
 		horizontalAlignment = when (textAlignment) {
-			Gravity.START -> LEFT
-			Gravity.END   -> RIGHT
-			else          -> CENTER
+			Gravity.START,
+			Gravity.TOP_START,
+			Gravity.BOTTOM_START -> SwingConstants.LEFT
+			Gravity.END,
+			Gravity.TOP_END,
+			Gravity.BOTTOM_END   -> SwingConstants.RIGHT
+			else                 -> SwingConstants.CENTER
 		}
 		verticalAlignment = when (textAlignment) {
-			Gravity.BOTTOM -> BOTTOM
-			Gravity.TOP    -> TOP
-			else           -> CENTER
+			Gravity.BOTTOM,
+			Gravity.BOTTOM_END,
+			Gravity.BOTTOM_START -> SwingConstants.BOTTOM
+			Gravity.TOP,
+			Gravity.TOP_END,
+			Gravity.TOP_START    -> SwingConstants.TOP
+			else                 -> SwingConstants.CENTER
 		}
 	}
 
@@ -44,21 +54,11 @@ class JILabel(
 			return super.getMinimumSize()
 		}
 
-//		val preferred by lazy { preferredSize }
 		val fontMetrics = getFontMetrics(font)
 
-		val minHeight =
-//			if (linearConstraints.height <= 0)
-				fontMetrics.height
-//			else
-//				preferred.height
+		val minHeight = fontMetrics.height
 
-		val minWidth =
-//			if (linearConstraints.width <= 0) {
-				fontMetrics.stringWidth(MIN_TEXT)
-//			} else {
-//				preferred.width
-//			}
+		val minWidth = fontMetrics.stringWidth(MIN_TEXT)
 
 		if (minWidth > 0 && minHeight > 0) {
 			return Dimension(minWidth, minHeight)
@@ -67,6 +67,7 @@ class JILabel(
 		return super.getMinimumSize()
 	}
 
+	// TODO вынести в ext
 	fun setErrorText(text: String?) {
 		setColoredText(text, JBColor.ORANGE)
 	}
