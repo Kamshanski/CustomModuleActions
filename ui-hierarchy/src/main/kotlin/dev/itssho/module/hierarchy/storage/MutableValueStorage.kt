@@ -8,6 +8,27 @@ interface ValueStorage {
 	fun get(key: String): String?
 
 	fun getList(key: String): List<String>?
+
+	object StrList {
+
+		val MODULE_NAME = "MODULE_NAME"
+
+		@Deprecated("Хз зачем это может быть нужно")
+		val PROJECT_PATH = "PROJECT_PATH"
+
+		// TODO заменить рефлексией или enum
+		fun values(): List<String> = listOf(
+			MODULE_NAME,
+			PROJECT_PATH,
+		)
+	}
+
+	object Str {
+
+		// TODO заменить рефлексией
+		fun values(): List<String> = listOf(
+		)
+	}
 }
 
 interface MutableValueStorage : ValueStorage {
