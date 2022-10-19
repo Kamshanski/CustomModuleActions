@@ -1,5 +1,6 @@
 package di
 
+import com.intellij.ide.script.IdeScriptEngineManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
@@ -27,6 +28,8 @@ class DiTest : KoinTest {
 	fun verifyKoinApp() {
 		val ho: HierarchyObject = mock()
 
+		val ideScriptEngineManager: IdeScriptEngineManager = mock()
+
 		val context: JBContext = mock()
 		val project: Project = mock()
 		val rootDirectory: PsiDirectory = mock()
@@ -41,6 +44,7 @@ class DiTest : KoinTest {
 
 		makeDi(context).apply {
 			koin.declare(ho)
+			koin.declare(ideScriptEngineManager)
 			checkModules()
 		}
 	}

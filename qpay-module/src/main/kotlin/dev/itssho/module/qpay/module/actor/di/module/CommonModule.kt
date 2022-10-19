@@ -1,5 +1,7 @@
 package dev.itssho.module.qpay.module.actor.di.module
 
+import com.intellij.ide.script.IdeScriptEngineManager
+import dev.itssho.module.component.scripting.idea.IdeaKtsScriptRunnerFactory
 import dev.itssho.module.core.actor.Context
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.core.actor.SwingContext
@@ -33,7 +35,10 @@ fun makeCommonDataModule(jbContext: JBContext?, swingContext: SwingContext?): Mo
 		}
 
 		single(DataScopeQ) { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
+		factory { IdeScriptEngineManager.getInstance() }
+
 		singleOf(::FullyEditableValueStorage) binds arrayOf(ValueStorage::class, MutableValueStorage::class)
+		singleOf(::IdeaKtsScriptRunnerFactory)
 
 		singleOf(::ModuleActionDataSource)
 
