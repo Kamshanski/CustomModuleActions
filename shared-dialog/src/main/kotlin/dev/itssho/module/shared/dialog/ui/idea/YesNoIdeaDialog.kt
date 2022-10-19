@@ -39,6 +39,8 @@ abstract class YesNoIdeaDialog<T>(
 
 	abstract fun configureDialog(dialogWrapper: DummyDialogWrapper)
 
+	// TODO выделить метод для запуска методов ВьюМодели
+
 	override fun onShow() {
 		dialogWrapper.okButton.addActionListener { okActions.invokeAll() }
 		dialogWrapper.cancelButton.addActionListener { cancelActions.invokeAll() }
@@ -93,22 +95,6 @@ abstract class YesNoIdeaDialog<T>(
 		}
 	}
 
-	override var title: String
-		get() = dialogWrapper.title
-		set(value) {
-			dialogWrapper.title = value
-		}
-	override var width: Int
-		get() = dialogWrapper.size.width
-		set(value) {
-			dialogWrapper.setSize(value, height)
-		}
-	override var height: Int
-		get() = dialogWrapper.size.height
-		set(value) {
-			dialogWrapper.setSize(width, value)
-		}
-
 	fun resumeDialogWithOkAction(result: T) {
 		setDialogResult(result)
 		dialogWrapper.doOKAction()
@@ -118,6 +104,26 @@ abstract class YesNoIdeaDialog<T>(
 		setDialogResult(result)
 		dialogWrapper.doCancelAction()
 	}
+
+
+	/** Use set in [asyncOnUIThread] or in [SwingUtilities.invokeLater] */
+	override var title: String
+		get() = dialogWrapper.title
+		set(value) {
+			dialogWrapper.title = value
+		}
+	/** Use set in [asyncOnUIThread] or in [SwingUtilities.invokeLater] */
+	override var width: Int
+		get() = dialogWrapper.size.width
+		set(value) {
+			dialogWrapper.setSize(value, height)
+		}
+	/** Use set in [asyncOnUIThread] or in [SwingUtilities.invokeLater] */
+	override var height: Int
+		get() = dialogWrapper.size.height
+		set(value) {
+			dialogWrapper.setSize(width, value)
+		}
 
 	override fun addOkListener(listener: () -> Unit) {
 		okActions.add(0, listener)
@@ -129,5 +135,10 @@ abstract class YesNoIdeaDialog<T>(
 
 	override fun addWindowCloseListener(listener: () -> Unit) {
 		windowCloseActions.add(0, listener)
+	}
+
+	/** Изменения диалога нужно делать тут */
+	fun asyncOnUIThread(uiChanges: () -> Unit) {
+		SwingUtilities.invokeLater(uiChanges)
 	}
 }

@@ -14,7 +14,6 @@ import dev.itssho.module.ui.util.constructor.table
 import kotlinx.coroutines.CoroutineScope
 import swing.observeText
 import javax.swing.JComponent
-import javax.swing.SwingUtilities
 
 class PreparationUi(
 	private val viewModel: PreparationViewModel,
@@ -41,13 +40,17 @@ class PreparationUi(
 	}
 
 	override fun configureDialog(dialogWrapper: DummyDialogWrapper) {
+		asyncOnUIThread {
+			width = 600
+			height = 250
+			title = "Выполнение скрипта"
+		}
+
 		dialogWrapper.okButton.isVisible = false
 		dialogWrapper.cancelButton.addActionListener { viewModel.close() }
 		initViewModelObservers()
 
-		SwingUtilities.invokeLater {
-			viewModel.startPreparation()
-		}
+		viewModel.startPreparation()
 	}
 
 	private fun initViewModelObservers() {

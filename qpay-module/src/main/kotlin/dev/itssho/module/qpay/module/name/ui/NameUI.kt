@@ -9,15 +9,8 @@ import dev.itssho.module.qpay.module.name.presentation.QpayNameStepResult
 import dev.itssho.module.qpay.module.name.presentation.QpayNameViewModel
 import dev.itssho.module.qpay.module.name.presentation.model.ModuleNameValidationResult
 import dev.itssho.module.shared.dialog.ui.idea.YesNoIdeaDialog
-import dev.itssho.module.ui.util.constructor.buttonsCollection
-import dev.itssho.module.ui.util.constructor.jCheckBox
-import dev.itssho.module.ui.util.constructor.jiLabel
-import dev.itssho.module.ui.util.constructor.jiTextField
-import dev.itssho.module.ui.util.constructor.table
-import dev.itssho.module.ui.util.constructor.tableColumn
-import dev.itssho.module.ui.util.container.cellsLeft
-import dev.itssho.module.ui.util.container.cellsTop
-import dev.itssho.module.ui.util.container.padHorizontal
+import dev.itssho.module.ui.util.constructor.*
+import dev.itssho.module.ui.util.container.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 import javax.swing.JComponent
@@ -67,6 +60,12 @@ class NameUI(
 	}
 
 	override fun configureDialog(dialogWrapper: DummyDialogWrapper) {
+		asyncOnUIThread {
+			title = Strings.Name.title
+			width = 500
+			height = 500
+		}
+
 		dialogWrapper.okButton.addActionListener {
 			viewModel.proceed()
 		}
@@ -76,10 +75,6 @@ class NameUI(
 
 		initViewModelObservers()
 		initViewsListeners()
-
-		title = Strings.Name.title
-		width = 500
-		height = 500
 	}
 
 	private fun initViewModelObservers() {

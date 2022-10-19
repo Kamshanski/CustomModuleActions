@@ -40,6 +40,12 @@ class StructureUi(
 	}
 
 	override fun configureDialog(dialogWrapper: DummyDialogWrapper) {
+		asyncOnUIThread {
+			title = Strings.Structure.title
+			width = 500
+			height = 500
+		}
+
 		dialogWrapper.okButton.addActionListener {
 			viewModel.proceed()
 		}
@@ -48,10 +54,6 @@ class StructureUi(
 		}
 
 		initViewModelObservers()
-
-		title = Strings.Structure.title
-		width = 500
-		height = 500
 	}
 
 	private fun initViewModelObservers() {
