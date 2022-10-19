@@ -7,6 +7,8 @@ import dev.itssho.module.qpay.module.actor.di.module.makeCreateDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeCreateModule
 import dev.itssho.module.qpay.module.actor.di.module.makeDeprecatedNameDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeDeprecatedNameModule
+import dev.itssho.module.qpay.module.actor.di.module.makeNameDataModule
+import dev.itssho.module.qpay.module.actor.di.module.makeNameModule
 import dev.itssho.module.qpay.module.actor.di.module.makePreparationDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makePreparationModule
 import dev.itssho.module.qpay.module.actor.di.module.makeStructureDataModule
@@ -42,9 +44,15 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	}
 
 
+	val deprecatedNameDataModule = makeDeprecatedNameDataModule().apply { includes(commonDataModule) }
+	val deprecatedNameModule = makeDeprecatedNameModule().apply {
+		includes(deprecatedNameDataModule)
+		includes(commonModule)
+	}
 
-	val nameDataModule = makeDeprecatedNameDataModule().apply { includes(commonDataModule) }
-	val nameModule = makeDeprecatedNameModule().apply {
+
+	val nameDataModule = makeNameDataModule().apply { includes(commonDataModule) }
+	val nameModule = makeNameModule().apply {
 		includes(nameDataModule)
 		includes(commonModule)
 	}
@@ -66,11 +74,12 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 
 
 	koinApp.modules(
-		commonDataModule, 		commonModule,
-		preparationDataModule, 	preparationModule,
-		nameDataModule, 		nameModule,
-		structureDataModule, 	structureModule,
-		createDataModule, 		createModule,
+		commonDataModule, 			commonModule,
+		preparationDataModule, 		preparationModule,
+		deprecatedNameDataModule, 	deprecatedNameModule,
+		nameDataModule, 			nameModule,
+		structureDataModule, 		structureModule,
+		createDataModule, 			createModule,
 	)
 
 	return koinApp
