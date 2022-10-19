@@ -4,7 +4,6 @@ import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.controller.Controller
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
-import kotlinx.coroutines.delay
 
 /**
  * Полезные исходнички
@@ -17,26 +16,18 @@ import kotlinx.coroutines.delay
  */
 
 class ImplementHierarchyUseCase(
-    private val getModuleActionUseCase: GetModuleActionUseCase,
-    private val controller: Controller,
-    private val valueStorage: MutableValueStorage,
+	private val getModuleActionUseCase: GetModuleActionUseCase,
+	private val controller: Controller,
+	private val valueStorage: MutableValueStorage,
 ) {
 
-    /**
-     * Implements only given [ho]. Children are not considered
-     */
-    @Throws(RuntimeException::class)
-    suspend operator fun invoke(ho: HierarchyObject) {
-        val hierarchyProcessor = getModuleActionUseCase().hierarchyProcessor
+	/**
+	 * Implements only given [ho]. Children are not considered
+	 */
+	@Throws(RuntimeException::class)
+	operator fun invoke(ho: HierarchyObject) {
+		val hierarchyProcessor = getModuleActionUseCase().hierarchyProcessor
 
-        hierarchyProcessor.handle(ho, valueStorage, controller)
-
-        // TODO реализовать логику создания файлов и папок и редактирования файлов
-        var currentTime = System.currentTimeMillis()
-        val endTimeTime = currentTime + 100
-        while (currentTime < endTimeTime) {
-            delay(1)
-            currentTime = System.currentTimeMillis()
-        }
-    }
+		hierarchyProcessor.handle(ho, valueStorage, controller)
+	}
 }

@@ -7,13 +7,19 @@ import dev.itssho.module.hierarchy.extension.flatten
 import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUseCase
 import dev.itssho.module.shared.file.domain.usecase.MakeIdeaFileUseCase
 import fullStackTraceString
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.withContext
 import string.fit
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.swing.SwingUtilities
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 /** TODO добавить валидатор. Скопипастить из [com.intellij.ide.actions.CreatePackageHandler.checkInput] [com.intellij.ide.actions.CreateDirectoryOrPackageHandler.checkInput] */
 class QpayCreateViewModel(
@@ -62,7 +68,20 @@ class QpayCreateViewModel(
 
 				// TODO не останавливать работу на ошибку
 				try {
-					implementHierarchyUseCase(ho)
+					// TODO Вытащить конструкцию в утилиты
+					// TODO IDEA всё равно говорит, что редактирование ч/з PSI происходит в неправильном потоке. Сейчас implementHierarchyUseCase вызывается на потоке EWT Event что-то там @coroutine2.
+					withContext(Dispatchers.Default) {
+						suspendCoroutine<Unit> { continuation ->
+							SwingUtilities.invokeAndWait {
+								try {
+									implementHierarchyUseCase(ho)
+									continuation.resume(Unit)
+								} catch (ex: Throwable) {
+									continuation.resumeWithException(ex)
+								}
+							}
+						}
+					}
 				} catch (exception: Throwable) {
 					errorsOccured = true
 					logBuilder.apply {
