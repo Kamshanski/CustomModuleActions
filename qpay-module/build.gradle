@@ -50,7 +50,6 @@ dependencies {
     implementation(project(":ui-hierarchy"))
     implementation(project(":ui-component"))
     implementation(project(":ui-util"))
-    implementation(project(":lib:script"))
     implementation(project(":lib:table"))
     implementation(project(":lib:table-swing"))
     implementation(project(":component-table"))
@@ -61,6 +60,7 @@ dependencies {
     implementation(project(":component-res"))
     implementation(project(":component-idea"))
     implementation(project(":component-log"))
+    implementation(project(":component-scripting"))
     implementation(project(":shared-dialog"))
     implementation(project(":shared-file"))
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
