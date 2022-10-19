@@ -1,12 +1,9 @@
 package dev.itssho.module.hierarchy.handler.util
 
 import dev.itssho.module.hierarchy.HierarchyObject
-import dev.itssho.module.hierarchy.attr.DirChain
 import dev.itssho.module.hierarchy.attr.FileExtension
 import dev.itssho.module.hierarchy.attr.FileTemplate
 import dev.itssho.module.hierarchy.extension.attributeOrNull
-import dev.itssho.module.hierarchy.extension.hasAttribute
-import dev.itssho.module.hierarchy.extension.takeUtillParent
 import dev.itssho.module.hierarchy.storage.ValueStorage
 
 object FileUtil {

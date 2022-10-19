@@ -5,7 +5,7 @@ import dev.itssho.module.hierarchy.HierarchyObject.HOFile
 import dev.itssho.module.hierarchy.HierarchyObject.HOLabel
 import dev.itssho.module.hierarchy.HierarchyObject.HOSelector
 import dev.itssho.module.hierarchy.HierarchyObject.HOTreeCheck
-import dev.itssho.module.hierarchy.attr.DirChain
+import dev.itssho.module.hierarchy.attr.Directory
 import dev.itssho.module.hierarchy.controller.Controller
 import dev.itssho.module.hierarchy.handler.util.DirUtil.extractDirRecursively
 import dev.itssho.module.hierarchy.handler.util.FileUtil.getContent
@@ -59,10 +59,9 @@ open class HierarchyProcessor {
 		controller.createDirectory(directory)
 	}
 
-	open fun interpretDirDefault(directory: DirChain.Dir, ho: HierarchyObject, moduleName: String): List<String> =
+	open fun interpretDirDefault(directory: Directory.Chain, ho: HierarchyObject, moduleName: String): List<String> =
 		when (directory) {
-			is DirChain.Dir.CUSTOM           -> directory.path.split(directory.delimiter)
-			is DirChain.Dir.PERSONAL_ITEM_ID -> ho.personalId.split(directory.delimiter)
-			is DirChain.Dir.MODULE_NAME      -> listOf(moduleName)
+			is Directory.Chain.CONST      -> directory.chain
+			is Directory.Chain.CALCULATED -> directory.calculate(ho)
 		}
 }

@@ -1,7 +1,7 @@
 package dev.itssho.module.hierarchy.handler.util
 
 import dev.itssho.module.hierarchy.HierarchyObject
-import dev.itssho.module.hierarchy.attr.DirChain
+import dev.itssho.module.hierarchy.attr.Directory
 import dev.itssho.module.hierarchy.extension.attributeOrNull
 import dev.itssho.module.hierarchy.extension.hasAttribute
 import dev.itssho.module.hierarchy.extension.takeUtillParent
@@ -19,11 +19,11 @@ object DirUtil {
 	): List<String> {
 		val moduleName = valueStorage.moduleName
 
-		val dirChainCapableObjects = ho.takeUtillParent(orderFromChildToParent = false) { parent -> !parent.hasAttribute<DirChain>() }
+		val dirChainCapableObjects = ho.takeUtillParent(orderFromChildToParent = false) { parent -> !parent.hasAttribute<Directory>() }
 
 		return dirChainCapableObjects.asSequence()
 			.mapNotNull { obj ->
-				val dirChain = obj.attributeOrNull<DirChain>() ?: return@mapNotNull null
+				val dirChain = obj.attributeOrNull<Directory>() ?: return@mapNotNull null
 				dirChain.chain.asSequence()
 					.map { dir -> interpretDir(dir, obj, moduleName) }
 					.flatten()
