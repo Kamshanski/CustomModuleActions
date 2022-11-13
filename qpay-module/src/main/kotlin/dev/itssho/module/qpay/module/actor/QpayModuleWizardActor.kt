@@ -2,6 +2,7 @@ package dev.itssho.module.qpay.module.actor
 
 import dev.itssho.module.core.actor.BaseActor
 import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.qpay.module.actor.di.component.NameKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi
 import dev.itssho.module.qpay.module.actor.di.component.QpayDeprecatedNameKoinDi
@@ -18,7 +19,9 @@ import dev.itssho.module.qpay.module.preparation.actor.QpayPreparationStep
 import dev.itssho.module.qpay.module.preparation.presentation.PreparationStepResult
 import dev.itssho.module.qpay.module.structure.actor.QpayStructureStep
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureStepResult
+import dev.itssho.module.shared.preferences.Settings
 import dev.itssho.module.util.koin.use
+import reflection.castOrNull
 
 class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 
@@ -26,46 +29,50 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 
 	override suspend fun runAction() {
 
-		val preparationResult = di.get<QpayPreparationKoinDi>().use { preparationDi ->
-			QpayPreparationStep(preparationDi)
-		}
+		runPreparationStep() ?: return
 
-		when (preparationResult) {
-			is PreparationStepResult.Success -> Unit
-			is PreparationStepResult.Failure -> return
-		}
-
-		val settings = di.get<GetSettingsUseCase>().invoke()
-		val useDelimiterfullNameStep = settings.useQpayNameStep
-
-		val moduleName = if (useDelimiterfullNameStep) {
-			val nameResult = di.get<QpayDeprecatedNameKoinDi>().use { nameDi ->
-				QpayDeprecatedNameStep(nameDi)
-			}
-			when (nameResult) {
-				is QpayNameStepResult.Name    -> nameResult.name
-				is QpayNameStepResult.Nothing -> return
-			}
+		val moduleName = if (getSettings().useQpayNameStep) {
+			runQpayNameStep() ?: return
 		} else {
-			val nameResult = di.get<NameKoinDi>().use { nameDi ->
-				NameStep(nameDi)
-			}
-			when (nameResult) {
-				is NameStepResult.Name    -> nameResult.name
-				is NameStepResult.Nothing -> return
-			}
+			runNameStep() ?: return
 		}
 
-		val structureResult = di.get<QpayStructureKoinDi>().use { structureDi ->
-			QpayStructureStep(moduleName, structureDi)
-		}
-		val structure = when (structureResult) {
-			is QpayStructureStepResult.Structure -> structureResult.filesFoldersHierarchy
-			is QpayStructureStepResult.Nothing   -> return
-		}
+		val structure = runStructureStep(moduleName) ?: return
 
-		di.get<QpayCreateKoinDi>().use { createDi ->
-			QpayCreateStep(moduleName, structure, createDi)
-		}
+		runCreateStep(moduleName, structure)
+	}
+
+	private fun getSettings(): Settings {
+		val settings = di.get<GetSettingsUseCase>().invoke()
+		return settings
+	}
+
+	private suspend fun runPreparationStep(): Unit? =
+		di.get<QpayPreparationKoinDi>()
+			.use { preparationDi -> QpayPreparationStep(preparationDi) }
+			.castOrNull<PreparationStepResult.Success>()
+			?.let { Unit }
+
+	private suspend fun runQpayNameStep(): String? =
+		di.get<QpayDeprecatedNameKoinDi>()
+			.use { nameDi -> QpayDeprecatedNameStep(nameDi) }
+			.castOrNull<QpayNameStepResult.Name>()
+			?.name
+
+	private suspend fun runNameStep(): String? =
+		di.get<NameKoinDi>()
+			.use { nameDi -> NameStep(nameDi) }
+			.castOrNull<NameStepResult.Name>()
+			?.name
+
+	private suspend fun runStructureStep(moduleName: String): HierarchyObject? =
+		di.get<QpayStructureKoinDi>()
+			.use { structureDi -> QpayStructureStep(moduleName, structureDi) }
+			.castOrNull<QpayStructureStepResult.Structure>()
+			?.filesFoldersHierarchy
+
+	private suspend fun runCreateStep(moduleName: String, structure: HierarchyObject) {
+		di.get<QpayCreateKoinDi>()
+			.use { createDi -> QpayCreateStep(moduleName, structure, createDi) }
 	}
 }
