@@ -23,24 +23,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
 
-    implementation(kotlin("script-runtime"))
-    implementation(kotlin("script-util"))
-    implementation(kotlin("scripting-jsr223"))
-    implementation(kotlin("scripting-dependencies"))
-    implementation(kotlin("scripting-common"))
-    implementation(kotlin("scripting-jvm"))
-    implementation(kotlin("scripting-jvm-host"))
-    implementation(kotlin("scripting-ide-services"))
-    implementation(kotlin("compiler-embeddable"))
-    implementation(kotlin("scripting-compiler"))
-    implementation(kotlin("scripting-compiler-embeddable"))
-    implementation(kotlin("scripting-compiler-impl"))
-    implementation(kotlin("scripting-compiler-impl-embeddable"))
-    implementation(kotlin("script-util"))
-    implementation(kotlin("scripting-intellij"))
-    implementation(kotlin("stdlib-jdk8"))
-    implementation(kotlin("reflect"))
-
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }

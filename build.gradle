@@ -21,23 +21,6 @@ static String kotlin(String s, String version = null) {
 }
 
 dependencies {
-    implementation(kotlin("script-runtime"))
-    implementation(kotlin("script-util"))
-    implementation(kotlin("scripting-jsr223"))
-    implementation(kotlin("scripting-dependencies"))
-    implementation(kotlin("scripting-common"))
-    implementation(kotlin("scripting-jvm"))
-    implementation(kotlin("scripting-jvm-host"))
-    implementation(kotlin("scripting-ide-services"))
-    implementation(kotlin("compiler-embeddable"))
-    implementation(kotlin("scripting-compiler"))
-    implementation(kotlin("scripting-compiler-embeddable"))
-    implementation(kotlin("scripting-compiler-impl"))
-    implementation(kotlin("scripting-compiler-impl-embeddable"))
-    implementation(kotlin("script-util"))
-    implementation(kotlin("scripting-intellij"))
-    implementation(kotlin("stdlib-jdk8"))
-
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
