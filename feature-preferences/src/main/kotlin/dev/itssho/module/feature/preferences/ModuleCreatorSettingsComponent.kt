@@ -26,7 +26,7 @@ class ModuleCreatorSettingsComponent {
 		set(value) { scriptPathInput.text = value }
 
 	private fun makeModuleCreatorSettingsPanel(): JPanel {
-		scriptPathInput.addBrowseFolderListener("Select path to Kotlin Script", null, null, FileChooserDescriptorFactory.createSingleFileDescriptor("kts"))
+		scriptPathInput.addBrowseFolderListener("Select path to Kotlin Script", null, null, FileChooserDescriptorFactory.createSingleFolderDescriptor())
 		return FormBuilder.createFormBuilder()
 			.addLabeledComponent(JBLabel("Script path"), scriptPathInput, 1, false)
 			.addComponent(useQpayNameStepCheckBox, 1)

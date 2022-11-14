@@ -6,7 +6,7 @@ import dev.itssho.module.core.actor.Context
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
-import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
+import dev.itssho.module.qpay.module.common.data.datasource.OldModuleActionDataSource
 import dev.itssho.module.qpay.module.common.data.datasource.SettingsDataSource
 import dev.itssho.module.qpay.module.common.data.repository.ModuleActionRepositoryImpl
 import dev.itssho.module.qpay.module.common.data.repository.SettingsRepositoryImpl
@@ -38,7 +38,7 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		singleOf(::FullyEditableValueStorage) binds arrayOf(ValueStorage::class, MutableValueStorage::class)
 		singleOf(::IdeaKtsScriptRunnerFactory)
 
-		singleOf(::ModuleActionDataSource)
+		singleOf(::OldModuleActionDataSource)
 		singleOf(::SettingsDataSource)
 
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class

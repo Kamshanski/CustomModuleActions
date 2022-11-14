@@ -9,8 +9,6 @@ import dev.itssho.module.qpay.module.actor.di.module.makeDeprecatedNameDataModul
 import dev.itssho.module.qpay.module.actor.di.module.makeDeprecatedNameModule
 import dev.itssho.module.qpay.module.actor.di.module.makeNameDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeNameModule
-import dev.itssho.module.qpay.module.actor.di.module.makePreparationDataModule
-import dev.itssho.module.qpay.module.actor.di.module.makePreparationModule
 import dev.itssho.module.qpay.module.actor.di.module.makeSelectionDataModule
 import dev.itssho.module.qpay.module.actor.di.module.makeSelectionModule
 import dev.itssho.module.qpay.module.actor.di.module.makeStructureDataModule
@@ -42,12 +40,6 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	val selectionDataModule = makeSelectionDataModule().apply { includes(commonDataModule) }
 	val selectionModule = makeSelectionModule().apply {
 		includes(selectionDataModule)
-		includes(commonModule)
-	}
-
-	val preparationDataModule = makePreparationDataModule().apply { includes(commonDataModule) }
-	val preparationModule = makePreparationModule().apply {
-		includes(preparationDataModule)
 		includes(commonModule)
 	}
 
@@ -84,7 +76,6 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	koinApp.modules(
 		commonDataModule, 			commonModule,
 		selectionDataModule,		selectionModule,
-		preparationDataModule, 		preparationModule,
 		deprecatedNameDataModule, 	deprecatedNameModule,
 		nameDataModule, 			nameModule,
 		structureDataModule, 		structureModule,
