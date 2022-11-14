@@ -36,10 +36,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4"
+//    implementation "org.jetbrains.kotlin:kotlin-reflect" // TODO Нужно?
 // Koin Core features
     implementation "io.insert-koin:koin-core:3.2.0"
 // Koin Test features
@@ -71,7 +71,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:4.6.1'
 }
 intellij {
-    version = '2020.2.4'
+    version = '2021.2.4'
     type = "IC"
 
     // Require the Android plugin (Gradle will choose the correct version):

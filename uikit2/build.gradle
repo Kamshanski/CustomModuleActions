@@ -12,14 +12,14 @@ dependencies {
     implementation(project(":lib:table-swing"))
     implementation(project(":ui-component"))
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4"
 //    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
 //    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }
 intellij {
-    version = '2020.2.4'
+    version = '2021.2.4'
     type = "IC"
 
     // Require the Android plugin (Gradle will choose the correct version):

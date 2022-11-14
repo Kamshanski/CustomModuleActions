@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'org.jetbrains.intellij' version '1.9.0' // При обновлении версии обновить сущности в модуле component-idea
-    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
 
 group 'dev.itssho.module'
@@ -40,9 +40,9 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
@@ -77,7 +77,7 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version = '2020.2.4'
+    version = '2021.2.4'
     type = "IC"
 
     plugins.set(["android"])

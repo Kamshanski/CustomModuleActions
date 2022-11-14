@@ -18,7 +18,7 @@ dependencies {
 }
 
 intellij {
-    version = '2020.2.4'
+    version = '2021.2.4'
     type = "IC"
 
     // Require the Android plugin (Gradle will choose the correct version):
