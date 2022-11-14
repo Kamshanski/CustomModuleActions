@@ -2,16 +2,16 @@ package dev.itssho.module.qpay.module.name.presentation
 
 import dev.itssho.module.core.presentation.ViewModel
 import dev.itssho.module.hierarchy.name.Issue
+import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
-import dev.itssho.module.qpay.module.common.domain.usecase.SetModuleNameUseCase
 import dev.itssho.module.qpay.module.name.presentation.model.NameStepResult
 import dev.itssho.module.qpay.module.name.presentation.validation.NameIssueReporter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class NameViewModel(
-	private val setModuleNameUseCase: SetModuleNameUseCase,
 	private val getModuleActionUseCase: GetModuleActionUseCase,
+	private val valueStorage: MutableValueStorage,
 ) : ViewModel() {
 
 	private val _name by lazy { MutableStateFlow(getModuleActionUseCase().nameHandler.getInitialName()) }
@@ -39,7 +39,7 @@ class NameViewModel(
 	fun proceed() {
 		// TODO сделать проверки. При ошибках не закрывать экран
 		val fullModuleName = name.value
-		setModuleNameUseCase(fullModuleName)
+		getModuleActionUseCase().nameHandler.handleResult(fullModuleName, valueStorage)
 		_finalResult.value = NameStepResult.Name(fullModuleName)
 	}
 

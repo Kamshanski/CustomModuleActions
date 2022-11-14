@@ -6,7 +6,6 @@ import dev.itssho.module.hierarchy.extension.attributeOrNull
 import dev.itssho.module.hierarchy.extension.hasAttribute
 import dev.itssho.module.hierarchy.extension.takeUtillParent
 import dev.itssho.module.hierarchy.storage.ValueStorage
-import dev.itssho.module.hierarchy.storage.moduleName
 
 @Suppress("MemberVisibilityCanBePrivate")
 object DirUtil {
@@ -17,15 +16,13 @@ object DirUtil {
 		valueStorage: ValueStorage,
 		interpretDir: DirInterpreter,
 	): List<String> {
-		val moduleName = valueStorage.moduleName
-
 		val dirChainCapableObjects = ho.takeUtillParent(orderFromChildToParent = false) { parent -> !parent.hasAttribute<Directory>() }
 
 		return dirChainCapableObjects.asSequence()
 			.mapNotNull { obj ->
 				val dirChain = obj.attributeOrNull<Directory>() ?: return@mapNotNull null
 				dirChain.chain.asSequence()
-					.map { dir -> interpretDir(dir, obj, moduleName) }
+					.map { dir -> interpretDir(dir, obj, valueStorage) }
 					.flatten()
 			}
 			.flatten()

@@ -16,7 +16,6 @@ import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueSto
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
-import dev.itssho.module.qpay.module.common.domain.usecase.SetModuleNameUseCase
 import dev.itssho.module.qpay.module.structure.actor.di.DataScopeQ
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +43,6 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class
 		singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
 
-		factoryOf(::SetModuleNameUseCase)
 		factoryOf(::GetModuleActionUseCase)
 		factoryOf(::LoadModuleActionUseCase)
 		factoryOf(::GetSettingsUseCase)

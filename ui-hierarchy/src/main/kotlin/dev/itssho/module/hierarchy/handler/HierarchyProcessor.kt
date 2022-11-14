@@ -12,6 +12,7 @@ import dev.itssho.module.hierarchy.handler.util.FileUtil.getContent
 import dev.itssho.module.hierarchy.handler.util.FileUtil.getFileExtensionPart
 import dev.itssho.module.hierarchy.handler.util.FileUtil.getFileName
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
+import dev.itssho.module.hierarchy.storage.ValueStorage
 
 /** От него нужно наследоваться. Может быть синглтоном */
 @Suppress("MemberVisibilityCanBePrivate")
@@ -59,7 +60,7 @@ open class HierarchyProcessor {
 		controller.createDirectory(directory)
 	}
 
-	open fun interpretDirDefault(directory: Directory.Chain, ho: HierarchyObject, moduleName: String): List<String> =
+	open fun interpretDirDefault(directory: Directory.Chain, ho: HierarchyObject, valueStorage: ValueStorage): List<String> =
 		when (directory) {
 			is Directory.Chain.CONST      -> directory.chain
 			is Directory.Chain.CALCULATED -> directory.calculate(ho)

@@ -24,7 +24,6 @@ import dev.itssho.module.hierarchy.name.IssueReporter
 import dev.itssho.module.hierarchy.name.NameHandler
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
-import dev.itssho.module.hierarchy.storage.moduleName
 import dev.itssho.module.hierarchy.text.Text
 import java.util.Locale
 
@@ -43,11 +42,15 @@ object C {
 
 	const val DELIMITER = "-"
 
+	const val MODULE_NAME_KEY = "MODULE_NAME"
 	const val COMPANY_NAME_KEY = "COMPANY_NAME"
 	const val TEAM_KEY = "TEAM"
 }
 
 interface VSUtil {
+
+	val ValueStorage.moduleName: String get() = get(C.MODULE_NAME_KEY)
+	val ValueStorage.moduleNameOrNull: String? get() = getOrNull(C.MODULE_NAME_KEY)
 
 	val ValueStorage.companyName: List<String> get() = this.getList(C.COMPANY_NAME_KEY)
 	val ValueStorage.companyNameOrNull: List<String>? get() = this.getListOrNull(C.COMPANY_NAME_KEY)
@@ -131,10 +134,10 @@ class QpayHierarchyProcessor : HierarchyProcessor() {
 	}
 }
 
-class FragmentTemplate : FileTemplate.Template("FRAGMENT_TEMPLATE_NAME") {
+class FragmentTemplate : FileTemplate.Template("FRAGMENT_TEMPLATE_NAME"), VSUtil {
 
 	override fun compile(folder: List<String>, fileName: String, fileExtension: String, valueStorage: ValueStorage): String {
-		val companyName = valueStorage.getList(C.COMPANY_NAME_KEY)
+		val companyName = valueStorage.companyName
 		val moduleName = valueStorage.moduleName.split(C.DELIMITER)
 		val fqPackage = companyName + moduleName
 
@@ -359,7 +362,7 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 }
 
 
-class MyNameHandler : NameHandler {
+class MyNameHandler : NameHandler, VSUtil {
 
 	companion object {
 
@@ -385,6 +388,10 @@ class MyNameHandler : NameHandler {
 		if (firstPart !in FIRST_PARTS) {
 			reporter.reportError("Module must be one of these: ${FIRST_PARTS.joinToString()}")
 		}
+	}
+
+	override fun handleResult(moduleName: String, valueStorage: MutableValueStorage) {
+		valueStorage.put(C.MODULE_NAME_KEY, moduleName)
 	}
 }
 

@@ -1,5 +1,7 @@
 package dev.itssho.module.hierarchy.name
 
+import dev.itssho.module.hierarchy.storage.MutableValueStorage
+
 // TODO Прокинуть ValueStorage в NameHandler
 interface NameHandler {
 
@@ -16,4 +18,6 @@ interface NameHandler {
 	 * 	WARNING - Starts with non-letter
 	 */
 	fun validate(fullName: String, reporter: IssueReporter)
+
+	fun handleResult(moduleName: String, valueStorage: MutableValueStorage)
 }
