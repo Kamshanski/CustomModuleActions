@@ -4,6 +4,18 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
 }
 
+// // На будущее
+//def kotlinDependencyBuilder = { String liba, String version = null ->
+//    if (version == null) {
+//        return "org.jetbrains.kotlin:kotlin-$liba"
+//    } else {
+//        return "org.jetbrains.kotlin:kotlin-$liba:$version"
+//    }
+//}
+//ext.kotlin = kotlinDependencyBuilder
+//ext.kotlinVer = "1.5.30"
+//ext.coroutinesVer = "1.5.30"
+
 group 'dev.itssho.module'
 version '1.0-SNAPSHOT'
 

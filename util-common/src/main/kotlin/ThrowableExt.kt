@@ -3,6 +3,7 @@ import java.io.StringWriter
 
 fun Throwable.fullStackTraceString(): String {
 	val writer = StringWriter()
-	this.printStackTrace(PrintWriter(writer))
+	val printWriter = PrintWriter(writer)
+	printStackTrace(printWriter)
 	return writer.toString()
 }
