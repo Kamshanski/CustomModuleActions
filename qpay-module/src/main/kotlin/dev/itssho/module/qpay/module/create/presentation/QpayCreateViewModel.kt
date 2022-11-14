@@ -4,8 +4,9 @@ import dev.itssho.module.core.presentation.ViewModel
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.extension.filterSelected
 import dev.itssho.module.hierarchy.extension.flatten
+import dev.itssho.module.hierarchy.importing.ModuleAction
+import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUseCase
-import dev.itssho.module.shared.file.domain.usecase.MakeIdeaFileUseCase
 import fullStackTraceString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +25,8 @@ import kotlin.coroutines.suspendCoroutine
 /** TODO добавить валидатор. Скопипастить из [com.intellij.ide.actions.CreatePackageHandler.checkInput] [com.intellij.ide.actions.CreateDirectoryOrPackageHandler.checkInput] */
 class QpayCreateViewModel(
 	val implementHierarchyUseCase: ImplementHierarchyUseCase,
-	val makeIdeaFileUseCase: MakeIdeaFileUseCase,
+	val valueStorage: FullyEditableValueStorage,
+	val moduleAction: ModuleAction,
 	val structure: HierarchyObject,
 ) : ViewModel() {
 
@@ -74,7 +76,7 @@ class QpayCreateViewModel(
 						suspendCoroutine<Unit> { continuation ->
 							SwingUtilities.invokeAndWait {
 								try {
-									implementHierarchyUseCase(ho)
+									implementHierarchyUseCase(valueStorage, moduleAction, ho)
 									continuation.resume(Unit)
 								} catch (ex: Throwable) {
 									continuation.resumeWithException(ex)
@@ -97,7 +99,7 @@ class QpayCreateViewModel(
 			}
 
 			if (errorsOccured) {
-				makeIdeaFileUseCase("Log_${LocalDateTime.now().run { "$hour.$minute.$second" }}.txt", _fullLog.value.toString())
+				// TODO Добавить логирование
 			} else {
 				_finalResult.value = Unit
 			}

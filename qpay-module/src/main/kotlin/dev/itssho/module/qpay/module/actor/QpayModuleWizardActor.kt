@@ -35,14 +35,14 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 		val moduleAction = runSelectionStep(valueStorage) ?: return
 
 		val moduleName = if (getSettings().useQpayNameStep) {
-			runQpayNameStep() ?: return
+			runQpayNameStep(valueStorage, moduleAction) ?: return
 		} else {
-			runNameStep() ?: return
+			runNameStep(valueStorage, moduleAction) ?: return
 		}
 
-		val structure = runStructureStep(moduleName) ?: return
+		val structure = runStructureStep(moduleName, valueStorage, moduleAction) ?: return
 
-		runCreateStep(moduleName, structure)
+		runCreateStep(moduleName, moduleAction, valueStorage, structure)
 	}
 
 	private fun getSettings(): Settings {
@@ -56,26 +56,26 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 			.castOrNull<SelectionStepResult.Compilation>()
 			?.moduleAction
 
-	private suspend fun runQpayNameStep(): String? =
+	private suspend fun runQpayNameStep(valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): String? =
 		di.get<QpayDeprecatedNameKoinDi>()
-			.use { nameDi -> QpayDeprecatedNameStep(nameDi) }
+			.use { nameDi -> QpayDeprecatedNameStep(valueStorage, moduleAction, nameDi) }
 			.castOrNull<QpayNameStepResult.Name>()
 			?.name
 
-	private suspend fun runNameStep(): String? =
+	private suspend fun runNameStep(valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): String? =
 		di.get<NameKoinDi>()
-			.use { nameDi -> NameStep(nameDi) }
+			.use { nameDi -> NameStep(valueStorage, moduleAction, nameDi) }
 			.castOrNull<NameStepResult.Name>()
 			?.name
 
-	private suspend fun runStructureStep(moduleName: String): HierarchyObject? =
+	private suspend fun runStructureStep(moduleName: String, valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): HierarchyObject? =
 		di.get<QpayStructureKoinDi>()
-			.use { structureDi -> QpayStructureStep(moduleName, structureDi) }
+			.use { structureDi -> QpayStructureStep(moduleName, moduleAction, valueStorage, structureDi) }
 			.castOrNull<QpayStructureStepResult.Structure>()
 			?.filesFoldersHierarchy
 
-	private suspend fun runCreateStep(moduleName: String, structure: HierarchyObject) {
+	private suspend fun runCreateStep(moduleName: String, moduleAction: ModuleAction, valueStorage: FullyEditableValueStorage, structure: HierarchyObject) {
 		di.get<QpayCreateKoinDi>()
-			.use { createDi -> QpayCreateStep(moduleName, structure, createDi) }
+			.use { createDi -> QpayCreateStep(moduleName, moduleAction, valueStorage, structure, createDi) }
 	}
 }
