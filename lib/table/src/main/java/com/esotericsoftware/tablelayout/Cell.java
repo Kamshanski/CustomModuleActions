@@ -497,6 +497,7 @@ public class Cell<C> {
 		return this;
 	}
 
+	/** Заставляет компонент в клетке расшириться до размера клетки */
 	/** Sets fillX and fillY to 1. */
 	public Cell fill () {
 		fillX = 1f;
@@ -504,12 +505,14 @@ public class Cell<C> {
 		return this;
 	}
 
+	/** Заставляет компонент в клетке расшириться до размера клетки */
 	/** Sets fillX to 1. */
 	public Cell fillX () {
 		fillX = 1f;
 		return this;
 	}
 
+	/** Заставляет компонент в клетке расшириться до размера клетки */
 	/** Sets fillY to 1. */
 	public Cell fillY () {
 		fillY = 1f;
@@ -593,6 +596,7 @@ public class Cell<C> {
 		return this;
 	}
 
+	/** Расширяет клетку таблицы */
 	/** Sets expandX and expandY to 1. */
 	public Cell expand () {
 		expandX = 1;
@@ -600,12 +604,14 @@ public class Cell<C> {
 		return this;
 	}
 
+	/** Расширяет клетку таблицы по оси X */
 	/** Sets expandX to 1. */
 	public Cell expandX () {
 		expandX = 1;
 		return this;
 	}
 
+	/** Расширяет клетку таблицы по оси Y */
 	/** Sets expandY to 1. */
 	public Cell expandY () {
 		expandY = 1;
