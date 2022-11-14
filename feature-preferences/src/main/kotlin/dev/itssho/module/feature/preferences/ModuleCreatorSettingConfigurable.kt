@@ -28,23 +28,23 @@ class ModuleCreatorSettingConfigurable : Configurable {
 	}
 
 	override fun isModified(): Boolean = runWithSettings { s ->
-		component.run {
-			   s.useQpayNameStep 	!= useQpayNameStep
-			|| s.scriptPath 		!= scriptPath
+		component.let { c ->
+			   s.useQpayNameStep 	!= c.useQpayNameStep
+			|| s.scriptPath 		!= c.scriptPath
 		}
 	}
 
 	override fun apply() = runWithSettings { s ->
-		component.run {
-			s.scriptPath 		= scriptPath
-			s.useQpayNameStep 	= useQpayNameStep
+		component.let { c ->
+			s.scriptPath 		= c.scriptPath
+			s.useQpayNameStep 	= c.useQpayNameStep
 		}
 	}
 
 	override fun reset() = runWithSettings { s ->
-		component.run {
-			scriptPath 			= s.scriptPath
-			useQpayNameStep 	= s.useQpayNameStep
+		component.let { c ->
+			c.scriptPath 		= s.scriptPath
+			c.useQpayNameStep 	= s.useQpayNameStep
 		}
 	}
 
