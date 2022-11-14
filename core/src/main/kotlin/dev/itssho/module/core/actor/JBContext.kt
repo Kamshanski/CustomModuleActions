@@ -10,7 +10,6 @@ import dev.itssho.module.component.chain.Separator
 import dev.itssho.module.component.chain.any.AnyChain
 import dev.itssho.module.component.chain.castTo
 import dev.itssho.module.component.chain.splitToChain
-import dev.itssho.module.core.ui.UiPlatform
 import java.nio.file.Path
 
 @Suppress("CanBeParameter", "MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
@@ -19,10 +18,6 @@ class JBContext(
 	val ideView: IdeView,
 	val ideProject: Project,
 ) : Context {
-
-	override val platform: UiPlatform = UiPlatform.JET_BRAINS
-
-	override val global: MutableMap<Any, Any> = mutableMapOf()
 
 	/** [PsiDirectory] файла, выбранного сейчас в дереве проекта */
 	val selectedDirectory: PsiDirectory = ideView.getOrChooseDirectory().takeNotNullOrExit()
@@ -75,7 +70,8 @@ class JBContext(
 			var dir: PsiDirectory? = selectedDirectory
 			val mainFolderPath = mainFolderDirChain.castTo(Separator.Url).assemble().let { Path.of(it) }
 			while (true) {
-				val curDir = dir ?: throw IllegalStateException("Main folder psi directory '$mainFolderDirChain' was not found in selected psi directory '$selectedDirectory'")
+				val curDir = dir
+					?: throw IllegalStateException("Main folder psi directory '$mainFolderDirChain' was not found in selected psi directory '$selectedDirectory'")
 
 				val curDirPath = curDir.virtualFile.toNioPath()
 				if (curDirPath == mainFolderPath || mainFolderPath.contains(curDirPath)) { // TODO хз как проверять. надо подебажить. Мб contains не нужен. + чекнуть Separator.Windows
