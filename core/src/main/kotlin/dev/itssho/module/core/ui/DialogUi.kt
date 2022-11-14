@@ -4,7 +4,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancel
 
 abstract class DialogUI<T>(
-	// TODO (подумать) вынести создание скоупа в контекст, пробрасывая его сюда. Чтобы убивать их всех после закрытия актора // context.coroutineScopeManager.makeNewScope()
 	val scope: CoroutineScope,
 ) {
 
@@ -46,8 +45,8 @@ abstract class DialogUI<T>(
 	open fun onFinish() {}
 
 	open fun finish() {
-		onFinish()
 		scope.cancel()
+		onFinish()
 	}
 
 	private sealed interface StepResult {

@@ -11,8 +11,8 @@ suspend fun SelectionStep(valueStorage: FullyEditableValueStorage, di: Selection
 
 	val result = ui.showForResult()
 
-	ui.finish()
 	viewModel.finish()
+	ui.finish()
 
 	return result
 }

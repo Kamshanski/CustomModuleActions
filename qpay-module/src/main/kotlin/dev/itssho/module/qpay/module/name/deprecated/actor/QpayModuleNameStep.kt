@@ -13,8 +13,8 @@ suspend fun QpayDeprecatedNameStep(valueStorage: FullyEditableValueStorage, modu
 
 	val result = ui.showForResult()
 
-	ui.finish()
 	viewModel.finish()
+	ui.finish()
 
 	return result
 }

@@ -15,8 +15,8 @@ suspend fun QpayStructureStep(moduleName: String, moduleAction: ModuleAction, va
 
 	val result = ui.showForResult()
 
-	ui.finish()
 	viewModel.finish()
+	ui.finish()
 
 	return result
 }

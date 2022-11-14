@@ -8,8 +8,8 @@ suspend fun QpayPreparationStep(di: QpayPreparationDi): PreparationStepResult {
 
 	val result = ui.showForResult()
 
-	ui.finish()
 	viewModel.finish()
+	ui.finish()
 
 	return result
 }

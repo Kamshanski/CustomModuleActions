@@ -13,7 +13,6 @@ import dev.itssho.module.ui.util.constructor.jiLabel
 import dev.itssho.module.ui.util.constructor.jiTextField
 import dev.itssho.module.ui.util.constructor.table
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import string.escapeHtml
 import javax.swing.JComponent
 
@@ -104,11 +103,5 @@ class NameUi(
 
 	private fun initViews() {
 		nameInputGuideLabel.text = "Введите имя модуля"
-	}
-
-	override fun onFinish() {
-		super.onFinish()
-		viewModel.finish()
-		scope.cancel()
 	}
 }

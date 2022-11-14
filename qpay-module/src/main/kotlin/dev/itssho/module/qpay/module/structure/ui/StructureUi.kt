@@ -12,7 +12,6 @@ import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelViewModel
 import dev.itssho.module.shared.dialog.ui.idea.YesNoIdeaDialog
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import javax.swing.JButton
 import javax.swing.JComponent
 
@@ -67,11 +66,5 @@ class StructureUi(
 			}
 
 		}
-	}
-
-	override fun onFinish() {
-		super.onFinish()
-		viewModel.finish()
-		scope.cancel()
 	}
 }

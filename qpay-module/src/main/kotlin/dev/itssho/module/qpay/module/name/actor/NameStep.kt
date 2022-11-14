@@ -13,8 +13,8 @@ suspend fun NameStep(valueStorage: FullyEditableValueStorage, moduleAction: Modu
 
 	val result = ui.showForResult()
 
-	ui.finish()
 	viewModel.finish()
+	ui.finish()
 
 	return result
 }

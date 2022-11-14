@@ -9,10 +9,16 @@ import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameStepRe
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameViewModel
 import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult
 import dev.itssho.module.shared.dialog.ui.idea.YesNoIdeaDialog
-import dev.itssho.module.ui.util.constructor.*
-import dev.itssho.module.ui.util.container.*
+import dev.itssho.module.ui.util.constructor.buttonsCollection
+import dev.itssho.module.ui.util.constructor.jCheckBox
+import dev.itssho.module.ui.util.constructor.jiLabel
+import dev.itssho.module.ui.util.constructor.jiTextField
+import dev.itssho.module.ui.util.constructor.table
+import dev.itssho.module.ui.util.constructor.tableColumn
+import dev.itssho.module.ui.util.container.cellsLeft
+import dev.itssho.module.ui.util.container.cellsTop
+import dev.itssho.module.ui.util.container.padHorizontal
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import javax.swing.JComponent
 
 class NameUI(
@@ -145,11 +151,5 @@ class NameUI(
 		moduleNameInput.addTextChangeListener { str ->
 			viewModel.setNamePart(str)
 		}
-	}
-
-	override fun onFinish() {
-		super.onFinish()
-		viewModel.finish()
-		scope.cancel()
 	}
 }
