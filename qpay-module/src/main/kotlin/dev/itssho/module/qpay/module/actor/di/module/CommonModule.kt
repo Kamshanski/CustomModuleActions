@@ -4,9 +4,7 @@ import com.intellij.ide.script.IdeScriptEngineManager
 import dev.itssho.module.component.scripting.idea.IdeaKtsScriptRunnerFactory
 import dev.itssho.module.core.actor.Context
 import dev.itssho.module.core.actor.JBContext
-import dev.itssho.module.hierarchy.storage.MutableValueStorage
-import dev.itssho.module.hierarchy.storage.ValueStorage
-import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
+import dev.itssho.module.qpay.module.common.data.datasource.OldModuleActionDataSource
 import dev.itssho.module.qpay.module.common.data.datasource.SettingsDataSource
 import dev.itssho.module.qpay.module.common.data.repository.ModuleActionRepositoryImpl
 import dev.itssho.module.qpay.module.common.data.repository.SettingsRepositoryImpl
@@ -23,7 +21,6 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
-import org.koin.dsl.binds
 import org.koin.dsl.module
 
 fun makeCommonDataModule(jbContext: JBContext): Module =
@@ -33,10 +30,9 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		single(DataScopeQ) { CoroutineScope(SupervisorJob() + Dispatchers.IO) }
 		factory { IdeScriptEngineManager.getInstance() }
 
-//		singleOf(::FullyEditableValueStorage) binds arrayOf(ValueStorage::class, MutableValueStorage::class)
 		singleOf(::IdeaKtsScriptRunnerFactory)
 
-		singleOf(::ModuleActionDataSource)
+		singleOf(::OldModuleActionDataSource)
 		singleOf(::SettingsDataSource)
 
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class

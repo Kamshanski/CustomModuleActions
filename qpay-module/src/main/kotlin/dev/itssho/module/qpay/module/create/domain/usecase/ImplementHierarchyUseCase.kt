@@ -2,8 +2,8 @@ package dev.itssho.module.qpay.module.create.domain.usecase
 
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.controller.Controller
+import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
-import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
 
 /**
  * Полезные исходнички
@@ -16,17 +16,19 @@ import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCas
  */
 
 class ImplementHierarchyUseCase(
-	private val getModuleActionUseCase: GetModuleActionUseCase,
 	private val controller: Controller,
-	private val valueStorage: MutableValueStorage,
 ) {
 
 	/**
 	 * Implements only given [ho]. Children are not considered
 	 */
 	@Throws(RuntimeException::class)
-	operator fun invoke(ho: HierarchyObject) {
-		val hierarchyProcessor = getModuleActionUseCase().hierarchyProcessor
+	operator fun invoke(
+		valueStorage: MutableValueStorage, // TODO временное решение. Убрать после изменения структуры DI
+		moduleAction: ModuleAction, // TODO временное решение. Убрать после изменения структуры DI
+		ho: HierarchyObject
+	) {
+		val hierarchyProcessor = moduleAction.hierarchyProcessor
 
 		hierarchyProcessor.handle(ho, valueStorage, controller)
 	}

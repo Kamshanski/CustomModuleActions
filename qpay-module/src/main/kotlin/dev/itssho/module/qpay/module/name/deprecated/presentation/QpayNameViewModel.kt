@@ -4,7 +4,7 @@ import dev.itssho.module.component.chain.Separator
 import dev.itssho.module.component.chain.chainOf
 import dev.itssho.module.component.chain.splitToChain
 import dev.itssho.module.core.presentation.ViewModel
-import dev.itssho.module.qpay.module.common.domain.usecase.SetModuleNameUseCase
+import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.qpay.module.name.deprecated.domain.entity.ModuleDomain
 import dev.itssho.module.qpay.module.name.deprecated.domain.entity.ModuleLevel
 import dev.itssho.module.qpay.module.name.deprecated.presentation.converter.convertDomainName
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.atomic.AtomicBoolean
 
 class QpayNameViewModel(
-	private val setModuleNameUseCase: SetModuleNameUseCase,
+	private val valueStorage: MutableValueStorage,
 ) : ViewModel() {
 
 	private companion object {
@@ -156,7 +156,8 @@ class QpayNameViewModel(
 		// TODO сделать проверки. При ошибках не закрывать экран
 		val fullModuleName = _moduleNameState.value.fullModuleName
 		if (validateModuleName(fullModuleName) is Valid) {
-			setModuleNameUseCase(fullModuleName)
+			// TODO Это очень не правильно. Нужно выпилить этот QpayNameStep полностью
+			valueStorage.put("MODULE_NAME", fullModuleName)
 			_finalResult.value = QpayNameStepResult.Name(fullModuleName)
 		}
 	}

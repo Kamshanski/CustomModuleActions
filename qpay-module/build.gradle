@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":lib:table-swing"))
     implementation(project(":component-table"))
     implementation(project(":core"))
+    implementation(project(":service-action-module"))
     implementation(project(":util-common"))
     implementation(project(":util-koin"))
     implementation(project(":component-chain"))

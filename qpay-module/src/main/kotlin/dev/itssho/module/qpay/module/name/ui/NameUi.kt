@@ -13,7 +13,6 @@ import dev.itssho.module.ui.util.constructor.jiLabel
 import dev.itssho.module.ui.util.constructor.jiTextField
 import dev.itssho.module.ui.util.constructor.table
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
 import string.escapeHtml
 import javax.swing.JComponent
 
@@ -107,8 +106,7 @@ class NameUi(
 	}
 
 	override fun onFinish() {
-		super.onFinish()
 		viewModel.finish()
-		scope.cancel()
+		super.onFinish()
 	}
 }

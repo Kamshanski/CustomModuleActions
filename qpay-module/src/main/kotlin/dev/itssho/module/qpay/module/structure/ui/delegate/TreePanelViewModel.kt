@@ -13,10 +13,10 @@ import dev.itssho.module.hierarchy.extension.forEach
 import dev.itssho.module.hierarchy.extension.setCheck
 import dev.itssho.module.hierarchy.extension.setSelectedItem
 import dev.itssho.module.hierarchy.extension.setText
+import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.hierarchy.text.Text
 import dev.itssho.module.hierarchy.text.Textual
-import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
 import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelState.Content
@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class TreePanelViewModel(
-	private val getModuleActionUseCase: GetModuleActionUseCase,
+	private val moduleAction: ModuleAction,
 	private val valueStorage: ValueStorage,
 	private val generateUniqueIdUseCase: GenerateUniqueIdUseCase,
 	private val getTextUseCase: GetTextUseCase,
@@ -38,7 +38,7 @@ class TreePanelViewModel(
 	val state: StateFlow<TreePanelState> = _state
 
 	fun loadStructure() {
-		val hierarchyInitializer = getModuleActionUseCase().hierarchyInitializer
+		val hierarchyInitializer = moduleAction.hierarchyInitializer
 
 		val ho = hierarchyInitializer.initialize(valueStorage)
 

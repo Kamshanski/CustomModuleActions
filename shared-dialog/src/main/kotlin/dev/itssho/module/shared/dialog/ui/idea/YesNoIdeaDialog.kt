@@ -8,6 +8,7 @@ import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.core.ui.DialogUI
 import invokeAll
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import swing.removeAllActionListeners
 import java.util.concurrent.atomic.AtomicBoolean
 import javax.swing.JButton
@@ -52,6 +53,7 @@ abstract class YesNoIdeaDialog<T>(
 
 	override fun onFinish() {
 		super.onFinish()
+		scope.cancel()
 		dialogWrapper.close(CANCEL_EXIT_CODE)
 	}
 

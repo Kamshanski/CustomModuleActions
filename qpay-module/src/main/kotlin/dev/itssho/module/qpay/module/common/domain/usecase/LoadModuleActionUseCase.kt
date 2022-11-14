@@ -4,6 +4,7 @@ import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
 import java.nio.file.InvalidPathException
 
+@Deprecated("Старая реализация")
 class LoadModuleActionUseCase(
 	private val moduleActionRepository: ModuleActionRepository,
 	private val getSettingsUseCase: GetSettingsUseCase,

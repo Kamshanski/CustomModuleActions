@@ -25,11 +25,8 @@ interface ValueStorage {
 
 	object Str {
 
-		val MODULE_NAME = "MODULE_NAME"
-
 		// TODO заменить рефлексией
 		fun values(): List<String> = listOf(
-			MODULE_NAME,
 		)
 	}
 }

@@ -1,11 +1,12 @@
 package dev.itssho.module.qpay.module.common.data.repository
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
-import dev.itssho.module.qpay.module.common.data.datasource.ModuleActionDataSource
+import dev.itssho.module.qpay.module.common.data.datasource.OldModuleActionDataSource
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
 
+@Deprecated("Старая реализация")
 class ModuleActionRepositoryImpl(
-	private val dataSource: ModuleActionDataSource
+	private val dataSource: OldModuleActionDataSource
 ) : ModuleActionRepository {
 
 	@Throws(IllegalStateException::class)

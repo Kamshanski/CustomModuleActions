@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.reflect.KProperty
@@ -34,6 +35,16 @@ inline fun <T> Flow<T>.collectOn(scope: CoroutineScope, crossinline collector: (
 // На случай поломки билда
 @Suppress("ObjectLiteralToLambda")
 suspend inline fun <T> Flow<T>.gather(crossinline collector: suspend (T) -> Unit) {
+	this.collect(object : FlowCollector<T> {
+		override suspend fun emit(value: T) {
+			collector(value)
+		}
+	})
+}
+
+// На случай поломки билда
+@Suppress("ObjectLiteralToLambda")
+suspend inline fun <T> SharedFlow<T>.gather(crossinline collector: suspend (T) -> Unit): Nothing {
 	this.collect(object : FlowCollector<T> {
 		override suspend fun emit(value: T) {
 			collector(value)

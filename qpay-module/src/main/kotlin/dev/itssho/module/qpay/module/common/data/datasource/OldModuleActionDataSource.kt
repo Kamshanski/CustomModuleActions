@@ -10,7 +10,9 @@ import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
 
-class ModuleActionDataSource(private val scriptRunnerFactory: IdeaKtsScriptRunnerFactory) {
+// TODO Заменить реализацию интерфейсом ScriptRunnerFactory
+@Deprecated("Старая реализация. Заменится прокидыванием moduleAction через DI")
+class OldModuleActionDataSource(private val scriptRunnerFactory: IdeaKtsScriptRunnerFactory) {
 
 	private val mutex = Mutex()
 
