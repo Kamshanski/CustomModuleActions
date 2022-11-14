@@ -28,5 +28,5 @@ include("component-scripting")
 include("component-scripting-idea")
 include("feature-preferences")
 include("shared-preferences")
-include 'service-action'
+include("service-action-module")
 

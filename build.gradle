@@ -63,6 +63,7 @@ dependencies {
     implementation project(":shared-preferences")
     implementation project(":uikit")
     implementation project(":uikit2")
+    implementation project(":service-action-module")
     implementation project(":qpay-module")
     implementation project(":feature-preferences")
     implementation project(":core")

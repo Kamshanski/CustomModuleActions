@@ -24,6 +24,8 @@
             instance="dev.itssho.module.feature.preferences.ModuleCreatorSettingConfigurable"
             id="dev.itssho.module.feature.preferences.ModuleCreatorSettingConfigurable"
             displayName="Module Creator Plugin Setting Example"/>
+        <projectService
+            serviceImplementation="dev.itssho.module.service.action.module.ModuleActionService"/>
     </extensions>
 
     <actions>
