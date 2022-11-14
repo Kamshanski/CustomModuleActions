@@ -27,6 +27,9 @@
     </extensions>
 
     <actions>
+        <action id="dev.itssho.module.feature.qpay.module.TestModuleAction" class="dev.itssho.module.feature.qpay.module.TestModuleAction" text="__TEST__">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
         <action id="dev.itssho.module.feature.qpay.module.QpayModuleAction" class="dev.itssho.module.feature.qpay.module.QpayModuleAction" text="Qpay Module">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
