@@ -1,17 +1,16 @@
 plugins {
+    id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
 
-group 'dev.itssho.module'
-version '1.0-SNAPSHOT'
-
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.1"
+//    implementation "org.jetbrains.kotlin:kotlin-reflect" // TODO Нужно?
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
 }

@@ -5,10 +5,6 @@ import dev.itssho.module.common.component.mvvm.ui.UserInterface
 import dev.itssho.module.feature.qpay.module.delegate.mainkt.ui.DataFolderUi
 import dev.itssho.module.resources.Strings
 import dev.itssho.module.uikit.component.panel.JXLinearPanel
-import dev.itssho.module.uikit.modification.Modifier
-import dev.itssho.module.uikit.modification.marginStart
-import dev.itssho.module.uikit.modification.marginVertical
-import dev.itssho.module.uikit.modification.wrapHeight
 import dev.itssho.module.uikit.dsl.panel.column
 import dev.itssho.module.uikit.dsl.panel.row
 import dev.itssho.module.uikit.dsl.select.checkBox
@@ -16,7 +12,10 @@ import dev.itssho.module.uikit.dsl.select.comboBox
 import dev.itssho.module.uikit.dsl.separator.hDivider
 import dev.itssho.module.uikit.dsl.separator.hSpace
 import dev.itssho.module.uikit.dsl.separator.vDivider
-import org.jetbrains.kotlin.tools.projectWizard.wizard.ui.bordered
+import dev.itssho.module.uikit.modification.Modifier
+import dev.itssho.module.uikit.modification.marginStart
+import dev.itssho.module.uikit.modification.marginVertical
+import dev.itssho.module.uikit.modification.wrapHeight
 import java.awt.Color
 import javax.swing.JCheckBox
 
@@ -44,7 +43,7 @@ class QpayStructureUi(override val scope: ScopeWrapper) : UserInterface {
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "model")
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "converter")
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "network")
-            }.bordered()
+            }
         }
 
     private fun JXLinearPanel.presentationFoldersGroup() =
@@ -108,7 +107,7 @@ class QpayStructureUi(override val scope: ScopeWrapper) : UserInterface {
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "<>Module")
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "<>FragmentModule")
                 checkBox(Modifier.marginStart(FOLDER_MARGIN), text = "ApiModule")
-            }.bordered()
+            }
         }
     }
 
