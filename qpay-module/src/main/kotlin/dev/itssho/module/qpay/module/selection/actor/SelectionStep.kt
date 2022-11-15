@@ -1,11 +1,8 @@
 package dev.itssho.module.qpay.module.selection.actor
 
-import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.selection.presentation.SelectionStepResult
 
-suspend fun SelectionStep(valueStorage: FullyEditableValueStorage, di: SelectionDi): SelectionStepResult {
-	di.insertValueStorage(valueStorage)
-
+suspend fun SelectionStep(di: SelectionDi): SelectionStepResult {
 	val viewModel = di.getViewModel()
 	val ui = di.getUi()
 

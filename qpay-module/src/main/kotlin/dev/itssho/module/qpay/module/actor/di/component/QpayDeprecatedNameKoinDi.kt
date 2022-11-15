@@ -11,20 +11,31 @@ import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin
+import org.koin.core.parameter.parametersOf
 
-class QpayDeprecatedNameKoinDi(koin: Koin) : LocalKoinScope(koin), QpayNameDi {
+class QpayDeprecatedNameKoinDi(
+	koin: Koin,
+	valueStorage: FullyEditableValueStorage,
+	moduleAction: ModuleAction,
+) : LocalKoinScope(koin), QpayNameDi {
+
+	companion object {
+
+		fun Koin.getQpayNameKoinDi(
+			valueStorage: FullyEditableValueStorage,
+			moduleAction: ModuleAction,
+		): QpayDeprecatedNameKoinDi =
+			get { parametersOf(valueStorage, moduleAction) }
+	}
+
+	init {
+		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+		scope.declare(moduleAction)
+	}
 
 	override fun getUi(): NameUI = scope.get()
 
 	override fun getViewModel(): QpayNameViewModel = scope.get()
 
 	override fun getUiScope() = scope.get<CoroutineScope>(UiScopeQ)
-
-	override fun insertValueStorage(valueStorage: FullyEditableValueStorage) {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-	}
-
-	override fun insertModuleAction(moduleAction: ModuleAction) {
-		scope.declare(moduleAction)
-	}
 }

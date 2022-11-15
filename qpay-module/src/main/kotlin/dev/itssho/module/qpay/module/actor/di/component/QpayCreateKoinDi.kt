@@ -13,28 +13,37 @@ import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin
+import org.koin.core.parameter.parametersOf
 
-class QpayCreateKoinDi(koin: Koin) : LocalKoinScope(koin), QpayCreateDi {
+class QpayCreateKoinDi(
+	koin: Koin,
+	valueStorage: FullyEditableValueStorage,
+	moduleAction: ModuleAction,
+	moduleName: String,
+	structure: HierarchyObject,
+) : LocalKoinScope(koin), QpayCreateDi {
+
+	companion object {
+
+		fun Koin.getCreateKoinDi(
+			valueStorage: FullyEditableValueStorage,
+			moduleAction: ModuleAction,
+			moduleName: String,
+			structure: HierarchyObject,
+		): QpayCreateKoinDi =
+			get { parametersOf(valueStorage, moduleAction, moduleName, structure) }
+	}
+
+	init {
+		scope.declare(moduleName, ModuleNameQ)
+		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+		scope.declare(moduleAction)
+		scope.declare(structure)
+	}
 
 	override fun getUi(): CreateUi = scope.get()
 
 	override fun getViewModel(): QpayCreateViewModel = scope.get()
 
 	override fun getUiScope(): CoroutineScope = scope.get(UiScopeQ)
-
-	override fun insertModuleName(moduleName: String) {
-		scope.declare(moduleName, ModuleNameQ)
-	}
-
-	override fun insertModuleAction(moduleAction: ModuleAction) {
-		scope.declare(moduleAction)
-	}
-
-	override fun insertValueStorage(valueStorage: FullyEditableValueStorage) {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-	}
-
-	override fun insertStructure(structure: HierarchyObject) {
-		scope.declare(structure)
-	}
 }

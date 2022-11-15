@@ -23,7 +23,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun makeCommonDataModule(jbContext: JBContext): Module =
+fun makeCommonDataModule(jbContext: JBContext, koinModule: Module, sharedFileModule: Module): Module =
 	module {
 		single { jbContext } bind Context::class
 
@@ -41,6 +41,14 @@ fun makeCommonDataModule(jbContext: JBContext): Module =
 		factoryOf(::GetModuleActionUseCase)
 		factoryOf(::LoadModuleActionUseCase)
 		factoryOf(::GetSettingsUseCase)
+	}.apply {
+		includes(koinModule)
+		includes(sharedFileModule)
 	}
 
-fun makeCommonModule() = module {}
+fun makeCommonFeatureModule(commonDataModule: Module, sharedFileFeatureModule: Module) =
+	module {
+	}.apply {
+		includes(commonDataModule)
+		includes(sharedFileFeatureModule)
+	}

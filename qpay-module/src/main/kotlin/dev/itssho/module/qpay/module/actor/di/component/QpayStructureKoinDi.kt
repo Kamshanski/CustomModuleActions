@@ -10,22 +10,32 @@ import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewMod
 import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.util.koin.LocalKoinScope
 import org.koin.core.Koin
+import org.koin.core.parameter.parametersOf
 
-class QpayStructureKoinDi(koin: Koin) : LocalKoinScope(koin), QpayStructureDi {
+class QpayStructureKoinDi(
+	koin: Koin,
+	valueStorage: FullyEditableValueStorage,
+	moduleAction: ModuleAction,
+	moduleName: String,
+) : LocalKoinScope(koin), QpayStructureDi {
+
+	companion object {
+
+		fun Koin.getStructureKoinDi(
+			valueStorage: FullyEditableValueStorage,
+			moduleAction: ModuleAction,
+			moduleName: String,
+		): QpayStructureKoinDi =
+			get { parametersOf(valueStorage, moduleAction, moduleName) }
+	}
+
+	init {
+		scope.declare(moduleName, ModuleNameQ)
+		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+		scope.declare(moduleAction)
+	}
 
 	override fun getUi(): StructureUi = scope.get()
 
 	override fun getViewModel(): QpayStructureViewModel = scope.get()
-
-	override fun insertModuleName(moduleName: String) {
-		scope.declare(moduleName, ModuleNameQ)
-	}
-
-	override fun insertValueStorage(valueStorage: FullyEditableValueStorage) {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-	}
-
-	override fun insertModuleAction(moduleAction: ModuleAction) {
-		scope.declare(moduleAction)
-	}
 }

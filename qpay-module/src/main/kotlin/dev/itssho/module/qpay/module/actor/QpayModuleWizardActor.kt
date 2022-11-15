@@ -4,11 +4,11 @@ import dev.itssho.module.core.actor.BaseActor
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
-import dev.itssho.module.qpay.module.actor.di.component.NameKoinDi
-import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi
-import dev.itssho.module.qpay.module.actor.di.component.QpayDeprecatedNameKoinDi
-import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
-import dev.itssho.module.qpay.module.actor.di.component.SelectionKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.NameKoinDi.Companion.getNameKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.QpayCreateKoinDi.Companion.getCreateKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.QpayDeprecatedNameKoinDi.Companion.getQpayNameKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi.Companion.getStructureKoinDi
+import dev.itssho.module.qpay.module.actor.di.component.SelectionKoinDi.Companion.getSelectionKoinDi
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
@@ -51,31 +51,31 @@ class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
 	}
 
 	private suspend fun runSelectionStep(valueStorage: FullyEditableValueStorage): ModuleAction? =
-		di.get<SelectionKoinDi>()
-			.use { selectionDi -> SelectionStep(valueStorage, selectionDi) }
+		di.getSelectionKoinDi(valueStorage)
+			.use { selectionDi -> SelectionStep(selectionDi) }
 			.castOrNull<SelectionStepResult.Compilation>()
 			?.moduleAction
 
 	private suspend fun runQpayNameStep(valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): String? =
-		di.get<QpayDeprecatedNameKoinDi>()
-			.use { nameDi -> QpayDeprecatedNameStep(valueStorage, moduleAction, nameDi) }
+		di.getQpayNameKoinDi(valueStorage, moduleAction)
+			.use { nameDi -> QpayDeprecatedNameStep(nameDi) }
 			.castOrNull<QpayNameStepResult.Name>()
 			?.name
 
 	private suspend fun runNameStep(valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): String? =
-		di.get<NameKoinDi>()
-			.use { nameDi -> NameStep(valueStorage, moduleAction, nameDi) }
+		di.getNameKoinDi(valueStorage, moduleAction)
+			.use { nameDi -> NameStep(nameDi) }
 			.castOrNull<NameStepResult.Name>()
 			?.name
 
 	private suspend fun runStructureStep(moduleName: String, valueStorage: FullyEditableValueStorage, moduleAction: ModuleAction): HierarchyObject? =
-		di.get<QpayStructureKoinDi>()
-			.use { structureDi -> QpayStructureStep(moduleName, moduleAction, valueStorage, structureDi) }
+		di.getStructureKoinDi(valueStorage, moduleAction, moduleName)
+			.use { structureDi -> QpayStructureStep(structureDi) }
 			.castOrNull<QpayStructureStepResult.Structure>()
 			?.filesFoldersHierarchy
 
 	private suspend fun runCreateStep(moduleName: String, moduleAction: ModuleAction, valueStorage: FullyEditableValueStorage, structure: HierarchyObject) {
-		di.get<QpayCreateKoinDi>()
-			.use { createDi -> QpayCreateStep(moduleName, moduleAction, valueStorage, structure, createDi) }
+		di.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)
+			.use { createDi -> QpayCreateStep(createDi) }
 	}
 }
