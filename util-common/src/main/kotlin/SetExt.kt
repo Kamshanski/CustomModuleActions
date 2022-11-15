@@ -1,0 +1,1 @@
+inline fun <T> Set<T>.contains(predicate: (T) -> Boolean): Boolean = indexOfFirst(predicate) > -1

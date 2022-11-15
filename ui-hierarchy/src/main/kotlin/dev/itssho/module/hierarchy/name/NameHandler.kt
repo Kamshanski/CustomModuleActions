@@ -19,5 +19,6 @@ interface NameHandler {
 	 */
 	fun validate(fullName: String, reporter: IssueReporter)
 
+	/** Executed only once. Passed [moduleName] is validated by [validate] method */
 	fun handleResult(moduleName: String, valueStorage: MutableValueStorage)
 }
