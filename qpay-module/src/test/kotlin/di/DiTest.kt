@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package di
 
 import com.intellij.ide.script.IdeScriptEngineManager
@@ -11,31 +13,27 @@ import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
-import dev.itssho.module.qpay.module.create.di.QpayCreateKoinDi
 import dev.itssho.module.qpay.module.create.di.QpayCreateKoinDi.Companion.getCreateKoinDi
-import dev.itssho.module.qpay.module.name.deprecated.di.QpayDeprecatedNameKoinDi
 import dev.itssho.module.qpay.module.name.deprecated.di.QpayDeprecatedNameKoinDi.Companion.getQpayNameKoinDi
-import dev.itssho.module.qpay.module.name.di.NameKoinDi
 import dev.itssho.module.qpay.module.name.di.NameKoinDi.Companion.getNameKoinDi
-import dev.itssho.module.qpay.module.selection.di.SelectionKoinDi
 import dev.itssho.module.qpay.module.selection.di.SelectionKoinDi.Companion.getSelectionKoinDi
-import dev.itssho.module.qpay.module.structure.di.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.structure.di.QpayStructureKoinDi.Companion.getStructureKoinDi
 import dev.itssho.module.service.action.module.ModuleActionService
+import dev.itssho.module.util.koin.LocalKoinScope
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.extension.RegisterExtension
-import org.koin.core.parameter.parametersOf
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
 import org.koin.test.junit5.mock.MockProviderExtension
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import kotlin.test.assertNotNull
 
+@KoinInternalApi
 class DiTest : KoinTest {
 
 	@RegisterExtension
@@ -69,18 +67,13 @@ class DiTest : KoinTest {
 	@Test
 	fun verifyFullGraph() {
 		val koinApp = makeKoinDi().apply {
-			koin.declare(structure)
 			koin.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
 			koin.declare(moduleAction)
+			koin.declare(moduleName)
+			koin.declare(structure)
 		}
 
-		koinApp.checkModules {
-			withParameters<SelectionKoinDi> { parametersOf(valueStorage) }
-			withParameters<QpayDeprecatedNameKoinDi> { parametersOf(valueStorage, moduleAction) }
-			withParameters<NameKoinDi> { parametersOf(valueStorage, moduleAction) }
-			withParameters<QpayStructureKoinDi> { parametersOf(valueStorage, moduleAction, moduleName) }
-			withParameters<QpayCreateKoinDi> { parametersOf(valueStorage, moduleAction, moduleName, structure) }
-		}
+		koinApp.checkModules()
 	}
 
 	/** Если верхнеуровневая сущность UI сможет создаться, то для этого скоупа всё ок.
@@ -88,13 +81,14 @@ class DiTest : KoinTest {
 	@TestFactory
 	fun verifyEachScope(): Collection<DynamicTest> {
 		val koinApp = makeKoinDi()
+		val koin = koinApp.koin
 
 		return listOf(
-			stepScopeDynamicTest({ koinApp.koin.getSelectionKoinDi(valueStorage) }, { it.getUi() }),
-			stepScopeDynamicTest({ koinApp.koin.getQpayNameKoinDi(valueStorage, moduleAction) }, { it.getUi() }),
-			stepScopeDynamicTest({ koinApp.koin.getNameKoinDi(valueStorage, moduleAction) }, { it.getUi() }),
-			stepScopeDynamicTest({ koinApp.koin.getStructureKoinDi(valueStorage, moduleAction, moduleName) }, { it.getUi() }),
-			stepScopeDynamicTest({ koinApp.koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure) }, { it.getUi() }),
+			stepScopeDynamicTest(koin.getSelectionKoinDi(valueStorage)),
+			stepScopeDynamicTest(koin.getQpayNameKoinDi(valueStorage, moduleAction)),
+			stepScopeDynamicTest(koin.getNameKoinDi(valueStorage, moduleAction)),
+			stepScopeDynamicTest(koin.getStructureKoinDi(valueStorage, moduleAction, moduleName)),
+			stepScopeDynamicTest(koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)),
 		)
 	}
 
@@ -103,11 +97,19 @@ class DiTest : KoinTest {
 		koin.declare(moduleActionService)
 	}
 
-	private fun <T : Any> stepScopeDynamicTest(createScope: () -> T, scopeAction: (T) -> Unit): DynamicTest {
-		val scope = createScope()
-		val testName = scope::class.simpleName!!
+	private fun stepScopeDynamicTest(scopeHolder: LocalKoinScope): DynamicTest {
+		val testName = scopeHolder::class.simpleName!!
 		return DynamicTest.dynamicTest(testName) {
-			assertNotNull(scopeAction(scope))
+			assertScopedItemsAvailable(scopeHolder)
+		}
+	}
+
+	private fun assertScopedItemsAvailable(scopeHolder: LocalKoinScope) {
+		val scope = scopeHolder.scope
+		val scopeValues = scope.getKoin().instanceRegistry.instances.filter { it.value.beanDefinition.scopeQualifier == scope.scopeQualifier }.values
+		scopeValues.forEach {
+			scope.get<Any>(it.beanDefinition.primaryType, it.beanDefinition.qualifier)
+			it.beanDefinition.secondaryTypes.forEach { secondaryType -> scope.get<Any>(secondaryType, it.beanDefinition.qualifier) }
 		}
 	}
 }

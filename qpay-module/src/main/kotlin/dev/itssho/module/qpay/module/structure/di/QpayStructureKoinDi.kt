@@ -8,14 +8,8 @@ import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewMod
 import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.util.koin.LocalKoinScope
 import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
 
-class QpayStructureKoinDi(
-	koin: Koin,
-	valueStorage: FullyEditableValueStorage,
-	moduleAction: ModuleAction,
-	moduleName: String,
-) : LocalKoinScope(koin), QpayStructureDi {
+class QpayStructureKoinDi(koin: Koin) : LocalKoinScope(koin), QpayStructureDi {
 
 	companion object {
 
@@ -23,14 +17,11 @@ class QpayStructureKoinDi(
 			valueStorage: FullyEditableValueStorage,
 			moduleAction: ModuleAction,
 			moduleName: String,
-		): QpayStructureKoinDi =
-			get { parametersOf(valueStorage, moduleAction, moduleName) }
-	}
-
-	init {
-		scope.declare(moduleName, ModuleNameQ)
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-		scope.declare(moduleAction)
+		): QpayStructureKoinDi = get<QpayStructureKoinDi>().apply {
+			scope.declare(moduleName, ModuleNameQ)
+			scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+			scope.declare(moduleAction)
+		}
 	}
 
 	override fun getUi(): StructureUi = scope.get()

@@ -10,7 +10,7 @@ import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelViewModel
 import dev.itssho.module.util.koin.factoryOf
-import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
+import dev.itssho.module.util.koin.factoryScopeOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +31,7 @@ private fun ScopeDSL.declareSelectionFeatureDomainEntries() {
 }
 
 fun makeStructureFeatureModule(commonFeatureModule: Module, structureDataModule: Module) = module {
-	parametrizedLocalKoinScopeFactoryOf(::QpayStructureKoinDi) {
+	factoryScopeOf(::QpayStructureKoinDi) {
 		declareSelectionFeatureDomainEntries()
 
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }

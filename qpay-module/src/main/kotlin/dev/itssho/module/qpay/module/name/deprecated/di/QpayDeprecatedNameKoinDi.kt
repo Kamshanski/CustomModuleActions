@@ -10,13 +10,8 @@ import dev.itssho.module.qpay.module.name.deprecated.ui.NameUI
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
 
-class QpayDeprecatedNameKoinDi(
-	koin: Koin,
-	valueStorage: FullyEditableValueStorage,
-	moduleAction: ModuleAction,
-) : LocalKoinScope(koin), QpayNameDi {
+class QpayDeprecatedNameKoinDi(koin: Koin) : LocalKoinScope(koin), QpayNameDi {
 
 	companion object {
 
@@ -24,12 +19,13 @@ class QpayDeprecatedNameKoinDi(
 			valueStorage: FullyEditableValueStorage,
 			moduleAction: ModuleAction,
 		): QpayDeprecatedNameKoinDi =
-			get { parametersOf(valueStorage, moduleAction) }
+			get<QpayDeprecatedNameKoinDi>().apply {
+				scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+				scope.declare(moduleAction)
+			}
 	}
 
 	init {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-		scope.declare(moduleAction)
 	}
 
 	override fun getUi(): NameUI = scope.get()

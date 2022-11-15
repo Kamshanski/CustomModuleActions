@@ -18,7 +18,7 @@ import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUse
 import dev.itssho.module.qpay.module.create.presentation.QpayCreateViewModel
 import dev.itssho.module.qpay.module.create.ui.CreateUi
 import dev.itssho.module.util.koin.factoryOf
-import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
+import dev.itssho.module.util.koin.factoryScopeOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,7 +49,7 @@ private fun ScopeDSL.declareCreateFeatureDomainEntries() {
 }
 
 fun makeCreateFeatureModule(commonFeatureModule: Module, createDataModule: Module): Module = module {
-	parametrizedLocalKoinScopeFactoryOf(::QpayCreateKoinDi) {
+	factoryScopeOf(::QpayCreateKoinDi) {
 		declareCreateFeatureDomainEntries()
 
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }

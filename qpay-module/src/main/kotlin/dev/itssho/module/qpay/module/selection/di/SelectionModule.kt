@@ -13,7 +13,7 @@ import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
 import dev.itssho.module.qpay.module.selection.ui.SelectionUi
 import dev.itssho.module.service.action.module.ModuleActionService
 import dev.itssho.module.util.koin.factoryOf
-import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
+import dev.itssho.module.util.koin.factoryScopeOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,7 +40,7 @@ private fun ScopeDSL.declareSelectionFeatureDomainEntries() {
 }
 
 fun makeSelectionModule(commonFeatureModule: Module, selectionDataModule: Module) = module {
-	parametrizedLocalKoinScopeFactoryOf(::SelectionKoinDi) {
+	factoryScopeOf(::SelectionKoinDi) {
 		declareSelectionFeatureDomainEntries()
 
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }

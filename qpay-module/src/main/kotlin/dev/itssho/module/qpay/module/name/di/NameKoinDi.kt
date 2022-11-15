@@ -10,13 +10,8 @@ import dev.itssho.module.qpay.module.name.ui.NameUi
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
 
-class NameKoinDi(
-	koin: Koin,
-	valueStorage: FullyEditableValueStorage,
-	moduleAction: ModuleAction,
-) : LocalKoinScope(koin), NameDi {
+class NameKoinDi(koin: Koin) : LocalKoinScope(koin), NameDi {
 
 	companion object {
 
@@ -24,12 +19,10 @@ class NameKoinDi(
 			valueStorage: FullyEditableValueStorage,
 			moduleAction: ModuleAction,
 		): NameKoinDi =
-			get { parametersOf(valueStorage, moduleAction) }
-	}
-
-	init {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
-		scope.declare(moduleAction)
+			get<NameKoinDi>().apply {
+				scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+				scope.declare(moduleAction)
+			}
 	}
 
 	override fun getUi(): NameUi = scope.get()

@@ -7,21 +7,15 @@ import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
 import dev.itssho.module.qpay.module.selection.ui.SelectionUi
 import dev.itssho.module.util.koin.LocalKoinScope
 import org.koin.core.Koin
-import org.koin.core.parameter.parametersOf
 
-class SelectionKoinDi(
-	koin: Koin,
-	valueStorage: FullyEditableValueStorage
-) : LocalKoinScope(koin), SelectionDi {
+class SelectionKoinDi(koin: Koin) : LocalKoinScope(koin), SelectionDi {
 
 	companion object {
 
 		fun Koin.getSelectionKoinDi(valueStorage: FullyEditableValueStorage): SelectionKoinDi =
-			get { parametersOf(valueStorage) }
-	}
-
-	init {
-		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+			get<SelectionKoinDi>().apply {
+				scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
+			}
 	}
 
 	override fun getUi(): SelectionUi = scope.get()
