@@ -1,15 +1,14 @@
-package dev.itssho.module.qpay.module.actor.di.component
+package dev.itssho.module.qpay.module.create.di
 
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
-import dev.itssho.module.qpay.module.create.actor.QpayCreateDi
 import dev.itssho.module.qpay.module.create.presentation.QpayCreateViewModel
 import dev.itssho.module.qpay.module.create.ui.CreateUi
-import dev.itssho.module.qpay.module.structure.actor.di.ModuleNameQ
-import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
+import dev.itssho.module.qpay.module.structure.di.ModuleNameQ
+import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin

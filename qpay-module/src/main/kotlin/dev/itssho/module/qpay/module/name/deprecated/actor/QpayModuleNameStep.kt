@@ -1,5 +1,6 @@
 package dev.itssho.module.qpay.module.name.deprecated.actor
 
+import dev.itssho.module.qpay.module.name.deprecated.di.QpayNameDi
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameStepResult
 
 suspend fun QpayDeprecatedNameStep(di: QpayNameDi): QpayNameStepResult {

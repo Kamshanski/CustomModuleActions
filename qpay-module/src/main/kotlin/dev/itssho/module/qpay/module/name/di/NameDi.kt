@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.name.actor
+package dev.itssho.module.qpay.module.name.di
 
 import dev.itssho.module.qpay.module.name.presentation.NameViewModel
 import dev.itssho.module.qpay.module.name.ui.NameUi

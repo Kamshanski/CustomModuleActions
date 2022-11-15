@@ -1,9 +1,8 @@
-package dev.itssho.module.qpay.module.actor.di.component
+package dev.itssho.module.qpay.module.selection.di
 
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
-import dev.itssho.module.qpay.module.selection.actor.SelectionDi
 import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
 import dev.itssho.module.qpay.module.selection.ui.SelectionUi
 import dev.itssho.module.util.koin.LocalKoinScope

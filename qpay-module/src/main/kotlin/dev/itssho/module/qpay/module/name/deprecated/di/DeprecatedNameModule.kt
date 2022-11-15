@@ -1,11 +1,10 @@
 @file:Suppress("RemoveExplicitTypeArguments")
 
-package dev.itssho.module.qpay.module.actor.di.module
+package dev.itssho.module.qpay.module.name.deprecated.di
 
-import dev.itssho.module.qpay.module.actor.di.component.QpayDeprecatedNameKoinDi
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameViewModel
 import dev.itssho.module.qpay.module.name.deprecated.ui.NameUI
-import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
+import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

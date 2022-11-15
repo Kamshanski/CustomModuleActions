@@ -1,41 +1,39 @@
-package dev.itssho.module.qpay.module.actor.di.component
+package dev.itssho.module.qpay.module.structure.di
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
-import dev.itssho.module.qpay.module.name.actor.NameDi
-import dev.itssho.module.qpay.module.name.presentation.NameViewModel
-import dev.itssho.module.qpay.module.name.ui.NameUi
-import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
+import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
+import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.util.koin.LocalKoinScope
-import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin
 import org.koin.core.parameter.parametersOf
 
-class NameKoinDi(
+class QpayStructureKoinDi(
 	koin: Koin,
 	valueStorage: FullyEditableValueStorage,
 	moduleAction: ModuleAction,
-) : LocalKoinScope(koin), NameDi {
+	moduleName: String,
+) : LocalKoinScope(koin), QpayStructureDi {
 
 	companion object {
 
-		fun Koin.getNameKoinDi(
+		fun Koin.getStructureKoinDi(
 			valueStorage: FullyEditableValueStorage,
 			moduleAction: ModuleAction,
-		): NameKoinDi =
-			get { parametersOf(valueStorage, moduleAction) }
+			moduleName: String,
+		): QpayStructureKoinDi =
+			get { parametersOf(valueStorage, moduleAction, moduleName) }
 	}
 
 	init {
+		scope.declare(moduleName, ModuleNameQ)
 		scope.declare(valueStorage, secondaryTypes = listOf(ValueStorage::class, MutableValueStorage::class))
 		scope.declare(moduleAction)
 	}
 
-	override fun getUi(): NameUi = scope.get()
+	override fun getUi(): StructureUi = scope.get()
 
-	override fun getViewModel(): NameViewModel = scope.get()
-
-	override fun getUiScope() = scope.get<CoroutineScope>(UiScopeQ)
+	override fun getViewModel(): QpayStructureViewModel = scope.get()
 }

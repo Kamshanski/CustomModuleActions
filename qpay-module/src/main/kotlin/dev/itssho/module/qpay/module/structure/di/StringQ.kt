@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.structure.actor.di
+package dev.itssho.module.qpay.module.structure.di
 
 import dev.itssho.module.util.koin.KoinQualifier
 

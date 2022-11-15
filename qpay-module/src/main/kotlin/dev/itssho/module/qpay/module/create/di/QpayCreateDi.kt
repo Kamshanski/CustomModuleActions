@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.create.actor
+package dev.itssho.module.qpay.module.create.di
 
 import dev.itssho.module.qpay.module.create.presentation.QpayCreateViewModel
 import dev.itssho.module.qpay.module.create.ui.CreateUi

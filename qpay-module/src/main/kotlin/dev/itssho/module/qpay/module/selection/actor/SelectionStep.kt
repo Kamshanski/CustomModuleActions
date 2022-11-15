@@ -1,5 +1,6 @@
 package dev.itssho.module.qpay.module.selection.actor
 
+import dev.itssho.module.qpay.module.selection.di.SelectionDi
 import dev.itssho.module.qpay.module.selection.presentation.SelectionStepResult
 
 suspend fun SelectionStep(di: SelectionDi): SelectionStepResult {

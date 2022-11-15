@@ -1,5 +1,6 @@
 package dev.itssho.module.qpay.module.name.actor
 
+import dev.itssho.module.qpay.module.name.di.NameDi
 import dev.itssho.module.qpay.module.name.presentation.model.NameStepResult
 
 suspend fun NameStep(di: NameDi): NameStepResult {

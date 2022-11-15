@@ -1,10 +1,8 @@
 @file:Suppress("RemoveExplicitTypeArguments")
 
-package dev.itssho.module.qpay.module.actor.di.module
+package dev.itssho.module.qpay.module.structure.di
 
-import dev.itssho.module.qpay.module.actor.di.component.QpayStructureKoinDi
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
-import dev.itssho.module.qpay.module.structure.actor.di.UiScopeQ
 import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
 import dev.itssho.module.qpay.module.structure.ui.StructureUi
