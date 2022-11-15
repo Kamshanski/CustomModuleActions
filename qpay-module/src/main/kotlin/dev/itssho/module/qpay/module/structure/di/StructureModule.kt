@@ -2,6 +2,7 @@
 
 package dev.itssho.module.qpay.module.structure.di
 
+import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
 import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel

@@ -3,10 +3,10 @@ package dev.itssho.module.qpay.module.name.di
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
+import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.name.presentation.NameViewModel
 import dev.itssho.module.qpay.module.name.ui.NameUi
-import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.LocalKoinScope
 import kotlinx.coroutines.CoroutineScope
 import org.koin.core.Koin

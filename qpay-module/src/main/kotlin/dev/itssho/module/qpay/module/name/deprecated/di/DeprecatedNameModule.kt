@@ -2,9 +2,9 @@
 
 package dev.itssho.module.qpay.module.name.deprecated.di
 
+import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameViewModel
 import dev.itssho.module.qpay.module.name.deprecated.ui.NameUI
-import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -13,7 +13,6 @@ import dev.itssho.module.qpay.module.common.domain.repository.SettingsRepository
 import dev.itssho.module.qpay.module.common.domain.usecase.GetModuleActionUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.common.domain.usecase.LoadModuleActionUseCase
-import dev.itssho.module.qpay.module.structure.di.DataScopeQ
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -2,9 +2,9 @@
 
 package dev.itssho.module.qpay.module.name.di
 
+import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.name.presentation.NameViewModel
 import dev.itssho.module.qpay.module.name.ui.NameUi
-import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

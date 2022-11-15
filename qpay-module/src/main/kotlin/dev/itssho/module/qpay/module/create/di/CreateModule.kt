@@ -6,6 +6,7 @@ import dev.itssho.module.component.idea.action.DirectoryOrPackageCreator
 import dev.itssho.module.component.idea.action.FileCreator
 import dev.itssho.module.core.actor.JBContext
 import dev.itssho.module.hierarchy.controller.Controller
+import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.common.domain.hierarchy.ControllerImpl
 import dev.itssho.module.qpay.module.create.data.datasource.directory.DirectoryDataSource
 import dev.itssho.module.qpay.module.create.data.datasource.file.FileDataSource
@@ -16,7 +17,6 @@ import dev.itssho.module.qpay.module.create.domain.repository.FileRepository
 import dev.itssho.module.qpay.module.create.domain.usecase.ImplementHierarchyUseCase
 import dev.itssho.module.qpay.module.create.presentation.QpayCreateViewModel
 import dev.itssho.module.qpay.module.create.ui.CreateUi
-import dev.itssho.module.qpay.module.structure.di.UiScopeQ
 import dev.itssho.module.util.koin.factoryOf
 import dev.itssho.module.util.koin.parametrizedLocalKoinScopeFactoryOf
 import kotlinx.coroutines.CoroutineScope
