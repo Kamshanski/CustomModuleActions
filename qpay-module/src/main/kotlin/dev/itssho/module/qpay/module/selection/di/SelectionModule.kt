@@ -7,7 +7,8 @@ import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.selection.data.datasource.ModuleActionDataSource
 import dev.itssho.module.qpay.module.selection.data.repository.ScriptRepositoryImpl
 import dev.itssho.module.qpay.module.selection.domain.repository.ScriptRepository
-import dev.itssho.module.qpay.module.selection.domain.usecase.GetScriptsUseCase
+import dev.itssho.module.qpay.module.selection.domain.usecase.GetModuleActionByScriptPathUseCase
+import dev.itssho.module.qpay.module.selection.domain.usecase.InitializeModuleActionUseCase
 import dev.itssho.module.qpay.module.selection.domain.usecase.UpdateScriptsUseCase
 import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
 import dev.itssho.module.qpay.module.selection.ui.SelectionUi
@@ -36,7 +37,8 @@ fun makeSelectionDataModule(commonDataModule: Module) = module {
 
 private fun ScopeDSL.declareSelectionFeatureDomainEntries() {
 	factoryOf(::UpdateScriptsUseCase)
-	factoryOf(::GetScriptsUseCase)
+	factoryOf(::GetModuleActionByScriptPathUseCase)
+	factoryOf(::InitializeModuleActionUseCase)
 }
 
 fun makeSelectionModule(commonFeatureModule: Module, selectionDataModule: Module) = module {
