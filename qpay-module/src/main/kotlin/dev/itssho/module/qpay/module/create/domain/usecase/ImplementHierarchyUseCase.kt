@@ -17,17 +17,15 @@ import dev.itssho.module.hierarchy.storage.MutableValueStorage
 
 class ImplementHierarchyUseCase(
 	private val controller: Controller,
+	private val valueStorage: MutableValueStorage,
+	private val moduleAction: ModuleAction,
 ) {
 
 	/**
 	 * Implements only given [ho]. Children are not considered
 	 */
 	@Throws(RuntimeException::class)
-	operator fun invoke(
-		valueStorage: MutableValueStorage, // TODO временное решение. Убрать после изменения структуры DI
-		moduleAction: ModuleAction, // TODO временное решение. Убрать после изменения структуры DI
-		ho: HierarchyObject
-	) {
+	operator fun invoke(ho: HierarchyObject) {
 		val hierarchyProcessor = moduleAction.hierarchyProcessor
 
 		hierarchyProcessor.handle(ho, valueStorage, controller)

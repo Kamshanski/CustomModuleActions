@@ -76,7 +76,7 @@ class QpayCreateViewModel(
 						suspendCoroutine<Unit> { continuation ->
 							SwingUtilities.invokeAndWait {
 								try {
-									implementHierarchyUseCase(valueStorage, moduleAction, ho)
+									implementHierarchyUseCase(ho)
 									continuation.resume(Unit)
 								} catch (ex: Throwable) {
 									continuation.resumeWithException(ex)
