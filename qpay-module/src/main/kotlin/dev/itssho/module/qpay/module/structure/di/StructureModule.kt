@@ -3,8 +3,10 @@
 package dev.itssho.module.qpay.module.structure.di
 
 import dev.itssho.module.qpay.module.common.di.UiScopeQ
-import dev.itssho.module.qpay.module.common.domain.usecase.GetTextUseCase
 import dev.itssho.module.qpay.module.structure.domain.usecase.GenerateUniqueIdUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.InitializeHierarchyUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.InterpretHierarchyTextsUseCase
+import dev.itssho.module.qpay.module.structure.domain.usecase.ValidateHierarchyUseCase
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
 import dev.itssho.module.qpay.module.structure.ui.StructureUi
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
@@ -27,7 +29,9 @@ fun makeStructureDataModule(commonDataModule: Module): Module = module {
 
 private fun ScopeDSL.declareSelectionFeatureDomainEntries() {
 	factoryOf(::GenerateUniqueIdUseCase)
-	factoryOf(::GetTextUseCase)
+	factoryOf(::InitializeHierarchyUseCase)
+	factoryOf(::InterpretHierarchyTextsUseCase)
+	factoryOf(::ValidateHierarchyUseCase)
 }
 
 fun makeStructureFeatureModule(commonFeatureModule: Module, structureDataModule: Module) = module {

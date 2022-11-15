@@ -10,15 +10,19 @@ import dev.itssho.module.component.util.addOnClickListener
 import dev.itssho.module.component.util.addOnSelectListener
 import dev.itssho.module.core.ui.UserInterface
 import dev.itssho.module.hierarchy.HierarchyObject
-import dev.itssho.module.hierarchy.HierarchyObject.*
+import dev.itssho.module.hierarchy.HierarchyObject.HOFile
+import dev.itssho.module.hierarchy.HierarchyObject.HOLabel
+import dev.itssho.module.hierarchy.HierarchyObject.HOSelector
+import dev.itssho.module.hierarchy.HierarchyObject.HOTreeCheck
 import dev.itssho.module.hierarchy.attr.BackText
 import dev.itssho.module.hierarchy.attr.FrontText
-import dev.itssho.module.hierarchy.text.Text
 import dev.itssho.module.hierarchy.extension.attributeOrNull
 import dev.itssho.module.hierarchy.extension.flatten
 import dev.itssho.module.hierarchy.extension.hasParent
+import dev.itssho.module.hierarchy.text.Text
 import dev.itssho.module.qpay.module.structure.ui.entity.Pad
-import dev.itssho.module.ui.util.constructor.*
+import dev.itssho.module.ui.util.constructor.jiLabel
+import dev.itssho.module.ui.util.constructor.jiSpace
 import kotlinx.coroutines.CoroutineScope
 import swing.setItems
 import swing.setSelectedIfDiffer
@@ -46,7 +50,7 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 		viewModel.state.observe(scope) { state ->
 			when (state) {
 				is TreePanelState.Loading -> setLoadingState()
-				is TreePanelState.Content -> setContentState(state.structure)
+				is TreePanelState.Content -> setContentState(state.structure, state.texts)
 			}
 		}
 	}
@@ -56,23 +60,23 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 		componentRegistry.clear()
 	}
 
-	private fun setContentState(structure: HierarchyObject) {
+	private fun setContentState(structure: HierarchyObject, texts: Map<Text, String>) {
 		val flatStructure = structure.flatten()
 
 		val newIds = flatStructure.map { it.id }
 		val previousIds = componentRegistry.keys
 
 		if (!newIds.contentEquals(previousIds)) {
-			updateTreePanel(flatStructure)
+			updateTreePanel(flatStructure, texts)
 		} else {
 			flatStructure.forEach { ho ->
 				val treeItem = componentRegistry.getValue(ho.id)
-				updateContent(ho, treeItem)
+				updateContent(ho, treeItem, texts)
 			}
 		}
 	}
 
-	private fun updateTreePanel(structure: List<HierarchyObject>) {
+	private fun updateTreePanel(structure: List<HierarchyObject>, texts: Map<Text, String>) {
 		val newComponentCatalogue = LinkedHashMap<String, TreeItem>(componentRegistry.size)
 		structure.forEach { ho ->
 			val component = componentRegistry[ho.id] ?: makeTreeLine(ho)
@@ -91,7 +95,7 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 
 			val component = componentRegistry[id] ?: return@mapNotNull null
 
-			updateContent(ho, component)
+			updateContent(ho, component, texts)
 
 			Table().left().top().apply {
 				addCell(jiSpace()).padRight(startShift)
@@ -120,9 +124,9 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 		return TreeItem(main = main, actions = actions, front = front, back = back)
 	}
 
-	private fun updateContent(ho: HierarchyObject, treeItem: TreeItem) {
+	private fun updateContent(ho: HierarchyObject, treeItem: TreeItem, texts: Map<Text, String>) {
 		treeItem.front.let { component ->
-			val frontText = ho.attributeOrNull<FrontText>()?.text.asString()
+			val frontText = ho.attributeOrNull<FrontText>()?.text.asString(texts)
 			if (frontText.isNullOrEmpty()) {
 				component.isVisible = false
 			} else {
@@ -133,7 +137,7 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 		}
 
 		treeItem.back.let { component ->
-			val backText = ho.attributeOrNull<BackText>()?.text.asString()
+			val backText = ho.attributeOrNull<BackText>()?.text.asString(texts)
 			if (backText.isNullOrEmpty()) {
 				component.isVisible = false
 			} else {
@@ -195,8 +199,8 @@ class TreePanelUi(private val viewModel: TreePanelViewModel, scope: CoroutineSco
 	private fun hasUncheckedParent(ho: HierarchyObject): Boolean =
 		ho.hasParent { (it as? HOTreeCheck)?.selected == false }
 
-	private fun Text?.asString(): String? =
-		this?.let { viewModel.texts[this] }
+	private fun Text?.asString(dictionary: Map<Text, String>): String? =
+		dictionary[this]
 
 	private fun makeFrontText(): JLabel =
 		jiLabel("")
