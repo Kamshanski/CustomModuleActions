@@ -37,17 +37,20 @@ fun makeCommonDataModule(jbContext: JBContext, koinModule: Module, sharedFileMod
 
 		singleOf(::ModuleActionRepositoryImpl) bind ModuleActionRepository::class
 		singleOf(::SettingsRepositoryImpl) bind SettingsRepository::class
-
-		factoryOf(::GetModuleActionUseCase)
-		factoryOf(::LoadModuleActionUseCase)
-		factoryOf(::GetSettingsUseCase)
 	}.apply {
 		includes(koinModule)
 		includes(sharedFileModule)
 	}
 
+fun Module.declareCommonDomainEntities() {
+	factoryOf(::GetModuleActionUseCase)
+	factoryOf(::LoadModuleActionUseCase)
+	factoryOf(::GetSettingsUseCase)
+}
+
 fun makeCommonFeatureModule(commonDataModule: Module, sharedFileFeatureModule: Module) =
 	module {
+		declareCommonDomainEntities()
 	}.apply {
 		includes(commonDataModule)
 		includes(sharedFileFeatureModule)
