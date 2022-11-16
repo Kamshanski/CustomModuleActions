@@ -42,36 +42,29 @@ class QpayCreateViewModel(
 	private val _finalResult = MutableStateFlow<Unit?>(null)
 	val finalResult = _finalResult as StateFlow<Unit?>
 
+	// TODO Чтобы тут вынести domain-логику в domain слой надо решить проблему с неправильным потоком. Но вообще вроде тут с логикой всё норм
 	fun startModuleCreation() {
 		launch({ handleError(it) }) {
 			// TODO добавить обработку удалённого корневого элемента
 			val flattenStructure = structure.filterSelected()!!.flatten()
-			val logBuilder = StringBuilder()
 
-			var errorsOccured: Boolean = false
+			var errorsOccurred = false
 			val max = flattenStructure.lastIndex
 			flattenStructure.forEachIndexed { i, ho ->
 				val percent = i * 100 / max
+				val itemType = ho::class
+				val itemName = ho.id
 
-				val progress = ProgressModel(percent, ho::class, ho.id)
-
-				logBuilder.apply {
-					append(getTimeString())
-					append(": ")
-					append(progress.itemType?.simpleName)
-					append(". ")
-					append(progress.itemName)
-					append(".\n")
-				}
-
+				val progress = ProgressModel(percent, itemType, itemName)
 				_progress.value = progress
-				publishLog(logBuilder)
-				logBuilder.clear()
+
+				publishLog("${getTimeString()}: ${itemType.simpleName}. $itemName.\n")
 
 				// TODO не останавливать работу на ошибку
 				try {
 					// TODO Вытащить конструкцию в утилиты
 					// TODO IDEA всё равно говорит, что редактирование ч/з PSI происходит в неправильном потоке. Сейчас implementHierarchyUseCase вызывается на потоке EWT Event что-то там @coroutine2.
+					// 	Мб поток верный, но корутины в название потока впихивают свою приставку @coroutines2, отчего IDEA считает поток неверным (((
 					withContext(Dispatchers.Default) {
 						suspendCoroutine<Unit> { continuation ->
 							SwingUtilities.invokeAndWait {
@@ -85,21 +78,13 @@ class QpayCreateViewModel(
 						}
 					}
 				} catch (exception: Throwable) {
-					errorsOccured = true
-					logBuilder.apply {
-						if (_fullLog.value.isNotEmpty()) {
-							append("\n")
-						}
-						logBuilder.append(exception.fullStackTraceString())
-					}
-
-					publishLog(logBuilder)
-					logBuilder.clear()
+					errorsOccurred = true
+					publishLog(exception.fullStackTraceString())
 				}
 			}
 
-			if (errorsOccured) {
-				// TODO Добавить логирование
+			if (errorsOccurred) {
+				// TODO Добавить логирование и отправку ошибок разрабу
 			} else {
 				_finalResult.value = Unit
 			}
@@ -111,7 +96,6 @@ class QpayCreateViewModel(
 
 	private suspend fun handleError(exception: Throwable) {
 		val msg = exception.message + exception.stackTrace.joinToString("\n\t")
-
 		publishLog(msg)
 	}
 
