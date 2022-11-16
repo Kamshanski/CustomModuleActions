@@ -16,7 +16,7 @@ fun makeSharedFileDataModule() = module {
 	singleOf(::FileRepositoryImpl) bind FileRepository::class
 }
 
-fun makeSharedFileFeatureModule(sharedFileDataModule: Module) = module {
+fun makeSharedFileDomainModule(sharedFileDataModule: Module) = module {
 	factoryOf(::ReadFileUseCase)
 	factoryOf(::GetFilesInFolderUseCase)
 }.apply {
