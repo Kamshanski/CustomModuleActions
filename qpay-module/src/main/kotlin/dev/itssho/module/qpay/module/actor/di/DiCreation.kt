@@ -17,8 +17,6 @@ import dev.itssho.module.shared.file.di.makeSharedFileDataModule
 import dev.itssho.module.shared.file.di.makeSharedFileDomainModule
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
-import org.koin.dsl.module
-
 
 /** Вкладывать common в другие модули не надо. Внутри makeDi это уже делается */
 fun makeDi(jbContext: JBContext): KoinApplication {
@@ -26,7 +24,7 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	val koinApp = koinApplication()
 	koinApp.allowOverride(false)
 
-	val koinModule = module { single { koinApp.koin } }
+	val rootModule = makeRootModule(jbContext, koinApp.koin)
 
 	val sharedFileDataModule = makeSharedFileDataModule()
 	val sharedFileFeatureModule = makeSharedFileDomainModule(sharedFileDataModule = sharedFileDataModule)
@@ -34,8 +32,7 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	// TODO Common неудачное название. Правильный common должен включать JBContext, KoinModule и другие общие для абсолютно всех модулей сущности
 	//  А общие для степов сущности должны быть отдельно
 	val commonDataModule = makeCommonDataModule(
-		jbContext = jbContext,
-		koinModule = koinModule,
+		rootModule = rootModule,
 		sharedFileModule = sharedFileDataModule,
 	)
 	val commonFeatureModule = makeCommonFeatureModule(
