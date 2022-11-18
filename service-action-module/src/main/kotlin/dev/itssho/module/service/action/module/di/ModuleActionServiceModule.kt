@@ -33,9 +33,9 @@ private fun makeModuleActionServiceDomainModule(dataModule: Module, sharedFileDo
 	includes(preferencesServiceDomainModule)
 }
 
-fun makeModuleActionServiceModule(rootModule: Module, sharedFileDomainModule: Module, preferencesServiceModule: Module) = module {
+fun makeModuleActionServiceModule(rootModule: Module, sharedFileModule: Module, preferencesServiceModule: Module) = module {
 	val dataModule = makeModuleActionServiceDataModule(rootModule)
-	val domainModule = makeModuleActionServiceDomainModule(dataModule, sharedFileDomainModule, preferencesServiceModule)
+	val domainModule = makeModuleActionServiceDomainModule(dataModule, sharedFileModule, preferencesServiceModule)
 
 	includes(dataModule, domainModule)
 }

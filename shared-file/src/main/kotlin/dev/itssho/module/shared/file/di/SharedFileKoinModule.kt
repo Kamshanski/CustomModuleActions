@@ -11,14 +11,21 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun makeSharedFileDataModule() = module {
+private fun makeSharedFileDataModule() = module {
 	singleOf(::FileDataSource)
 	singleOf(::FileRepositoryImpl) bind FileRepository::class
 }
 
-fun makeSharedFileDomainModule(sharedFileDataModule: Module) = module {
+private fun makeSharedFileDomainModule(sharedFileDataModule: Module) = module {
 	factoryOf(::ReadFileUseCase)
 	factoryOf(::GetFilesInFolderUseCase)
 }.apply {
 	includes(sharedFileDataModule)
+}
+
+fun makeSharedFileModule() = module {
+	val dataModule = makeSharedFileDataModule()
+	val domainModule = makeSharedFileDomainModule(dataModule)
+
+	includes(dataModule, domainModule)
 }

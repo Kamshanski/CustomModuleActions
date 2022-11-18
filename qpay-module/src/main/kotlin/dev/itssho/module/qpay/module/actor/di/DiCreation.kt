@@ -14,8 +14,7 @@ import dev.itssho.module.qpay.module.structure.di.makeStructureDataModule
 import dev.itssho.module.qpay.module.structure.di.makeStructureFeatureModule
 import dev.itssho.module.service.action.module.di.makeModuleActionServiceModule
 import dev.itssho.module.service.preferences.di.makePreferencesServiceModule
-import dev.itssho.module.shared.file.di.makeSharedFileDataModule
-import dev.itssho.module.shared.file.di.makeSharedFileDomainModule
+import dev.itssho.module.shared.file.di.makeSharedFileModule
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 
@@ -27,13 +26,12 @@ fun makeDi(jbContext: ProjectWindowClickContext): KoinApplication {
 
 	val rootModule = makeRootModule(jbContext, koinApp.koin)
 
-	val sharedFileDataModule = makeSharedFileDataModule()
-	val sharedFileDomainModule = makeSharedFileDomainModule(sharedFileDataModule = sharedFileDataModule)
+	val sharedFileModule = makeSharedFileModule()
 
 	val preferencesServiceModule = makePreferencesServiceModule()
 	val moduleActionServiceModule = makeModuleActionServiceModule(
 		rootModule = rootModule,
-		sharedFileDomainModule = sharedFileDomainModule,
+		sharedFileModule = sharedFileModule,
 		preferencesServiceModule = preferencesServiceModule,
 	)
 
@@ -41,11 +39,11 @@ fun makeDi(jbContext: ProjectWindowClickContext): KoinApplication {
 	//  А общие для степов сущности должны быть отдельно
 	val commonDataModule = makeCommonDataModule(
 		rootModule = rootModule,
-		sharedFileModule = sharedFileDataModule,
+		sharedFileModule = sharedFileModule,
 	)
 	val commonFeatureModule = makeCommonFeatureModule(
 		commonDataModule = commonDataModule,
-		sharedFileDomainModule = sharedFileDomainModule,
+		sharedFileDomainModule = sharedFileModule,
 		preferencesServiceModule = preferencesServiceModule,
 	)
 
