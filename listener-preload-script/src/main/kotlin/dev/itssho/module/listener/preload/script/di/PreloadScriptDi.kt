@@ -9,7 +9,7 @@ import org.koin.dsl.koinApplication
 import org.koin.dsl.module
 import kotlin.reflect.KClass
 
-class PreloadScriptDi(val context: JBContext) {
+internal class PreloadScriptDi(val context: JBContext) {
 
 	private companion object {
 
@@ -36,7 +36,7 @@ class PreloadScriptDi(val context: JBContext) {
 	}
 
 	private val koinApp = makeModuleActionServiceKoin(context)
-	private val koin = koinApp.koin
+	val koin = koinApp.koin
 
 	fun <T> get(type: KClass<*>): T = koin.get(type)
 
