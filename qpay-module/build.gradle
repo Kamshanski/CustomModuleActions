@@ -49,10 +49,12 @@ dependencies {
     implementation(project(":shared-dialog"))
     implementation(project(":service-preferences"))
     implementation(project(":shared-file"))
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
     testImplementation 'org.mockito:mockito-core:4.6.1'
+
+    testImplementation project(":test-koin")
 }
 intellij {
     version = '2021.2.4'
