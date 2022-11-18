@@ -24,23 +24,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-import org.junit.jupiter.api.extension.RegisterExtension
+import org.junit.jupiter.api.extension.ExtendWith
 import org.koin.core.annotation.KoinInternalApi
-import org.koin.test.KoinTest
 import org.koin.test.check.checkModules
-import org.koin.test.junit5.mock.MockProviderExtension
-import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import dev.itssho.module.test.koin.KoinMockExtension
+
 
 @KoinInternalApi
-class DiTest : KoinTest {
-
-	@RegisterExtension
-	val mockProvider = MockProviderExtension.create { clazz ->
-		// Setup your nock framework
-		Mockito.mock(clazz.java)
-	}
+@ExtendWith(KoinMockExtension::class)
+class DiTest {
 
 	val structure: HierarchyObject = mock()
 	val valueStorage: FullyEditableValueStorage = mock()
