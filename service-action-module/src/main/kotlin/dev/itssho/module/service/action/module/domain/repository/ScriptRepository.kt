@@ -1,6 +1,6 @@
-package dev.itssho.module.qpay.module.selection.domain.repository
+package dev.itssho.module.service.action.module.domain.repository
 
-import dev.itssho.module.qpay.module.selection.domain.entity.Script
+import dev.itssho.module.service.action.module.domain.entity.Script
 import kotlinx.coroutines.flow.Flow
 
 interface ScriptRepository {

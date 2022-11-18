@@ -1,4 +1,4 @@
-package dev.itssho.module.qpay.module.selection.domain.entity
+package dev.itssho.module.service.action.module.domain.entity
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import java.time.LocalDateTime

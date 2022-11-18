@@ -33,6 +33,8 @@ dependencies {
 	implementation(project(":core"))
 	implementation(project(":util-common"))
 	implementation(project(":util-koin"))
+	implementation(project(":service-preferences"))
+	implementation(project(":shared-file"))
 	implementation(project(":component-scripting"))
 	implementation(project(":component-scripting-idea"))
 

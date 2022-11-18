@@ -9,10 +9,10 @@ import dev.itssho.module.qpay.module.name.deprecated.di.makeDeprecatedNameDataMo
 import dev.itssho.module.qpay.module.name.deprecated.di.makeDeprecatedNameFeatureModule
 import dev.itssho.module.qpay.module.name.di.makeNameDataModule
 import dev.itssho.module.qpay.module.name.di.makeNameFeatureModule
-import dev.itssho.module.qpay.module.selection.di.makeSelectionDataModule
 import dev.itssho.module.qpay.module.selection.di.makeSelectionModule
 import dev.itssho.module.qpay.module.structure.di.makeStructureDataModule
 import dev.itssho.module.qpay.module.structure.di.makeStructureFeatureModule
+import dev.itssho.module.service.action.module.di.makeModuleActionServiceModule
 import dev.itssho.module.service.preferences.di.makePreferencesServiceModule
 import dev.itssho.module.shared.file.di.makeSharedFileDataModule
 import dev.itssho.module.shared.file.di.makeSharedFileDomainModule
@@ -28,9 +28,14 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	val rootModule = makeRootModule(jbContext, koinApp.koin)
 
 	val sharedFileDataModule = makeSharedFileDataModule()
-	val sharedFileFeatureModule = makeSharedFileDomainModule(sharedFileDataModule = sharedFileDataModule)
+	val sharedFileDomainModule = makeSharedFileDomainModule(sharedFileDataModule = sharedFileDataModule)
 
 	val preferencesServiceModule = makePreferencesServiceModule()
+	val moduleActionServiceModule = makeModuleActionServiceModule(
+		rootModule = rootModule,
+		sharedFileDomainModule = sharedFileDomainModule,
+		preferencesServiceModule = preferencesServiceModule,
+	)
 
 	// TODO Common неудачное название. Правильный common должен включать JBContext, KoinModule и другие общие для абсолютно всех модулей сущности
 	//  А общие для степов сущности должны быть отдельно
@@ -40,14 +45,13 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	)
 	val commonFeatureModule = makeCommonFeatureModule(
 		commonDataModule = commonDataModule,
-		sharedFileFeatureModule = sharedFileFeatureModule,
+		sharedFileDomainModule = sharedFileDomainModule,
 		preferencesServiceModule = preferencesServiceModule,
 	)
 
-	val selectionDataModule = makeSelectionDataModule(commonDataModule = commonDataModule)
 	val selectionFeatureModule = makeSelectionModule(
 		commonFeatureModule = commonFeatureModule,
-		selectionDataModule = selectionDataModule,
+		moduleActionServiceModule = moduleActionServiceModule,
 	)
 
 	val deprecatedNameDataModule = makeDeprecatedNameDataModule(commonDataModule = commonDataModule)

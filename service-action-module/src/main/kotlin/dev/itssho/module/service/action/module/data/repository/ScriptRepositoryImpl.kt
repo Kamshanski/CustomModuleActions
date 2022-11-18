@@ -1,8 +1,8 @@
-package dev.itssho.module.qpay.module.selection.data.repository
+package dev.itssho.module.service.action.module.data.repository
 
-import dev.itssho.module.qpay.module.selection.data.datasource.ModuleActionDataSource
-import dev.itssho.module.qpay.module.selection.domain.entity.Script
-import dev.itssho.module.qpay.module.selection.domain.repository.ScriptRepository
+import dev.itssho.module.service.action.module.data.datasource.ModuleActionDataSource
+import dev.itssho.module.service.action.module.domain.entity.Script
+import dev.itssho.module.service.action.module.domain.repository.ScriptRepository
 import kotlinx.coroutines.flow.Flow
 
 class ScriptRepositoryImpl(private val moduleActionDataSource: ModuleActionDataSource) : ScriptRepository {
