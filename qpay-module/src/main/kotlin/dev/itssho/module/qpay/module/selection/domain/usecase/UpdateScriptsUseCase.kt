@@ -1,8 +1,8 @@
 package dev.itssho.module.qpay.module.selection.domain.usecase
 
-import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.selection.domain.entity.Script
 import dev.itssho.module.qpay.module.selection.domain.repository.ScriptRepository
+import dev.itssho.module.service.preferences.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.shared.file.domain.usecase.GetFilesInFolderUseCase
 import kotlinx.coroutines.flow.Flow
 

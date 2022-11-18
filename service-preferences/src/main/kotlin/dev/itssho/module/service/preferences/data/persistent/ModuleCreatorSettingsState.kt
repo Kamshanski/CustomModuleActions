@@ -1,4 +1,4 @@
-package dev.itssho.module.shared.preferences
+package dev.itssho.module.service.preferences.data.persistent
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.PersistentStateComponent
@@ -6,13 +6,8 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 
-interface Settings {
-	val useQpayNameStep		: Boolean
-	val scriptPath			: String
-}
-
 @State(
-	name = "dev.itssho.module.shared.preferences.ModuleCreatorSettingsState",
+	name = "dev.itssho.module.service.preferences.data.persistent.ModuleCreatorSettingsState",
 	storages = [Storage("ItsshoModuleCreatorPluginSetting.xml")]
 )
 class ModuleCreatorSettingsState : PersistentStateComponent<ModuleCreatorSettingsState>, Settings {
@@ -20,8 +15,8 @@ class ModuleCreatorSettingsState : PersistentStateComponent<ModuleCreatorSetting
 
 	// Transient нужен, чтобы создаваемая котлином переменная useQpayNameStep$delegate: MutableMap<String, String> НЕ попала в сериализацию XML
 	// Хотя мб сериализатор умный, не тронул бы эту переменную. Или мб в Class<> не будет этого поля. Но хз, пусть будет Transient
-	@delegate:Transient override var useQpayNameStep	 by boolean(	default = false, 	map)
-	@delegate:Transient override var scriptPath			 by string (	default = "", 		map)
+	@delegate:Transient override var useQpayNameStep	 by boolean(false,	map)
+	@delegate:Transient override var scriptPath			 by string ("",		map)
 
 
 

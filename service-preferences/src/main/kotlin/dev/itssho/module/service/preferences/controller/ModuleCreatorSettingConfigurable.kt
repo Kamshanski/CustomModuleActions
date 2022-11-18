@@ -1,7 +1,8 @@
-package dev.itssho.module.feature.preferences
+package dev.itssho.module.service.preferences.controller
 
 import com.intellij.openapi.options.Configurable
-import dev.itssho.module.shared.preferences.ModuleCreatorSettingsState
+import dev.itssho.module.service.preferences.data.persistent.ModuleCreatorSettingsState
+import dev.itssho.module.service.preferences.ui.ModuleCreatorSettingsComponent
 import org.jetbrains.annotations.Nls
 import javax.swing.JComponent
 
@@ -52,6 +53,7 @@ class ModuleCreatorSettingConfigurable : Configurable {
 		_moduleCreatorSettingsComponent = null
 	}
 
+	// TODO добавить вторым аргументом c
 	private inline fun <T> runWithSettings(block: (settings: ModuleCreatorSettingsState) -> T): T {
 		val settings = ModuleCreatorSettingsState.getInstance().state
 		return block(settings)

@@ -26,7 +26,6 @@ include("component-log")
 include("shared-file")
 include("component-scripting")
 include("component-scripting-idea")
-include("feature-preferences")
-include("shared-preferences")
+include("service-preferences")
 include("service-action-module")
 

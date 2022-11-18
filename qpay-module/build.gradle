@@ -47,7 +47,7 @@ dependencies {
     implementation(project(":component-scripting"))
     implementation(project(":component-scripting-idea"))
     implementation(project(":shared-dialog"))
-    implementation(project(":shared-preferences"))
+    implementation(project(":service-preferences"))
     implementation(project(":shared-file"))
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'

@@ -6,7 +6,6 @@ import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
-import dev.itssho.module.qpay.module.common.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.qpay.module.create.actor.QpayCreateStep
 import dev.itssho.module.qpay.module.create.di.QpayCreateKoinDi.Companion.getCreateKoinDi
 import dev.itssho.module.qpay.module.name.actor.NameStep
@@ -21,7 +20,8 @@ import dev.itssho.module.qpay.module.selection.presentation.SelectionStepResult
 import dev.itssho.module.qpay.module.structure.actor.QpayStructureStep
 import dev.itssho.module.qpay.module.structure.di.QpayStructureKoinDi.Companion.getStructureKoinDi
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureStepResult
-import dev.itssho.module.shared.preferences.Settings
+import dev.itssho.module.service.preferences.data.persistent.Settings
+import dev.itssho.module.service.preferences.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.util.koin.use
 import reflection.castOrNull
 

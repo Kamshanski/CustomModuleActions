@@ -1,4 +1,4 @@
-package dev.itssho.module.feature.preferences
+package dev.itssho.module.service.preferences.ui
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -8,7 +8,7 @@ import com.intellij.util.ui.FormBuilder
 import javax.swing.JComponent
 import javax.swing.JPanel
 
-class ModuleCreatorSettingsComponent {
+internal class ModuleCreatorSettingsComponent {
 
 	// Components
 	private val useQpayNameStepCheckBox = JBCheckBox("Use Qpay module mame step?")

@@ -1,4 +1,4 @@
-package dev.itssho.module.shared.preferences
+package dev.itssho.module.service.preferences.data.persistent
 
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

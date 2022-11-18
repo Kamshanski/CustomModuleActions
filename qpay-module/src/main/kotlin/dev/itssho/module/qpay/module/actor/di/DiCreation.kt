@@ -13,6 +13,7 @@ import dev.itssho.module.qpay.module.selection.di.makeSelectionDataModule
 import dev.itssho.module.qpay.module.selection.di.makeSelectionModule
 import dev.itssho.module.qpay.module.structure.di.makeStructureDataModule
 import dev.itssho.module.qpay.module.structure.di.makeStructureFeatureModule
+import dev.itssho.module.service.preferences.di.makePreferencesServiceModule
 import dev.itssho.module.shared.file.di.makeSharedFileDataModule
 import dev.itssho.module.shared.file.di.makeSharedFileDomainModule
 import org.koin.core.KoinApplication
@@ -29,6 +30,8 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	val sharedFileDataModule = makeSharedFileDataModule()
 	val sharedFileFeatureModule = makeSharedFileDomainModule(sharedFileDataModule = sharedFileDataModule)
 
+	val preferencesServiceModule = makePreferencesServiceModule()
+
 	// TODO Common неудачное название. Правильный common должен включать JBContext, KoinModule и другие общие для абсолютно всех модулей сущности
 	//  А общие для степов сущности должны быть отдельно
 	val commonDataModule = makeCommonDataModule(
@@ -38,6 +41,7 @@ fun makeDi(jbContext: JBContext): KoinApplication {
 	val commonFeatureModule = makeCommonFeatureModule(
 		commonDataModule = commonDataModule,
 		sharedFileFeatureModule = sharedFileFeatureModule,
+		preferencesServiceModule = preferencesServiceModule,
 	)
 
 	val selectionDataModule = makeSelectionDataModule(commonDataModule = commonDataModule)

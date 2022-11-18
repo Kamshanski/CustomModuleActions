@@ -2,6 +2,7 @@ package dev.itssho.module.qpay.module.common.domain.usecase
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.qpay.module.common.domain.repository.ModuleActionRepository
+import dev.itssho.module.service.preferences.domain.usecase.GetSettingsUseCase
 import java.nio.file.InvalidPathException
 
 @Deprecated("Старая реализация")
