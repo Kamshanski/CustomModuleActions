@@ -28,4 +28,4 @@ include("component-scripting")
 include("component-scripting-idea")
 include("service-preferences")
 include("service-action-module")
-
+include("listener-preload-script")

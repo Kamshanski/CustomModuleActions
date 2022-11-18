@@ -1,0 +1,5 @@
+com.intellij.ide.ApplicationInitializedListener,
+com.intellij.openapi.wm.ex.ToolWindowManagerListener и
+com.intellij.ide.ApplicationLoadListener
+↑ Бесполезны для трекинга запуска IDE или открытия прокета.
+    Какие-то из них ни разу не запустились при старте IDE.

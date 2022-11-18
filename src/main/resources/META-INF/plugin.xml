@@ -16,6 +16,12 @@
     <depends>com.intellij.gradle</depends>
     <depends>org.jetbrains.kotlin</depends>
 
+    <projectListeners>
+        <listener
+            class="dev.itssho.module.listener.preload.script.ProjectManagerListenerImpl"
+            topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </projectListeners>
+
     <extensions defaultExtensionNs="com.intellij">
 <!-- TODO Разделить ModuleCreatorSettingsState на projectService c путём до папки скриптов и applicationService общими для плагина настройками -->
         <applicationService

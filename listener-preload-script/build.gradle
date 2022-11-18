@@ -1,0 +1,32 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'org.jetbrains.intellij'
+}
+
+repositories {
+    mavenCentral()
+    google()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4"
+
+    implementation "io.insert-koin:koin-core:3.2.0"
+
+    implementation project(":core")
+    implementation project(":service-action-module")
+    implementation project(":service-preferences")
+    implementation project(":shared-file")
+    implementation project(":util-common")
+}
+
+intellij {
+    version = '2021.2.4'
+    type = "IC"
+
+    // Require the Android plugin (Gradle will choose the correct version):
+    plugins.set(["android"])
+}
