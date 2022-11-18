@@ -1,14 +1,14 @@
 package dev.itssho.module.service.action.module.data.datasource
 
 import dev.itssho.module.service.action.module.ActionItem
-import dev.itssho.module.service.action.module.ModuleActionService
+import dev.itssho.module.service.action.module.ModuleActionServiceFactory
 import dev.itssho.module.service.action.module.domain.entity.Script
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.nio.file.Path
 
 class ModuleActionDataSource(
-	private val moduleActionService: ModuleActionService,
+	private val moduleActionServiceFactory: ModuleActionServiceFactory,
 ) {
 
 	fun clearAbsentItems(presentScriptsPaths: List<String>) {
@@ -26,6 +26,9 @@ class ModuleActionDataSource(
 		val scriptsMap = moduleActionService.state.value
 		return scriptsMap.values.map { convertActionItemToModule(it) }
 	}
+
+	private val moduleActionService
+		get() = moduleActionServiceFactory.get()
 }
 
 private fun convertActionItemToModule(item: ActionItem): Script =

@@ -1,13 +1,12 @@
 package dev.itssho.module.service.action.module
 
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import dev.itssho.module.service.action.module.internal.manager.ActionItemsManager
 import kotlinx.coroutines.flow.StateFlow
 import java.nio.file.Path
 
-class ModuleActionService(private val ideProject: Project) : Disposable {
+class ModuleActionService(@Suppress("unused") private val ideProject: Project) : Disposable {
 
 	private val actionItemsManager: ActionItemsManager = ActionItemsManager()
 
@@ -27,11 +26,5 @@ class ModuleActionService(private val ideProject: Project) : Disposable {
 
 	override fun dispose() {
 		actionItemsManager.dispose()
-	}
-
-	companion object {
-
-		fun getInstance(project: Project): ModuleActionService =
-			project.service()
 	}
 }

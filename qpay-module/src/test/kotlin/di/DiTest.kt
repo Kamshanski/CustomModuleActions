@@ -40,7 +40,6 @@ class DiTest {
 	val moduleName = "ModuleName"
 
 	val ideScriptEngineManager: IdeScriptEngineManager = mock()
-	val moduleActionService: ModuleActionService = mock()
 
 	val context: ProjectWindowClickContext = mock()
 	val project: Project = mock()
@@ -86,6 +85,5 @@ class DiTest {
 
 	private fun makeKoinDi() = makeDi(context).apply {
 		koin.declare(ideScriptEngineManager)
-		koin.declare(moduleActionService)
 	}
 }

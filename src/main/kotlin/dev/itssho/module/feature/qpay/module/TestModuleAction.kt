@@ -4,9 +4,10 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.project.DumbAware
 import coroutine.gather
+import dev.itssho.module.core.context.JBContext
 import dev.itssho.module.resources.R
 import dev.itssho.module.service.action.module.ActionItem
-import dev.itssho.module.service.action.module.ModuleActionService
+import dev.itssho.module.service.action.module.ModuleActionServiceFactory
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
@@ -18,7 +19,8 @@ class TestModuleAction : AnAction(R.icon.test), DumbAware {
 
 	override fun actionPerformed(e: AnActionEvent) {
 		val project = e.project!!
-		val service = ModuleActionService.getInstance(project)
+		val context = JBContext(project)
+		val service = ModuleActionServiceFactory(context).get()
 
 		scope.launch {
 			var i = 0
