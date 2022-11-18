@@ -18,8 +18,8 @@ import dev.itssho.module.qpay.module.name.deprecated.di.QpayDeprecatedNameKoinDi
 import dev.itssho.module.qpay.module.name.di.NameKoinDi.Companion.getNameKoinDi
 import dev.itssho.module.qpay.module.selection.di.SelectionKoinDi.Companion.getSelectionKoinDi
 import dev.itssho.module.qpay.module.structure.di.QpayStructureKoinDi.Companion.getStructureKoinDi
-import dev.itssho.module.service.action.module.ModuleActionService
-import dev.itssho.module.util.koin.LocalKoinScope
+import dev.itssho.module.test.koin.KoinMockExtension
+import dev.itssho.module.test.koin.scopeDynamicTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
@@ -29,8 +29,6 @@ import org.koin.core.annotation.KoinInternalApi
 import org.koin.test.check.checkModules
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import dev.itssho.module.test.koin.KoinMockExtension
-
 
 @KoinInternalApi
 @ExtendWith(KoinMockExtension::class)
@@ -78,32 +76,16 @@ class DiTest {
 		val koin = koinApp.koin
 
 		return listOf(
-			stepScopeDynamicTest(koin.getSelectionKoinDi(valueStorage)),
-			stepScopeDynamicTest(koin.getQpayNameKoinDi(valueStorage, moduleAction)),
-			stepScopeDynamicTest(koin.getNameKoinDi(valueStorage, moduleAction)),
-			stepScopeDynamicTest(koin.getStructureKoinDi(valueStorage, moduleAction, moduleName)),
-			stepScopeDynamicTest(koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)),
+			scopeDynamicTest(koin.getSelectionKoinDi(valueStorage)),
+			scopeDynamicTest(koin.getQpayNameKoinDi(valueStorage, moduleAction)),
+			scopeDynamicTest(koin.getNameKoinDi(valueStorage, moduleAction)),
+			scopeDynamicTest(koin.getStructureKoinDi(valueStorage, moduleAction, moduleName)),
+			scopeDynamicTest(koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)),
 		)
 	}
 
 	private fun makeKoinDi() = makeDi(context).apply {
 		koin.declare(ideScriptEngineManager)
 		koin.declare(moduleActionService)
-	}
-
-	private fun stepScopeDynamicTest(scopeHolder: LocalKoinScope): DynamicTest {
-		val testName = scopeHolder::class.simpleName!!
-		return DynamicTest.dynamicTest(testName) {
-			assertScopedItemsAvailable(scopeHolder)
-		}
-	}
-
-	private fun assertScopedItemsAvailable(scopeHolder: LocalKoinScope) {
-		val scope = scopeHolder.scope
-		val scopeValues = scope.getKoin().instanceRegistry.instances.filter { it.value.beanDefinition.scopeQualifier == scope.scopeQualifier }.values
-		scopeValues.forEach {
-			scope.get<Any>(it.beanDefinition.primaryType, it.beanDefinition.qualifier)
-			it.beanDefinition.secondaryTypes.forEach { secondaryType -> scope.get<Any>(secondaryType, it.beanDefinition.qualifier) }
-		}
 	}
 }
