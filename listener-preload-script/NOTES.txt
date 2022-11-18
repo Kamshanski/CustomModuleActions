@@ -3,3 +3,27 @@ com.intellij.openapi.wm.ex.ToolWindowManagerListener и
 com.intellij.ide.ApplicationLoadListener
 ↑ Бесполезны для трекинга запуска IDE или открытия прокета.
     Какие-то из них ни разу не запустились при старте IDE.
+
+
+//
+//import com.intellij.ide.AppLifecycleListener
+//import dev.getTimedCallPlace
+//
+// // Пока бесполезное. Но мб когда-нибудь понадобится
+//class AppLifecycleListenerImpl : AppLifecycleListener {
+//
+//	/** IDE только что открылась*/
+//	override fun appFrameCreated(commandLineArgs: MutableList<String>) {
+//		println(getTimedCallPlace())
+//	}
+//
+//	/** Проект открыт и какие-то ещё другие подготовительный работы закончены */
+//	override fun appStarted() {
+//		println(getTimedCallPlace())
+//	}
+//
+//	/** После этого метода IDE 100% будет закрыта. */
+//	override fun appWillBeClosed(isRestart: Boolean) {
+//		println(getTimedCallPlace(isRestart))
+//	}
+//}
