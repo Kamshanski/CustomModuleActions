@@ -20,26 +20,31 @@ import org.koin.dsl.ScopeDSL
 import org.koin.dsl.module
 
 // TODO разнести модули DI по пакетам
-fun makeNameDataModule(commonDataModule: Module): Module = module {
+private fun makeNameDataModule(): Module = module {
 }.apply {
-	includes(commonDataModule)
 }
 
-fun ScopeDSL.declareNameFeatureDomainEntity() {
-	factoryOf(::ValidateModuleNameUseCase)
-	factoryOf(::SubmitModuleNameUseCase)
-	factoryOf(::GetInitialNameUseCase)
-}
-
-//class Obj(val po: Int)
-
-fun makeNameFeatureModule(commonFeatureModule: Module, nameDataModule: Module) = module {
+private fun makeNameFeatureModule(dataModule: Module, moduleActionServiceModule: Module) = module {
 	factoryScopeOf(::NameKoinDi) {
-		declareNameFeatureDomainEntity()
+		factoryOf(::ValidateModuleNameUseCase)
+		factoryOf(::SubmitModuleNameUseCase)
+		factoryOf(::GetInitialNameUseCase)
+
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
 		scopedOf(::NameViewModel)
 		scoped { NameUi(get(), get(), get<CoroutineScope>(UiScopeQ)) }
 	}
 }.apply {
-	includes(commonFeatureModule, nameDataModule)
+	includes(dataModule)
+	includes(moduleActionServiceModule)
+}
+
+fun makeNameModule(moduleActionServiceModule: Module) = module {
+	val dataModule = makeNameDataModule()
+	val featureModule = makeNameFeatureModule(
+		dataModule = dataModule,
+		moduleActionServiceModule = moduleActionServiceModule,
+	)
+
+	includes(featureModule)
 }

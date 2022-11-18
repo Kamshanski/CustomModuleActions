@@ -1,90 +1,61 @@
 package dev.itssho.module.qpay.module.actor.di
 
+import delegate.unsafeLazy
 import dev.itssho.module.core.context.ProjectWindowClickContext
-import dev.itssho.module.qpay.module.common.di.makeCommonDataModule
-import dev.itssho.module.qpay.module.common.di.makeCommonFeatureModule
-import dev.itssho.module.qpay.module.create.di.makeCreateDataModule
-import dev.itssho.module.qpay.module.create.di.makeCreateFeatureModule
-import dev.itssho.module.qpay.module.name.deprecated.di.makeDeprecatedNameDataModule
-import dev.itssho.module.qpay.module.name.deprecated.di.makeDeprecatedNameFeatureModule
-import dev.itssho.module.qpay.module.name.di.makeNameDataModule
-import dev.itssho.module.qpay.module.name.di.makeNameFeatureModule
+import dev.itssho.module.qpay.module.create.di.makeCreateModule
+import dev.itssho.module.qpay.module.name.deprecated.di.makeQpayNameModule
+import dev.itssho.module.qpay.module.name.di.makeNameModule
 import dev.itssho.module.qpay.module.selection.di.makeSelectionModule
-import dev.itssho.module.qpay.module.structure.di.makeStructureDataModule
-import dev.itssho.module.qpay.module.structure.di.makeStructureFeatureModule
+import dev.itssho.module.qpay.module.structure.di.makeStructureModule
 import dev.itssho.module.service.action.module.di.makeModuleActionServiceModule
 import dev.itssho.module.service.preferences.di.makePreferencesServiceModule
 import dev.itssho.module.shared.file.di.makeSharedFileModule
+import org.koin.core.Koin
 import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 
-/** Вкладывать common в другие модули не надо. Внутри makeDi это уже делается */
-fun makeDi(jbContext: ProjectWindowClickContext): KoinApplication {
+class ModuleHost(private val context: ProjectWindowClickContext, private val koin: Koin) {
 
-	val koinApp = koinApplication()
-	koinApp.allowOverride(false)
+	val rootModule by unsafeLazy { makeRootModule(context, koin) }
 
-	val rootModule = makeRootModule(jbContext, koinApp.koin)
+	val sharedFileModule by unsafeLazy { makeSharedFileModule() }
 
-	val sharedFileModule = makeSharedFileModule()
+	val preferencesServiceModule by unsafeLazy { makePreferencesServiceModule() }
+	val moduleActionServiceModule by unsafeLazy {
+		makeModuleActionServiceModule(
+			rootModule = rootModule,
+			sharedFileModule = sharedFileModule,
+			preferencesServiceModule = preferencesServiceModule,
+		)
+	}
+}
 
-	val preferencesServiceModule = makePreferencesServiceModule()
-	val moduleActionServiceModule = makeModuleActionServiceModule(
-		rootModule = rootModule,
-		sharedFileModule = sharedFileModule,
-		preferencesServiceModule = preferencesServiceModule,
-	)
+class StepModuleHost(host: ModuleHost) {
 
-	// TODO Common неудачное название. Правильный common должен включать JBContext, KoinModule и другие общие для абсолютно всех модулей сущности
-	//  А общие для степов сущности должны быть отдельно
-	val commonDataModule = makeCommonDataModule(
-		rootModule = rootModule,
-		sharedFileModule = sharedFileModule,
-	)
-	val commonFeatureModule = makeCommonFeatureModule(
-		commonDataModule = commonDataModule,
-		sharedFileDomainModule = sharedFileModule,
-		preferencesServiceModule = preferencesServiceModule,
-	)
+	val selectionModule by unsafeLazy { makeSelectionModule(moduleActionServiceModule = host.moduleActionServiceModule) }
 
-	val selectionFeatureModule = makeSelectionModule(
-		commonFeatureModule = commonFeatureModule,
-		moduleActionServiceModule = moduleActionServiceModule,
-	)
+	val qpayNameModule by unsafeLazy { makeQpayNameModule(rootModule = host.rootModule) }
 
-	val deprecatedNameDataModule = makeDeprecatedNameDataModule(commonDataModule = commonDataModule)
-	val deprecatedNameFeatureModule = makeDeprecatedNameFeatureModule(
-		commonFeatureModule = commonFeatureModule,
-		deprecatedNameDataModule = deprecatedNameDataModule,
-	)
+	val nameModule by unsafeLazy { makeNameModule(moduleActionServiceModule = host.moduleActionServiceModule) }
 
-	val nameDataModule = makeNameDataModule(commonDataModule = commonDataModule)
-	val nameFeatureModule = makeNameFeatureModule(
-		commonFeatureModule = commonFeatureModule,
-		nameDataModule = nameDataModule,
-	)
+	val structureModule by unsafeLazy { makeStructureModule(rootModule = host.rootModule) }
 
-	val structureDataModule = makeStructureDataModule(commonDataModule = commonDataModule)
-	val structureFeatureModule = makeStructureFeatureModule(
-		commonFeatureModule = commonFeatureModule,
-		structureDataModule = structureDataModule,
-	)
+	val createModule by unsafeLazy { makeCreateModule(rootModule = host.rootModule) }
+}
 
-	val createDataModule = makeCreateDataModule(commonDataModule = commonDataModule)
-	val createFeatureModule = makeCreateFeatureModule(
-		commonFeatureModule = commonFeatureModule,
-		createDataModule = createDataModule,
-	)
+fun makeDi(context: ProjectWindowClickContext): KoinApplication = koinApplication {
+	allowOverride(false)
 
+	val host = ModuleHost(context, koin)
+	val stepHost = StepModuleHost(host)
 
-	koinApp.modules(
-		commonFeatureModule,
-		selectionFeatureModule,
-		deprecatedNameFeatureModule,
-		nameFeatureModule,
-		structureFeatureModule,
-		createFeatureModule,
-	)
-
-	return koinApp
+	stepHost.run {
+		modules(
+			selectionModule,
+			qpayNameModule,
+			nameModule,
+			structureModule,
+			createModule,
+		)
+	}
 }

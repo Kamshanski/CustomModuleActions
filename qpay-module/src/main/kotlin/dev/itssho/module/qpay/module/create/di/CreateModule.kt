@@ -26,11 +26,10 @@ import kotlinx.coroutines.swing.Swing
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.ScopeDSL
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun makeCreateDataModule(commonDataModule: Module) = module {
+private fun makeCreateDataModule(rootModule: Module) = module {
 	single { DirectoryOrPackageCreator(get<ProjectWindowClickContext>().ideProject) }
 	single { FileCreator(get<ProjectWindowClickContext>().ideProject) }
 
@@ -40,22 +39,25 @@ fun makeCreateDataModule(commonDataModule: Module) = module {
 	singleOf(::DirectoryRepositoryImpl) bind DirectoryRepository::class
 	singleOf(::FileRepositoryImpl) bind FileRepository::class
 }.apply {
-	includes(commonDataModule)
+	includes(rootModule)
 }
 
-private fun ScopeDSL.declareCreateFeatureDomainEntries() {
-	factoryOf(::ImplementHierarchyUseCase)
-	factoryOf(::ControllerImpl) bind Controller::class
-}
-
-fun makeCreateFeatureModule(commonFeatureModule: Module, createDataModule: Module): Module = module {
+private fun makeCreateFeatureModule(dataModule: Module): Module = module {
 	factoryScopeOf(::QpayCreateKoinDi) {
-		declareCreateFeatureDomainEntries()
+		factoryOf(::ImplementHierarchyUseCase)
+		factoryOf(::ControllerImpl) bind Controller::class
 
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
 		scopedOf(::QpayCreateViewModel)
 		scoped { CreateUi(get(), get(), get<CoroutineScope>(UiScopeQ)) }
 	}
 }.apply {
-	includes(commonFeatureModule, createDataModule)
+	includes(dataModule)
+}
+
+fun makeCreateModule(rootModule: Module) = module {
+	val dataModule = makeCreateDataModule(rootModule)
+	val featureModule = makeCreateFeatureModule(dataModule)
+
+	includes(featureModule)
 }

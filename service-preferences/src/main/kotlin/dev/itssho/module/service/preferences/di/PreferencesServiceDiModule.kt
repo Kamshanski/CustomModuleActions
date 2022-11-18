@@ -26,5 +26,5 @@ fun makePreferencesServiceModule() = module {
 	val dataModule = makeDataPreferencesServiceModule()
 	val domainModule = makeDomainPreferencesServiceModule(dataModule)
 
-	includes(dataModule, domainModule)
+	includes(domainModule)
 }

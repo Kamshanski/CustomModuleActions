@@ -11,6 +11,8 @@ import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
 import dev.itssho.module.hierarchy.storage.ValueStorage
+import dev.itssho.module.qpay.module.actor.di.ModuleHost
+import dev.itssho.module.qpay.module.actor.di.StepModuleHost
 import dev.itssho.module.qpay.module.actor.di.makeDi
 import dev.itssho.module.qpay.module.common.domain.storage.FullyEditableValueStorage
 import dev.itssho.module.qpay.module.create.di.QpayCreateKoinDi.Companion.getCreateKoinDi
@@ -26,6 +28,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.extension.ExtendWith
 import org.koin.core.annotation.KoinInternalApi
+import org.koin.core.module.Module
+import org.koin.dsl.koinApplication
 import org.koin.test.check.checkModules
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -38,8 +42,6 @@ class DiTest {
 	val valueStorage: FullyEditableValueStorage = mock()
 	val moduleAction: ModuleAction = mock()
 	val moduleName = "ModuleName"
-
-	val ideScriptEngineManager: IdeScriptEngineManager = mock()
 
 	val context: ProjectWindowClickContext = mock()
 	val project: Project = mock()
@@ -67,23 +69,26 @@ class DiTest {
 		koinApp.checkModules()
 	}
 
+	private fun makeKoinDi() = makeDi(context)
+
 	/** Если верхнеуровневая сущность UI сможет создаться, то для этого скоупа всё ок.
 	 * Этот тест более честный по скоупам, т.к. не проверяет scoped-сущности вне самого скоупа, как это делает checkModules */
 	@TestFactory
 	fun verifyEachScope(): Collection<DynamicTest> {
-		val koinApp = makeKoinDi()
-		val koin = koinApp.koin
-
 		return listOf(
-			scopeDynamicTest(koin.getSelectionKoinDi(valueStorage)),
-			scopeDynamicTest(koin.getQpayNameKoinDi(valueStorage, moduleAction)),
-			scopeDynamicTest(koin.getNameKoinDi(valueStorage, moduleAction)),
-			scopeDynamicTest(koin.getStructureKoinDi(valueStorage, moduleAction, moduleName)),
-			scopeDynamicTest(koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)),
+			scopeDynamicTest(makeTestKoinDi { selectionModule }.koin.getSelectionKoinDi(valueStorage)),
+			scopeDynamicTest(makeTestKoinDi { qpayNameModule }.koin.getQpayNameKoinDi(valueStorage, moduleAction)),
+			scopeDynamicTest(makeTestKoinDi { nameModule }.koin.getNameKoinDi(valueStorage, moduleAction)),
+			scopeDynamicTest(makeTestKoinDi { structureModule }.koin.getStructureKoinDi(valueStorage, moduleAction, moduleName)),
+			scopeDynamicTest(makeTestKoinDi { createModule }.koin.getCreateKoinDi(valueStorage, moduleAction, moduleName, structure)),
 		)
 	}
 
-	private fun makeKoinDi() = makeDi(context).apply {
-		koin.declare(ideScriptEngineManager)
+	private fun makeTestKoinDi(filter: StepModuleHost.() -> Module) = koinApplication {
+		allowOverride(false)
+		val host = ModuleHost(context, koin)
+		val stepHost = StepModuleHost(host)
+
+		modules(stepHost.filter())
 	}
 }

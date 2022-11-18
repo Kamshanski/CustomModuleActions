@@ -19,24 +19,19 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.swing.Swing
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
-import org.koin.dsl.ScopeDSL
 import org.koin.dsl.module
 
-fun makeStructureDataModule(commonDataModule: Module): Module = module {
+private fun makeStructureDataModule(rootModule: Module): Module = module {
 }.apply {
-	includes(commonDataModule)
+	includes(rootModule)
 }
 
-private fun ScopeDSL.declareSelectionFeatureDomainEntries() {
-	factoryOf(::GenerateUniqueIdUseCase)
-	factoryOf(::InitializeHierarchyUseCase)
-	factoryOf(::InterpretHierarchyTextsUseCase)
-	factoryOf(::ValidateHierarchyUseCase)
-}
-
-fun makeStructureFeatureModule(commonFeatureModule: Module, structureDataModule: Module) = module {
+private fun makeStructureFeatureModule(dataModule: Module) = module {
 	factoryScopeOf(::QpayStructureKoinDi) {
-		declareSelectionFeatureDomainEntries()
+		factoryOf(::GenerateUniqueIdUseCase)
+		factoryOf(::InitializeHierarchyUseCase)
+		factoryOf(::InterpretHierarchyTextsUseCase)
+		factoryOf(::ValidateHierarchyUseCase)
 
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
 
@@ -46,5 +41,12 @@ fun makeStructureFeatureModule(commonFeatureModule: Module, structureDataModule:
 		scoped { StructureUi(get(), get(), get(), get(), get<CoroutineScope>(UiScopeQ)) }
 	}
 }.apply {
-	includes(commonFeatureModule, structureDataModule)
+	includes(dataModule)
+}
+
+fun makeStructureModule(rootModule: Module) = module {
+	val dataModule = makeStructureDataModule(rootModule)
+	val featureModule = makeStructureFeatureModule(dataModule)
+
+	includes(featureModule)
 }

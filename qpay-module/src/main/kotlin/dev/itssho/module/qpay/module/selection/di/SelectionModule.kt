@@ -17,7 +17,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 
-private fun makeSelectionFeatureModule(commonFeatureModule: Module, moduleActionServiceModule: Module) = module {
+private fun makeSelectionFeatureModule(moduleActionServiceModule: Module) = module {
 	factoryScopeOf(::SelectionKoinDi) {
 		factoryOf(::GetModuleActionByScriptPathUseCase)
 		factoryOf(::InitializeModuleActionUseCase)
@@ -27,13 +27,11 @@ private fun makeSelectionFeatureModule(commonFeatureModule: Module, moduleAction
 		scopedOf(::SelectionViewModel)
 	}
 }.apply {
-	includes(commonFeatureModule)
 	includes(moduleActionServiceModule)
 }
 
-fun makeSelectionModule(commonFeatureModule: Module, moduleActionServiceModule: Module) = module {
+fun makeSelectionModule(moduleActionServiceModule: Module) = module {
 	val featureModule = makeSelectionFeatureModule(
-		commonFeatureModule = commonFeatureModule,
 		moduleActionServiceModule = moduleActionServiceModule,
 	)
 

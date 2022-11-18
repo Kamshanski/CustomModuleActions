@@ -27,5 +27,5 @@ fun makeSharedFileModule() = module {
 	val dataModule = makeSharedFileDataModule()
 	val domainModule = makeSharedFileDomainModule(dataModule)
 
-	includes(dataModule, domainModule)
+	includes(domainModule)
 }

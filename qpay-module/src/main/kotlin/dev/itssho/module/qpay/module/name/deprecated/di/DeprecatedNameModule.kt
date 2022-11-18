@@ -14,12 +14,12 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
 import org.koin.dsl.module
 
-fun makeDeprecatedNameDataModule(commonDataModule: Module) = module {
+private fun makeQpayNameDataModule(rootModule: Module) = module {
 }.apply {
-	includes(commonDataModule)
+	includes(rootModule)
 }
 
-fun makeDeprecatedNameFeatureModule(commonFeatureModule: Module, deprecatedNameDataModule: Module) = module {
+private fun makeQpayNameFeatureModule(dataModule: Module) = module {
 	factoryScopeOf(::QpayDeprecatedNameKoinDi) {
 		scoped(UiScopeQ) { CoroutineScope(Job() + Dispatchers.Swing) }
 		scopedOf(::QpayNameViewModel)
@@ -28,6 +28,12 @@ fun makeDeprecatedNameFeatureModule(commonFeatureModule: Module, deprecatedNameD
 		}
 	}
 }.apply {
-	includes(commonFeatureModule)
-	includes(deprecatedNameDataModule)
+	includes(dataModule)
+}
+
+fun makeQpayNameModule(rootModule: Module) = module {
+	val dataModule = makeQpayNameDataModule(rootModule)
+	val featureModule = makeQpayNameFeatureModule(dataModule)
+
+	includes(featureModule)
 }
