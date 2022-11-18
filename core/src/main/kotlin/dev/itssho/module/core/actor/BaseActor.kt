@@ -1,8 +1,10 @@
 package dev.itssho.module.core.actor
 
+import dev.itssho.module.core.context.JBContext
+
 // TODO Почистить
 @Suppress("ComponentNotRegistered")
-abstract class BaseActor(val context: Context) {
+abstract class BaseActor(val context: JBContext) {
 
 //    val scope: CoroutineScope = CoroutineScope(Job() + Dispatchers.Swing)
 //    val wrappedScope = ScopeWrapper(scope)

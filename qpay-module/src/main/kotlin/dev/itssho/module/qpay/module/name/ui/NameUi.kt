@@ -4,7 +4,7 @@ import coroutine.observe
 import dev.itssho.module.component.Scroll
 import dev.itssho.module.component.resources.Strings
 import dev.itssho.module.component.value.Gravity
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.hierarchy.name.Issue
 import dev.itssho.module.qpay.module.name.presentation.NameViewModel
 import dev.itssho.module.qpay.module.name.presentation.model.NameStepResult
@@ -17,7 +17,7 @@ import string.escapeHtml
 import javax.swing.JComponent
 
 class NameUi(
-	context: JBContext,
+	context: ProjectWindowClickContext,
 	private val viewModel: NameViewModel,
 	scope: CoroutineScope,
 ) : YesNoIdeaDialog<NameStepResult>(context = context, scope = scope) {

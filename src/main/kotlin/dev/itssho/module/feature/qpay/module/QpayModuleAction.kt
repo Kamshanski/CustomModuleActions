@@ -4,7 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.project.DumbAware
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.actor.QpayModuleWizardActor
 import dev.itssho.module.resources.R
 import kotlinx.coroutines.runBlocking
@@ -17,7 +17,7 @@ class QpayModuleAction : AnAction(R.icon.qpay), DumbAware {
 			// null => IDE ещё не готова
             e.getData(CommonDataKeys.PROJECT) ?: return@runBlocking
 
-            val context = JBContext.make(e.dataContext)
+            val context = ProjectWindowClickContext.make(e.dataContext)
             QpayModuleWizardActor(context).runAction()
         }
 	}

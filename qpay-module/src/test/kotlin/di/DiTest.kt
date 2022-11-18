@@ -6,7 +6,7 @@ import com.intellij.ide.script.IdeScriptEngineManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.hierarchy.storage.MutableValueStorage
@@ -50,7 +50,7 @@ class DiTest : KoinTest {
 	val ideScriptEngineManager: IdeScriptEngineManager = mock()
 	val moduleActionService: ModuleActionService = mock()
 
-	val context: JBContext = mock()
+	val context: ProjectWindowClickContext = mock()
 	val project: Project = mock()
 	val rootDirectory: PsiDirectory = mock()
 	val rootDirectoryVirtualFile: VirtualFile = mock()

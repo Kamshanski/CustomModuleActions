@@ -6,7 +6,7 @@ import dev.itssho.module.component.Scroll
 import dev.itssho.module.component.components.simple.JILabel
 import dev.itssho.module.component.resources.Icons
 import dev.itssho.module.component.value.Gravity
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.selection.presentation.ScriptModel
 import dev.itssho.module.qpay.module.selection.presentation.SelectionStepResult
 import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
@@ -24,7 +24,7 @@ import javax.swing.ListSelectionModel
 import javax.swing.event.ListSelectionEvent
 
 class SelectionUi(
-	context: JBContext,
+	context: ProjectWindowClickContext,
 	private val viewModel: SelectionViewModel,
 	scope: CoroutineScope,
 ) : YesNoIdeaDialog<SelectionStepResult>(context = context, scope = scope) {

@@ -9,7 +9,7 @@ import com.intellij.psi.PsiDirectory
 import dev.itssho.module.common.component.chain.Separator
 import dev.itssho.module.common.component.chain.splitToChain
 
-@Deprecated("", replaceWith = ReplaceWith("JBContext", "dev.itssho.module.core.actor.JBContext"))
+@Deprecated("", replaceWith = ReplaceWith("JBContext", "dev.itssho.module.core.context.JBContext"))
 @Suppress("CanBeParameter", "MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
 class IdeaContext(val ideContext: DataContext): Context {
 

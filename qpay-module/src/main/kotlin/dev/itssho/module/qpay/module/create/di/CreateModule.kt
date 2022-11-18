@@ -4,7 +4,7 @@ package dev.itssho.module.qpay.module.create.di
 
 import dev.itssho.module.component.idea.action.DirectoryOrPackageCreator
 import dev.itssho.module.component.idea.action.FileCreator
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.hierarchy.controller.Controller
 import dev.itssho.module.qpay.module.common.di.UiScopeQ
 import dev.itssho.module.qpay.module.common.domain.hierarchy.ControllerImpl
@@ -31,8 +31,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 fun makeCreateDataModule(commonDataModule: Module) = module {
-	single { DirectoryOrPackageCreator(get<JBContext>().ideProject) }
-	single { FileCreator(get<JBContext>().ideProject) }
+	single { DirectoryOrPackageCreator(get<ProjectWindowClickContext>().ideProject) }
+	single { FileCreator(get<ProjectWindowClickContext>().ideProject) }
 
 	singleOf(::DirectoryDataSource)
 	singleOf(::FileDataSource)

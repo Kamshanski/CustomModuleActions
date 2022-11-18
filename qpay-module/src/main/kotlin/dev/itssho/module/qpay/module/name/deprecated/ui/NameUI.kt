@@ -4,7 +4,7 @@ import coroutine.observe
 import dev.itssho.module.component.components.select.ButtonCollection
 import dev.itssho.module.component.resources.Strings
 import dev.itssho.module.component.value.Gravity
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameStepResult
 import dev.itssho.module.qpay.module.name.deprecated.presentation.QpayNameViewModel
 import dev.itssho.module.qpay.module.name.deprecated.presentation.model.ModuleNameValidationResult
@@ -22,7 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import javax.swing.JComponent
 
 class NameUI(
-	context: JBContext,
+	context: ProjectWindowClickContext,
 	private val viewModel: QpayNameViewModel,
 	scope: CoroutineScope,
 ) : YesNoIdeaDialog<QpayNameStepResult>(context = context, scope = scope) {

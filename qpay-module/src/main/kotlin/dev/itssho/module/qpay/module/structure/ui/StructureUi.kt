@@ -5,7 +5,7 @@ import dev.itssho.module.component.Scroll
 import dev.itssho.module.component.resources.Strings
 import dev.itssho.module.component.table.MSColumn
 import dev.itssho.module.component.table.MSRow
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureStepResult
 import dev.itssho.module.qpay.module.structure.presentation.QpayStructureViewModel
 import dev.itssho.module.qpay.module.structure.ui.delegate.TreePanelUi
@@ -16,7 +16,7 @@ import javax.swing.JButton
 import javax.swing.JComponent
 
 class StructureUi(
-	context: JBContext,
+	context: ProjectWindowClickContext,
 	private val treePanelViewModel: TreePanelViewModel,
 	private val treePanelUi: TreePanelUi,
 	private val viewModel: QpayStructureViewModel,

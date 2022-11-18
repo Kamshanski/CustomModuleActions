@@ -4,7 +4,7 @@ import com.intellij.CommonBundle
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.DialogWrapper.CANCEL_EXIT_CODE
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.core.ui.DialogUI
 import invokeAll
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ import javax.swing.JComponent
 import javax.swing.SwingUtilities
 
 abstract class YesNoIdeaDialog<T>(
-	val context: JBContext,
+	val context: ProjectWindowClickContext,
 	scope: CoroutineScope,
 	canBeParent: Boolean = false,
 	applicationModalIfPossible: Boolean = true,

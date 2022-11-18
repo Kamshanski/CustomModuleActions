@@ -1,4 +1,4 @@
-package dev.itssho.module.core.actor
+package dev.itssho.module.core.context
 
 import com.intellij.ide.IdeView
 import com.intellij.openapi.actionSystem.CommonDataKeys
@@ -10,14 +10,15 @@ import dev.itssho.module.component.chain.Separator
 import dev.itssho.module.component.chain.any.AnyChain
 import dev.itssho.module.component.chain.castTo
 import dev.itssho.module.component.chain.splitToChain
+import dev.itssho.module.core.actor.ContextCreationException
 import java.nio.file.Path
 
 @Suppress("CanBeParameter", "MemberVisibilityCanBePrivate", "UsePropertyAccessSyntax")
-class JBContext(
+class ProjectWindowClickContext(
 	val ideDataContext: DataContext,
 	val ideView: IdeView,
-	val ideProject: Project,
-) : Context {
+	ideProject: Project,
+) : JBContext(ideProject) {
 
 	/** [PsiDirectory] файла, выбранного сейчас в дереве проекта */
 	val selectedDirectory: PsiDirectory = ideView.getOrChooseDirectory().takeNotNullOrExit()
@@ -36,7 +37,7 @@ class JBContext(
 
 	companion object {
 
-		fun make(ideContext: DataContext): JBContext = JBContext(
+		fun make(ideContext: DataContext): ProjectWindowClickContext = ProjectWindowClickContext(
 			ideDataContext = ideContext,
 			ideView = LangDataKeys.IDE_VIEW.getData(ideContext).takeNotNullOrExit(),
 			ideProject = CommonDataKeys.PROJECT.getData(ideContext).takeNotNullOrExit(),
@@ -44,7 +45,7 @@ class JBContext(
 
 		private inline fun <reified T> T?.takeNotNullOrExit(): T {
 			if (this == null) {
-				val msg = "Error making ${JBContext::class.java.simpleName}: desired '${T::class.java.simpleName}' is null"
+				val msg = "Error making ${ProjectWindowClickContext::class.java.simpleName}: desired '${T::class.java.simpleName}' is null"
 				throw ContextCreationException(msg)
 			}
 

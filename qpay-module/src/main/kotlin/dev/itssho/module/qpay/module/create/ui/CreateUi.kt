@@ -4,20 +4,19 @@ import coroutine.collectOn
 import coroutine.observe
 import dev.itssho.module.component.Scroll
 import dev.itssho.module.component.resources.Strings
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.create.presentation.QpayCreateViewModel
 import dev.itssho.module.shared.dialog.ui.idea.YesNoIdeaDialog
 import dev.itssho.module.ui.util.constructor.jProgressBar
 import dev.itssho.module.ui.util.constructor.jbTextArea
 import dev.itssho.module.ui.util.constructor.jiLabel
 import dev.itssho.module.ui.util.constructor.table
-import dev.itssho.module.ui.util.container.*
 import kotlinx.coroutines.CoroutineScope
 import java.awt.event.ActionListener
 import javax.swing.JComponent
 
 class CreateUi(
-	context: JBContext,
+	context: ProjectWindowClickContext,
 	private val viewModel: QpayCreateViewModel,
 	scope: CoroutineScope,
 ) : YesNoIdeaDialog<Unit>(context = context, scope = scope) {

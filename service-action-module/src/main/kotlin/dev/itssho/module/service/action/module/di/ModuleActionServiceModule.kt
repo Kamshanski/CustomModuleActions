@@ -2,7 +2,7 @@
 
 package dev.itssho.module.service.action.module.di
 
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.JBContext
 import dev.itssho.module.service.action.module.ModuleActionService
 import dev.itssho.module.service.action.module.data.datasource.ModuleActionDataSource
 import dev.itssho.module.service.action.module.data.repository.ScriptRepositoryImpl

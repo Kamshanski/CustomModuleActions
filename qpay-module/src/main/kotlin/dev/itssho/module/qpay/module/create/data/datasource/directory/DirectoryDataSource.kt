@@ -3,10 +3,10 @@ package dev.itssho.module.qpay.module.create.data.datasource.directory
 import com.intellij.psi.PsiDirectory
 import com.intellij.psi.PsiElement
 import dev.itssho.module.component.idea.action.DirectoryOrPackageCreator
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 
 class DirectoryDataSource(
-	private val context: JBContext,
+	private val context: ProjectWindowClickContext,
 	private val creationHandler: DirectoryOrPackageCreator,
 ) {
 

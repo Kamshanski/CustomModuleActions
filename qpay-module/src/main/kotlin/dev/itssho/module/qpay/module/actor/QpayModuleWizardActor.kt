@@ -1,7 +1,7 @@
 package dev.itssho.module.qpay.module.actor
 
 import dev.itssho.module.core.actor.BaseActor
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.hierarchy.HierarchyObject
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import dev.itssho.module.qpay.module.actor.di.makeDi
@@ -25,7 +25,7 @@ import dev.itssho.module.service.preferences.domain.usecase.GetSettingsUseCase
 import dev.itssho.module.util.koin.use
 import reflection.castOrNull
 
-class QpayModuleWizardActor(jbContext: JBContext) : BaseActor(jbContext) {
+class QpayModuleWizardActor(jbContext: ProjectWindowClickContext) : BaseActor(jbContext) {
 
 	val di = makeDi(jbContext).koin
 

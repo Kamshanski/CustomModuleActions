@@ -1,6 +1,6 @@
 package dev.itssho.module.qpay.module.actor.di
 
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import dev.itssho.module.qpay.module.common.di.makeCommonDataModule
 import dev.itssho.module.qpay.module.common.di.makeCommonFeatureModule
 import dev.itssho.module.qpay.module.create.di.makeCreateDataModule
@@ -20,7 +20,7 @@ import org.koin.core.KoinApplication
 import org.koin.dsl.koinApplication
 
 /** Вкладывать common в другие модули не надо. Внутри makeDi это уже делается */
-fun makeDi(jbContext: JBContext): KoinApplication {
+fun makeDi(jbContext: ProjectWindowClickContext): KoinApplication {
 
 	val koinApp = koinApplication()
 	koinApp.allowOverride(false)

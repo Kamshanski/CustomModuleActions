@@ -4,12 +4,12 @@ import com.intellij.lang.Language
 import com.intellij.openapi.vfs.VfsUtil
 import com.intellij.psi.PsiDirectory
 import dev.itssho.module.component.idea.action.FileCreator
-import dev.itssho.module.core.actor.JBContext
+import dev.itssho.module.core.context.ProjectWindowClickContext
 import java.util.Locale
 
 class FileDataSource(
 	private val fileCreator: FileCreator,
-	private val context: JBContext,
+	private val context: ProjectWindowClickContext,
 ) {
 
 	/** fileName with extension */
