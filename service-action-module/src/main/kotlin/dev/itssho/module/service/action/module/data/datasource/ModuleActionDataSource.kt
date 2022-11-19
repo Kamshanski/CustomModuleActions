@@ -1,6 +1,5 @@
 package dev.itssho.module.service.action.module.data.datasource
 
-import dev.itssho.module.service.action.module.ActionItem
 import dev.itssho.module.service.action.module.ModuleActionServiceFactory
 import dev.itssho.module.service.action.module.domain.entity.Script
 import kotlinx.coroutines.flow.Flow
@@ -19,23 +18,14 @@ class ModuleActionDataSource(
 	fun loadScripts(scriptsPaths: List<String>): Flow<List<Script>> {
 		val paths = scriptsPaths.map { Path.of(it) }
 		moduleActionService.loadActions(paths)
-		return moduleActionService.state.map { map -> map.values.map { convertActionItemToModule(it) } }
+		return moduleActionService.state.map { map -> map.values.toList() }
 	}
 
 	fun getScripts(): List<Script> {
 		val scriptsMap = moduleActionService.state.value
-		return scriptsMap.values.map { convertActionItemToModule(it) }
+		return scriptsMap.values.toList()
 	}
 
 	private val moduleActionService
 		get() = moduleActionServiceFactory.get()
 }
-
-private fun convertActionItemToModule(item: ActionItem): Script =
-	item.run {
-		when (this) {
-			is ActionItem.Failure -> Script.Failure(path.toString(), exception, timestamp)
-			is ActionItem.Loaded  -> Script.Loaded(path.toString(), compilation.moduleAction, compilation.timestamp)
-			is ActionItem.Loading -> Script.Loading(path.toString())
-		}
-	}

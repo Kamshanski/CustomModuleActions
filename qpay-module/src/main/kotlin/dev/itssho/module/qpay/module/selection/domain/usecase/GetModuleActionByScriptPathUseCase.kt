@@ -17,6 +17,6 @@ class GetModuleActionByScriptPathUseCase(
 			.firstOrNull { it.path == path }
 			.castNotNull { "No script found with path: '${path}'" }
 			.castOrThrow<Script.Loaded> { "User clicked on script which is not loaded. Current state: '$it'. Script path: '${path}'" }
-			.moduleAction
+			.useModuleAction()
 	}
 }

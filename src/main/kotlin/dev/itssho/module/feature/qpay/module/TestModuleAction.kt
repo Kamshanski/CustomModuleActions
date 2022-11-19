@@ -6,8 +6,8 @@ import com.intellij.openapi.project.DumbAware
 import coroutine.gather
 import dev.itssho.module.core.context.JBContext
 import dev.itssho.module.resources.R
-import dev.itssho.module.service.action.module.ActionItem
 import dev.itssho.module.service.action.module.ModuleActionServiceFactory
+import dev.itssho.module.service.action.module.domain.entity.Script
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
@@ -24,7 +24,7 @@ class TestModuleAction : AnAction(R.icon.test), DumbAware {
 
 		scope.launch {
 			var i = 0
-			service.state.onCompletion { println("colletcion completed") }.gather { syncMap: Map<Path, ActionItem> ->
+			service.state.onCompletion { println("colletcion completed") }.gather { syncMap: Map<Path, Script> ->
 				val entries = syncMap.toMutableMap().values
 				val mes = StringBuilder("\nIteration ${i++}:\n\t").apply {
 					entries.joinTo(this, separator = "\t\n") { it.toString() }

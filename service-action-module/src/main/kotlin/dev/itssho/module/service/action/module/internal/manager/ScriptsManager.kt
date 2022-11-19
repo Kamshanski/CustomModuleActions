@@ -6,9 +6,13 @@ import com.intellij.openapi.Disposable
 import dev.itssho.module.component.scripting.ScriptRunner
 import dev.itssho.module.component.scripting.idea.IdeaKtsScriptRunnerFactory
 import dev.itssho.module.hierarchy.importing.ModuleAction
-import dev.itssho.module.service.action.module.ActionItem
-import dev.itssho.module.service.action.module.ScriptCompilation
+import dev.itssho.module.hierarchy.importing.ReusableAction
+import dev.itssho.module.service.action.module.domain.entity.Script
+import dev.itssho.module.service.action.module.domain.entity.ScriptCompilation
 import dev.itssho.module.service.action.module.internal.concurency.NewSafeThreadExecutor
+import mapNotNullValues
+import org.jetbrains.kotlin.tools.projectWizard.core.asPath
+import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -18,16 +22,18 @@ import java.security.MessageDigest
 import java.time.LocalDateTime.now
 import java.time.LocalTime
 
-internal class ActionItemsManager(maxThreadPoolSize: Int = 8) : Disposable {
+internal class ScriptsManager(maxThreadPoolSize: Int = 8) : Disposable {
 
 	private val uniqueThreadExecutor = NewSafeThreadExecutor(maxThreadPoolSize)
 
-	private val _state = ActionItemFlow()
+	private val _state = ScriptsFlow()
 	val state = _state.immutable()
 
-	fun clearAbsentItems(presentScriptsPaths: List<Path>) {
+	fun clearItems(presentScriptsPaths: List<Path>) {
 		_state.modify { map ->
-			map.filter { it.key in presentScriptsPaths }
+			map
+				.filter { it.key in presentScriptsPaths }
+				.recycleUsed()
 		}
 	}
 
@@ -35,6 +41,11 @@ internal class ActionItemsManager(maxThreadPoolSize: Int = 8) : Disposable {
 		try {
 			printlnLog("Start '${path.fileName}'")
 			uniqueThreadExecutor.start()
+
+			printlnLog("Recycle used scripts")
+			_state.modify { map -> map.recycleUsed() }
+
+			printlnLog("INIT start")
 			val loadingItem = tryInitUpdate(path)
 			if (loadingItem == null) {
 				printlnLog("INITED FAIL. ALREADY LOADING: '${path.fileName}'")
@@ -67,15 +78,34 @@ internal class ActionItemsManager(maxThreadPoolSize: Int = 8) : Disposable {
 		}
 	}
 
-	private fun tryInitUpdate(path: Path): ActionItem.Loading? {
-		var loadingItem: ActionItem.Loading? = null
+	private fun Map<Path, Script>.recycleUsed(): Map<Path, Script> =
+		mapNotNullValues { recycle(it.value) }
+
+	private fun recycle(script: Script): Script? {
+		if (script is Script.Loaded && script.isUsed) {
+			if (script.isReusable) {
+				val moduleAction = script.compilation.moduleAction
+				val reusable = moduleAction.cast<ReusableAction>()
+				reusable.recycle()
+				printlnLog("Recycled script ${script.path.asPath().fileName}")
+				return clearLoadedScript(script)
+			} else {
+				printlnLog("Deleted used script ${script.path.asPath().fileName}")
+				return null
+			}
+		}
+		return script
+	}
+
+	private fun tryInitUpdate(path: Path): Script.Loading? {
+		var loadingItem: Script.Loading? = null
 		_state.modify { items ->
 			val existingItem = items[path]
 			val newItem = when (existingItem) {
 				null,
-				is ActionItem.Failure -> ActionItem.Loading(path)
-				is ActionItem.Loaded  -> ActionItem.Loading(path, cache = existingItem.compilation)
-				is ActionItem.Loading -> return null
+				is Script.Failure -> Script.Loading(path.toString())
+				is Script.Loaded  -> Script.Loading(path.toString(), cache = existingItem.compilation)
+				is Script.Loading -> return null
 			}
 
 			loadingItem = newItem
@@ -90,7 +120,7 @@ internal class ActionItemsManager(maxThreadPoolSize: Int = 8) : Disposable {
 	private fun setErrorItem(path: Path, exception: Throwable) {
 		_state.modify {
 			it.toMutableMap().apply {
-				val errorItem = ActionItem.Failure(path, exception, now())
+				val errorItem = Script.Failure(path.toString(), exception, now())
 				put(path, errorItem)
 			}
 		}
@@ -113,7 +143,7 @@ internal class ActionItemsManager(maxThreadPoolSize: Int = 8) : Disposable {
 	private fun setCompiledItem(path: Path, cache: ScriptCompilation) {
 		_state.modify {
 			it.toMutableMap().apply {
-				val loadedItem = ActionItem.Loaded(path, cache)
+				val loadedItem = Script.Loaded(path.toString(), cache)
 				put(path, loadedItem)
 			}
 		}

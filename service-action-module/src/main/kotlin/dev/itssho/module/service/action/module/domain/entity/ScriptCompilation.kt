@@ -1,4 +1,4 @@
-package dev.itssho.module.service.action.module
+package dev.itssho.module.service.action.module.domain.entity
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
 import java.time.LocalDateTime
