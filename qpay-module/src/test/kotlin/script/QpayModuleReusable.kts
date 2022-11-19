@@ -17,7 +17,7 @@ import dev.itssho.module.hierarchy.extension.selectedItem
 import dev.itssho.module.hierarchy.handler.HierarchyProcessor
 import dev.itssho.module.hierarchy.handler.util.DirUtil
 import dev.itssho.module.hierarchy.handler.util.FileUtil
-import dev.itssho.module.hierarchy.importing.ModuleAction
+import dev.itssho.module.hierarchy.importing.ReusableModuleAction
 import dev.itssho.module.hierarchy.initializer.HierarchyInitializer
 import dev.itssho.module.hierarchy.initializer.ValuesInitializer
 import dev.itssho.module.hierarchy.name.IssueReporter
@@ -30,10 +30,12 @@ import java.util.Locale
 /* Util functions. Attention!: Some fun usage may cause exceptions. Avoid global fun.  */
 
 fun Char.uppercase(): Char = this.toString().lowercase().first()
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")	// Независимость от версии Kotlin`а
+
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")    // Независимость от версии Kotlin`а
 fun String.uppercase(): String = (this as java.lang.String).toUpperCase(Locale.US)
 fun Char.lowercase(): Char = this.toString().lowercase().first()
-@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")	// Независимость от версии Kotlin`а
+
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")    // Независимость от версии Kotlin`а
 fun String.lowercase(): String = (this as java.lang.String).toLowerCase(Locale.US)
 
 /* Constants and utils */
@@ -59,8 +61,6 @@ interface VSUtil {
 	val ValueStorage.teamOrNull: String? get() = this.getOrNull(C.TEAM_KEY)
 }
 
-
-
 /* Value Initializer. Keys and values initialization here  */
 
 class ValuesInitializerImpl : ValuesInitializer {
@@ -69,8 +69,6 @@ class ValuesInitializerImpl : ValuesInitializer {
 		valueStorage.put(C.COMPANY_NAME_KEY, listOf("ru", "ftc", "qpay"))
 	}
 }
-
-
 
 /* Hierarchy Processor. Use controller to create folders, files or edit them. Use FileTemplate.Template to make dynamic file content.  */
 
@@ -224,8 +222,6 @@ class ViewModelTemplate : FileTemplate.Template("VIEW_MODEL_TEMPLATE_NAME") {
 		""".trimIndent()
 }
 
-
-
 /* Hierarchy Initializer. Define initial hierarchy. Use attrs to add features to each element: design, file name/ext/templates and more */
 
 @Suppress("MemberVisibilityCanBePrivate", "PropertyName", "TestFunctionName")
@@ -266,7 +262,7 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 	// Temp File
 	fun FolderItemActs(): List<Act> = AddFile() + AddFolder() + Delete()
 
-	fun DirOfItemId(delimiter: String = DOT_DELIMITER): List<Attr> = Dir(Directory.Chain.CALCULATED { ho -> ho.personalId.split(delimiter)})
+	fun DirOfItemId(delimiter: String = DOT_DELIMITER): List<Attr> = Dir(Directory.Chain.CALCULATED { ho -> ho.personalId.split(delimiter) })
 	fun FileExt(type: String): List<Attr> = listOf(FileExtension(type))
 	fun Kt(): List<Attr> = FileExt("kt")
 	fun Md(): List<Attr> = FileExt("md")
@@ -295,35 +291,113 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 				HierarchyObject.HOLabel(
 					"moduleName", attributes = Back(vs.moduleName) + Dir(valueStorage.moduleName.split(C.DELIMITER)), children = listOf(
 						HierarchyObject.HOTreeCheck(
-							"mainKotlin", selected = true, actions = FolderItemActs(), attrs = Back("main.kotlin") + Dir("src.main.kotlin".byDot + vs.companyName + vs.moduleName.byMinus), children = listOf(
+							"mainKotlin",
+							selected = true,
+							actions = FolderItemActs(),
+							attrs = Back("main.kotlin") + Dir("src.main.kotlin".byDot + vs.companyName + vs.moduleName.byMinus),
+							children = listOf(
 								HierarchyObject.HOTreeCheck(
 									"data", selected = true, actions = FolderItemActs(), attrs = Back("data") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOTreeCheck("datasource", selected = true, actions = FolderItemActs(), attrs = Back("datasource") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("repository", selected = true, actions = FolderItemActs(), attrs = Back("repository") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("convertor", selected = true, actions = FolderItemActs(), attrs = Back("convertor") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("model", selected = false, actions = FolderItemActs(), attrs = Back("model") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("network", selected = false, actions = FolderItemActs(), attrs = Back("network") + DirOfItemId())
+										HierarchyObject.HOTreeCheck(
+											"datasource",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("datasource") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"repository",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("repository") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"convertor",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("convertor") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"model",
+											selected = false,
+											actions = FolderItemActs(),
+											attrs = Back("model") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"network",
+											selected = false,
+											actions = FolderItemActs(),
+											attrs = Back("network") + DirOfItemId()
+										)
 									)
 								),
 								HierarchyObject.HOTreeCheck(
 									"domain", selected = true, actions = FolderItemActs(), attrs = Back("domain") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOTreeCheck("repository", selected = true, actions = FolderItemActs(), attrs = Back("repository") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("usecase", selected = true, actions = FolderItemActs(), attrs = Back("usecase") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("scenario", selected = false, actions = FolderItemActs(), attrs = Back("scenario") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("entity", selected = false, actions = FolderItemActs(), attrs = Back("entity") + DirOfItemId())
+										HierarchyObject.HOTreeCheck(
+											"repository",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("repository") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"usecase",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("usecase") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"scenario",
+											selected = false,
+											actions = FolderItemActs(),
+											attrs = Back("scenario") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"entity",
+											selected = false,
+											actions = FolderItemActs(),
+											attrs = Back("entity") + DirOfItemId()
+										)
 									)
 								),
 								HierarchyObject.HOTreeCheck(
-									"presentation", selected = true, actions = FolderItemActs(), attrs = Back("presentation") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOTreeCheck("converter", selected = true, actions = FolderItemActs(), attrs = Back("converter") + DirOfItemId()),
-										HierarchyObject.HOTreeCheck("model", selected = true, actions = FolderItemActs(), attrs = Back("model") + DirOfItemId()),
-										HierarchyObject.HOFile("fileViewModel", text = VMText(vs), actions = Delete(), attrs = Back(".kt") + FileTemplate(ViewModelTemplate()) + Kt())
+									"presentation",
+									selected = true,
+									actions = FolderItemActs(),
+									attrs = Back("presentation") + DirOfItemId(),
+									children = listOf(
+										HierarchyObject.HOTreeCheck(
+											"converter",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("converter") + DirOfItemId()
+										),
+										HierarchyObject.HOTreeCheck(
+											"model",
+											selected = true,
+											actions = FolderItemActs(),
+											attrs = Back("model") + DirOfItemId()
+										),
+										HierarchyObject.HOFile(
+											"fileViewModel",
+											text = VMText(vs),
+											actions = Delete(),
+											attrs = Back(".kt") + FileTemplate(ViewModelTemplate()) + Kt()
+										)
 									)
 								),
 								HierarchyObject.HOTreeCheck(
 									"ui", selected = true, actions = FolderItemActs(), attrs = Back("ui") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOFile("fragment", text = FragmentText(vs), actions = Delete(), attrs = Back(".kt") + FileTemplate(FragmentTemplate()) + Kt()),
-										HierarchyObject.HOFile("router", text = RouterText(vs), actions = Delete(), attrs = Back(".kt") + FileTemplate(RouterTemplate()) + Kt())
+										HierarchyObject.HOFile(
+											"fragment",
+											text = FragmentText(vs),
+											actions = Delete(),
+											attrs = Back(".kt") + FileTemplate(FragmentTemplate()) + Kt()
+										),
+										HierarchyObject.HOFile(
+											"router",
+											text = RouterText(vs),
+											actions = Delete(),
+											attrs = Back(".kt") + FileTemplate(RouterTemplate()) + Kt()
+										)
 									)
 								)
 							)
@@ -332,12 +406,22 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 							"mainRes", selected = true, attrs = Back("main.res") + Dir("src.main.res"), children = listOf(
 								HierarchyObject.HOTreeCheck(
 									"layout", selected = true, actions = FolderItemActs(), attrs = Back("layout") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOFile("Layout", text = LayoutText(vs), actions = Delete(), attrs = Back(".xml") + FileTemplate(LayoutTemplate()) + Xml())
+										HierarchyObject.HOFile(
+											"Layout",
+											text = LayoutText(vs),
+											actions = Delete(),
+											attrs = Back(".xml") + FileTemplate(LayoutTemplate()) + Xml()
+										)
 									)
 								),
 								HierarchyObject.HOTreeCheck(
 									"values", selected = true, actions = FolderItemActs(), attrs = Back("values") + DirOfItemId(), children = listOf(
-										HierarchyObject.HOFile("strings", text = "strings_ewallet", actions = Delete(), attrs = Back(".xml") + FileTemplate(StringsTemplate()) + Xml())
+										HierarchyObject.HOFile(
+											"strings",
+											text = "strings_ewallet",
+											actions = Delete(),
+											attrs = Back(".xml") + FileTemplate(StringsTemplate()) + Xml()
+										)
 									)
 								)
 							)
@@ -351,7 +435,12 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 						HierarchyObject.HOTreeCheck("build", selected = true, attrs = Back("build.gradle")),
 						HierarchyObject.HOTreeCheck(
 							"readme", selected = true, attrs = Back("readme"), children = listOf(
-								HierarchyObject.HOSelector("team", items = TEAMS_LIST, selectedIndex = 0, attributes = Front("Команда") + FileTemplate(ReadmeTemplate()) + Md())
+								HierarchyObject.HOSelector(
+									"team",
+									items = TEAMS_LIST,
+									selectedIndex = 0,
+									attributes = Front("Команда") + FileTemplate(ReadmeTemplate()) + Md()
+								)
 							)
 						)
 					)
@@ -360,7 +449,6 @@ class HierarchyInitializerImpl : HierarchyInitializer, VSUtil {
 		)
 	}
 }
-
 
 class MyNameHandler : NameHandler, VSUtil {
 
@@ -395,14 +483,12 @@ class MyNameHandler : NameHandler, VSUtil {
 	}
 }
 
+/* Combine all classes in one return value */
 
-
-/* Combine all classes in one script return */
-
-ModuleAction(
-	name = "MyGreatName",
-	nameHandler = MyNameHandler(),
-	hierarchyInitializer = HierarchyInitializerImpl(),
-	valuesInitializer = ValuesInitializerImpl(),
-	hierarchyProcessor = QpayHierarchyProcessor()
+ReusableModuleAction(
+	name = "ReusableModuleAction",
+	nameHandler = { MyNameHandler() },
+	hierarchyInitializer = { HierarchyInitializerImpl() },
+	valuesInitializer = { ValuesInitializerImpl() },
+	hierarchyProcessor = { QpayHierarchyProcessor() }
 )
