@@ -7,6 +7,7 @@ import dev.itssho.module.core.presentation.ViewModel
 import dev.itssho.module.qpay.module.selection.domain.usecase.GetModuleActionByScriptPathUseCase
 import dev.itssho.module.qpay.module.selection.domain.usecase.InitializeModuleActionUseCase
 import dev.itssho.module.service.action.module.domain.entity.Script
+import dev.itssho.module.service.action.module.domain.usecase.ReloadScriptUseCase
 import dev.itssho.module.service.action.module.domain.usecase.UpdateScriptsUseCase
 import fullStackTraceString
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +19,7 @@ class SelectionViewModel(
 	private val updateScriptsUseCase: UpdateScriptsUseCase,
 	private val getModuleActionByScriptPathUseCase: GetModuleActionByScriptPathUseCase,
 	private val initializeModuleActionUseCase: InitializeModuleActionUseCase,
+	private val reloadScriptUseCase: ReloadScriptUseCase,
 ) : ViewModel() {
 
 	private val _finalResult = MutableStateFlow<SelectionStepResult?>(null)
@@ -64,6 +66,10 @@ class SelectionViewModel(
 
 	fun close() {
 		_finalResult.value = SelectionStepResult.Nothing
+	}
+
+	fun update(command: ReloadScriptCommand) {
+		reloadScriptUseCase(command.path)
 	}
 }
 

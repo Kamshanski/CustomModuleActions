@@ -1,7 +1,6 @@
 package dev.itssho.module.service.action.module.domain.entity
 
 import dev.itssho.module.hierarchy.importing.ModuleAction
-import dev.itssho.module.hierarchy.importing.ReusableAction
 import java.time.LocalDateTime
 
 sealed interface Script {
@@ -11,13 +10,10 @@ sealed interface Script {
 
 	class Loaded(override val path: String, internal val compilation: ScriptCompilation) : Script {
 
+		val timestamp: LocalDateTime = compilation.timestamp
+
 		var isUsed: Boolean = false
 			private set
-
-		val isReusable: Boolean =
-			compilation.moduleAction is ReusableAction
-
-		val timestamp: LocalDateTime = compilation.timestamp
 
 		fun useModuleAction(): ModuleAction {
 			if (isUsed) {

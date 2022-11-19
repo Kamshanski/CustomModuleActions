@@ -12,7 +12,6 @@ import dev.itssho.module.service.action.module.domain.entity.ScriptCompilation
 import dev.itssho.module.service.action.module.internal.concurency.NewSafeThreadExecutor
 import mapNotNullValues
 import org.jetbrains.kotlin.tools.projectWizard.core.asPath
-import org.jetbrains.kotlin.utils.addToStdlib.cast
 import java.io.InputStreamReader
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -83,9 +82,8 @@ internal class ScriptsManager(maxThreadPoolSize: Int = 8) : Disposable {
 
 	private fun recycle(script: Script): Script? {
 		if (script is Script.Loaded && script.isUsed) {
-			if (script.isReusable) {
-				val moduleAction = script.compilation.moduleAction
-				val reusable = moduleAction.cast<ReusableAction>()
+			if (script.compilation.moduleAction is ReusableAction) {
+				val reusable = script.compilation.moduleAction
 				reusable.recycle()
 				printlnLog("Recycled script ${script.path.asPath().fileName}")
 				return clearLoadedScript(script)

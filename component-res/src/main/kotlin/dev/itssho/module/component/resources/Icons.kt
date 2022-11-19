@@ -17,6 +17,8 @@ object Icons {
 	object SUCCESS_GREEN : PixelImage("/drawable/Success-Green.png")
 	object WAIT_YELLOW : PixelImage("/drawable/Wait-Yellow.png")
 	object WARNING_ORANGE : PixelImage("/drawable/Warning-Orange.png")
+
+	object UPDATE : PixelImage("/drawable/Update.png")
 }
 
 /*

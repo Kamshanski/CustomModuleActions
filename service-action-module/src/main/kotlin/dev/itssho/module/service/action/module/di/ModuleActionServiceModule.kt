@@ -7,6 +7,7 @@ import dev.itssho.module.service.action.module.data.datasource.ModuleActionDataS
 import dev.itssho.module.service.action.module.data.repository.ScriptRepositoryImpl
 import dev.itssho.module.service.action.module.domain.repository.ScriptRepository
 import dev.itssho.module.service.action.module.domain.usecase.GetScriptsUseCase
+import dev.itssho.module.service.action.module.domain.usecase.ReloadScriptUseCase
 import dev.itssho.module.service.action.module.domain.usecase.UpdateScriptsUseCase
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.factoryOf
@@ -26,6 +27,7 @@ private fun makeModuleActionServiceDataModule(rootModule: Module) = module {
 private fun makeModuleActionServiceDomainModule(dataModule: Module, sharedFileDomainModule: Module, preferencesServiceDomainModule: Module) = module {
 	factoryOf(::UpdateScriptsUseCase)
 	factoryOf(::GetScriptsUseCase)
+	factoryOf(::ReloadScriptUseCase)
 }.apply {
 	includes(dataModule)
 	includes(sharedFileDomainModule)

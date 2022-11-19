@@ -7,6 +7,7 @@ import dev.itssho.module.component.components.simple.JILabel
 import dev.itssho.module.component.resources.Icons
 import dev.itssho.module.component.value.Gravity
 import dev.itssho.module.core.context.ProjectWindowClickContext
+import dev.itssho.module.qpay.module.selection.presentation.ReloadScriptCommand
 import dev.itssho.module.qpay.module.selection.presentation.ScriptModel
 import dev.itssho.module.qpay.module.selection.presentation.SelectionStepResult
 import dev.itssho.module.qpay.module.selection.presentation.SelectionViewModel
@@ -32,7 +33,8 @@ class SelectionUi(
 	private val COLUMN_NAMES = listOf(
 		ScriptsTableModel.ColumModel("Скрипт", Any::class.java),
 		ScriptsTableModel.ColumModel("Дата", Any::class.java),
-		ScriptsTableModel.ColumModel("Статус", Icon::class.java)
+		ScriptsTableModel.ColumModel("Статус", Icon::class.java),
+		ScriptsTableModel.ColumModel("Обновить", ReloadScriptCommand::class.java)
 	)
 
 	private val tableModel = ScriptsTableModel(COLUMN_NAMES)
@@ -78,11 +80,16 @@ class SelectionUi(
 		showCenterMessage()
 
 		scriptsTable.cellEditor
-		scriptsTable.model = tableModel
 		scriptsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
 		scriptsTable.rowSelectionAllowed = true
 		scriptsTable.columnSelectionAllowed = false
 		scriptsTable.cellSelectionEnabled = false
+
+		val reloadCommandCellHandler = ReloadScriptCommandCellRenderer("Обновить") { command -> viewModel.update(command) }
+		scriptsTable.setDefaultEditor(ReloadScriptCommand::class.java, reloadCommandCellHandler)
+		scriptsTable.setDefaultRenderer(ReloadScriptCommand::class.java, reloadCommandCellHandler)
+
+		scriptsTable.model = tableModel
 	}
 
 	private fun initViewModelObservers(dialogWrapper: DummyDialogWrapper) {
@@ -117,6 +124,7 @@ class SelectionUi(
 			tableModel.rowCount = scriptModels.size
 			scriptModels.forEachIndexed { index, model ->
 				tableModel.setValueAt(model.name, index, 0)
+				tableModel.setValueAt(ReloadScriptCommand(model.path), index, 3)
 				when (model) {
 					is ScriptModel.Failure -> {
 						tableModel.setValueAt(model.timestamp, index, 1)
